@@ -116,7 +116,7 @@ jobs:
 
       - name: Upload Release Assets
         env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           for file in artifacts/*.zip; do
             gh release upload "${{ github.ref_name }}" "$file" --clobber
