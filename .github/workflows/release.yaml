@@ -33,7 +33,9 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          # Switch to a .NET 9 SDK (preview) so you can target net9.0
+          dotnet-version: '9.0.x'
+          include-prerelease: true
 
       - name: Restore dependencies
         run: dotnet restore
@@ -89,6 +91,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           for file in artifacts/*.zip; do
-            echo "Uploading $file"
             gh release upload "${{ github.ref_name }}" "$file" --clobber
           done
