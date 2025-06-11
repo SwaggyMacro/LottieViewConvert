@@ -14,16 +14,36 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
+            framework: net8.0
             runtime: linux-x64
           - os: ubuntu-latest
+            framework: net8.0
             runtime: linux-arm64
           - os: macos-latest
+            framework: net8.0
             runtime: osx-x64
           - os: macos-latest
+            framework: net8.0
             runtime: osx-arm64
           - os: windows-latest
+            framework: net8.0
             runtime: win-x64
-    name: Build on ${{ matrix.os }} (${{ matrix.runtime }})
+          - os: ubuntu-latest
+            framework: net9.0
+            runtime: linux-x64
+          - os: ubuntu-latest
+            framework: net9.0
+            runtime: linux-arm64
+          - os: macos-latest
+            framework: net9.0
+            runtime: osx-x64
+          - os: macos-latest
+            framework: net9.0
+            runtime: osx-arm64
+          - os: windows-latest
+            framework: net9.0
+            runtime: win-x64
+    name: Build ${{ matrix.framework }} on ${{ matrix.os }} (${{ matrix.runtime }})
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,15 +53,18 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: ${{ matrix.framework == 'net9.0' && '9.0.x' || '8.0.x' }}
+          include-prerelease: ${{ matrix.framework == 'net9.0' && 'true' || 'false' }}
 
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Publish for ${{ matrix.runtime }}
+      - name: Publish for ${{ matrix.framework }} ${{ matrix.runtime }}
+        shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
         run: |
-          dotnet publish -c Release \
-            -f net9.0 \
+          dotnet publish \
+            -c Release \
+            -f ${{ matrix.framework }} \
             -r ${{ matrix.runtime }} \
             --self-contained true \
             -p:PublishReadyToRun=true \
@@ -49,24 +72,26 @@ jobs:
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
             -p:IncludeAllContentForSelfExtract=true \
-            -o ./artifacts/${{ matrix.runtime }}
+            -o ./artifacts/${{ matrix.framework }}-${{ matrix.runtime }}
 
       - name: Archive artifact on Windows
         if: runner.os == 'Windows'
+        shell: pwsh
         run: |
-          powershell -Command "Compress-Archive -Path artifacts/${{ matrix.runtime }}/* -DestinationPath artifacts/${{ matrix.runtime }}.zip"
+          Compress-Archive -Path artifacts/${{ matrix.framework }}-${{ matrix.runtime }}/* `
+            -DestinationPath artifacts/${{ matrix.framework }}-${{ matrix.runtime }}.zip
 
       - name: Archive artifact on Linux/macOS
         if: runner.os != 'Windows'
         run: |
           cd artifacts
-          zip -r "${{ matrix.runtime }}.zip" "${{ matrix.runtime }}"
+          zip -r "${{ matrix.framework }}-${{ matrix.runtime }}.zip" "${{ matrix.framework }}-${{ matrix.runtime }}"
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.runtime }}
-          path: artifacts/${{ matrix.runtime }}.zip
+          name: ${{ matrix.framework }}-${{ matrix.runtime }}
+          path: artifacts/${{ matrix.framework }}-${{ matrix.runtime }}.zip
 
   release:
     needs: build
@@ -76,7 +101,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download artifacts
+      - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
@@ -95,5 +120,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           for file in artifacts/*.zip; do
+            echo "Uploading $file"
             gh release upload "${{ github.ref_name }}" "$file" --clobber
           done
