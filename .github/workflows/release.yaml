@@ -85,6 +85,14 @@ jobs:
         with:
           path: artifacts
 
+      - name: Repackage downloaded artifacts into ZIPs
+        run: |
+          cd artifacts
+          # each subfolder is named after the runtime, zip it back up
+          for dir in */; do
+            zip -r "${dir%/}.zip" "$dir"
+          done
+
       - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v1
         with:
@@ -92,7 +100,6 @@ jobs:
           name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
-          # glob to include ZIPs in subfolders
-          files: artifacts/**/*.zip
+          files: artifacts/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
