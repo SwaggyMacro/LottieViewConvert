@@ -78,6 +78,24 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Batch convert done.
+        /// </summary>
+        public static string BatchConvertDone {
+            get {
+                return ResourceManager.GetString("BatchConvertDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Batch convert error.
+        /// </summary>
+        public static string BatchConvertError {
+            get {
+                return ResourceManager.GetString("BatchConvertError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse....
         /// </summary>
         public static string BrowseDotDotDot {
@@ -177,6 +195,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drag folder here to convert!.
+        /// </summary>
+        public static string DragFolderHere {
+            get {
+                return ResourceManager.GetString("DragFolderHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drag here to convert!.
         /// </summary>
         public static string DragHereToConvert {
@@ -218,6 +245,15 @@ namespace LottieViewConvert.Lang {
         public static string Factory {
             get {
                 return ResourceManager.GetString("Factory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed.
+        /// </summary>
+        public static string Failed {
+            get {
+                return ResourceManager.GetString("Failed", resourceCulture);
             }
         }
         
@@ -366,6 +402,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Output Folder.
+        /// </summary>
+        public static string OutputFolder {
+            get {
+                return ResourceManager.GetString("OutputFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Output Path.
         /// </summary>
         public static string OutputPath {
@@ -380,6 +425,15 @@ namespace LottieViewConvert.Lang {
         public static string PlaySpeed {
             get {
                 return ResourceManager.GetString("PlaySpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please choose output folder andFiles.
+        /// </summary>
+        public static string PleaseChooseOutputFolderAndFiles {
+            get {
+                return ResourceManager.GetString("PleaseChooseOutputFolderAndFiles", resourceCulture);
             }
         }
         
@@ -429,6 +483,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Lottie folder.
+        /// </summary>
+        public static string SelectLottieFolder {
+            get {
+                return ResourceManager.GetString("SelectLottieFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Output Folder.
         /// </summary>
         public static string SelectOutputFolder {
@@ -447,6 +510,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Source Folder.
+        /// </summary>
+        public static string SourceFolder {
+            get {
+                return ResourceManager.GetString("SourceFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         public static string Start {
@@ -456,11 +528,38 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start batch convert.
+        /// </summary>
+        public static string StartBatchConvert {
+            get {
+                return ResourceManager.GetString("StartBatchConvert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stop.
         /// </summary>
         public static string Stop {
             get {
                 return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopping conversion....
+        /// </summary>
+        public static string StoppingConversion {
+            get {
+                return ResourceManager.GetString("StoppingConversion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Succeeded {
+            get {
+                return ResourceManager.GetString("Succeeded", resourceCulture);
             }
         }
         
@@ -542,6 +641,15 @@ namespace LottieViewConvert.Lang {
         public static string ToggleMode {
             get {
                 return ResourceManager.GetString("ToggleMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting for browse or drop....
+        /// </summary>
+        public static string WaitingForBrowse {
+            get {
+                return ResourceManager.GetString("WaitingForBrowse", resourceCulture);
             }
         }
         

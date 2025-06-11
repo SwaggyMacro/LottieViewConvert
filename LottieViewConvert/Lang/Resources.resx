@@ -192,4 +192,40 @@
     <data name="SaveFile" xml:space="preserve">
         <value>Save File</value>
     </data>
+    <data name="WaitingForBrowse" xml:space="preserve">
+        <value>Waiting for browse or drop...</value>
+    </data>
+    <data name="DragFolderHere" xml:space="preserve">
+        <value>Drag folder here to convert!</value>
+    </data>
+    <data name="SelectLottieFolder" xml:space="preserve">
+        <value>Select Lottie folder</value>
+    </data>
+    <data name="SourceFolder" xml:space="preserve">
+        <value>Source Folder</value>
+    </data>
+    <data name="OutputFolder" xml:space="preserve">
+        <value>Output Folder</value>
+    </data>
+    <data name="StoppingConversion" xml:space="preserve">
+        <value>Stopping conversion...</value>
+    </data>
+    <data name="PleaseChooseOutputFolderAndFiles" xml:space="preserve">
+        <value>Please choose output folder andFiles</value>
+    </data>
+    <data name="StartBatchConvert" xml:space="preserve">
+        <value>Start batch convert</value>
+    </data>
+    <data name="BatchConvertDone" xml:space="preserve">
+        <value>Batch convert done</value>
+    </data>
+    <data name="Succeeded" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Failed" xml:space="preserve">
+        <value>Failed</value>
+    </data>
+    <data name="BatchConvertError" xml:space="preserve">
+        <value>Batch convert error</value>
+    </data>
 </root>

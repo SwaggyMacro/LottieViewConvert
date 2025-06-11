@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,10 +10,11 @@ using LottieViewConvert.Interface.Convert;
 
 namespace LottieViewConvert.Helper.Convert;
 
+[SuppressMessage("ReSharper", "UnusedParameter.Local")]
 public class Converter
 {
     private readonly string _source;
-    private readonly string? _outputDirectory;
+    private readonly string _outputDirectory;
     private readonly ConversionOptions _options;
     private readonly IFrameExporter _frameExporter;
     private readonly IProgressTracker _progressTracker;
@@ -37,7 +39,7 @@ public class Converter
 
     public Converter(
         string source,
-        string? outputDirectory,
+        string outputDirectory,
         ConversionOptions? options = null,
         IFrameExporter? frameExporter = null,
         IProgressTracker? progressTracker = null,
@@ -49,8 +51,7 @@ public class Converter
         _frameExporter = frameExporter ?? new FrameExporter();
         _progressTracker = progressTracker ?? new ProgressTracker();
         _progressCalculator = new ConversionProgressCalculator();
-
-        // 默认格式转换器
+        
         var commandExecutor = new CommandExecutor();
         _formatConverters = formatConverters ?? new Dictionary<string, IFormatConverter>
         {
@@ -113,7 +114,7 @@ public class Converter
     {
         if (!_formatConverters.TryGetValue(format, out var converter))
         {
-            Logger.Error($"不支持的格式: {format}");
+            Logger.Error($"Unsupported format: {format}");
             return false;
         }
 
@@ -125,17 +126,15 @@ public class Converter
 
         try
         {
-            // 阶段1: 初始化
-            ReportProgress(ConversionStage.Initializing, "准备转换...", 0);
+            ReportProgress(ConversionStage.Initializing, "Ready to start...", 0);
 
             var tmpDir = Path.Combine(_outputDirectory, "tmp");
             Directory.CreateDirectory(tmpDir);
 
             var outputFileName = Path.GetFileNameWithoutExtension(_source);
             var outputPath = Path.Combine(_outputDirectory, $"{outputFileName}.{converter.FileExtension}");
-
-            // 阶段2: PNG 导出
-            ReportProgress(ConversionStage.PngExport, "导出 PNG 帧...", 0);
+            
+            ReportProgress(ConversionStage.PngExport, "Export PNG frame...", 0);
 
             var pngExportProgress = new Progress<ExportProgressEventArgs>(pngProgress =>
             {
@@ -144,7 +143,7 @@ public class Converter
 
                 var progressArgs = _progressCalculator.CalculateProgress(
                     ConversionStage.PngExport,
-                    $"导出 PNG 帧 ({pngProgress.CurrentFrame}/{pngProgress.TotalFrames})",
+                    $"Export PNG frame ({pngProgress.CurrentFrame}/{pngProgress.TotalFrames})",
                     pngProgress.ProgressPercentage,
                     pngProgress);
 
@@ -160,9 +159,8 @@ public class Converter
                 _options.Height,
                 pngExportProgress,
                 token);
-
-            // 阶段3: 格式转换
-            ReportProgress(ConversionStage.Converting, $"转换为 {converter.FormatName}...", 0);
+            
+            ReportProgress(ConversionStage.Converting, $"convert to {converter.FormatName}...", 0);
 
             var conversionProgress = new Progress<TimeSpan>(timespan =>
             {
@@ -172,7 +170,7 @@ public class Converter
 
                 var progressArgs = _progressCalculator.CalculateProgress(
                     ConversionStage.Converting,
-                    $"转换为 {converter.FormatName} ({timespan:mm\\:ss}/{_estimatedDuration:mm\\:ss})",
+                    $"convert to {converter.FormatName} ({timespan:mm\\:ss}/{_estimatedDuration:mm\\:ss})",
                     conversionProgressPercentage,
                     null,
                     timespan);
@@ -182,24 +180,22 @@ public class Converter
 
             var success = await converter.ConvertAsync(tmpDir, outputPath, _options, conversionProgress, token);
             if (!success) return false;
-
-            // 阶段4: 清理
-            ReportProgress(ConversionStage.Cleanup, "清理临时文件...", 0);
+            
+            ReportProgress(ConversionStage.Cleanup, "cleanup the tmp files...", 0);
             CleanupTempDirectory(tmpDir);
-
-            // 阶段5: 完成
-            ReportProgress(ConversionStage.Completed, "转换完成", 100);
+            
+            ReportProgress(ConversionStage.Completed, "Conversion completed.", 100);
 
             return true;
         }
         catch (OperationCanceledException)
         {
-            Logger.Warn($"转换 {format} 被取消: {_source}");
+            Logger.Warn($"Conversion {format} was canceled: {_source}");
             return false;
         }
         catch (Exception ex)
         {
-            Logger.Error($"转换 {format} 失败: {_source}, {ex.Message}");
+            Logger.Error($"Convert to {format} failed: {_source}, {ex.Message}");
             return false;
         }
     }
@@ -221,7 +217,7 @@ public class Converter
         }
         catch (Exception ex)
         {
-            Logger.Warn($"清理临时目录失败: {ex.Message}");
+            Logger.Warn($"Failed to cleanup the tmp files: {ex.Message}");
         }
     }
 }

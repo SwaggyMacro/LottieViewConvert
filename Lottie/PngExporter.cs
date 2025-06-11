@@ -82,14 +82,14 @@ namespace Lottie
 
             try
             {
-                var durationSec = animation.Duration;
-                
-                // 计算实际的输出持续时间（考虑播放速度）
-                var outputDurationSec = durationSec.Seconds / playbackSpeed;
-                
-                // 根据输出持续时间计算帧数
+                var durationSec = animation.Duration.TotalSeconds;
+
+                // calculate the actual output duration based on playback speed
+                var outputDurationSec = durationSec / playbackSpeed;
+
+                // calculate the fps via the output duration
                 var frameCount = (int)Math.Ceiling(outputDurationSec * fps);
-                
+
                 var baseWidth = (int)animation.Size.Width;
                 var baseHeight = (int)animation.Size.Height;
                 var width = outputWidth ?? baseWidth;
@@ -103,12 +103,12 @@ namespace Lottie
                 {
                     // calculate the output time for this frame
                     var outputTime = i / (double)fps;
-                    
+
                     // time for this frame adjusted by playback speed
                     var animationTime = outputTime * playbackSpeed;
-                    
+
                     // ensure dont exceed the animation duration
-                    animationTime = Math.Min(animationTime, durationSec.Seconds);
+                    animationTime = Math.Min(animationTime, durationSec);
 
                     animation.SeekFrameTime(animationTime);
 
@@ -116,7 +116,7 @@ namespace Lottie
                     var canvas = surface.Canvas;
                     canvas.Clear(SKColors.Transparent);
 
-                    // Scale if output size differs
+                    // Scale if the output size differs
                     if (width != baseWidth || height != baseHeight)
                     {
                         var scaleX = width / (float)baseWidth;
@@ -138,6 +138,10 @@ namespace Lottie
                     var progress = new ExportProgressEventArgs(i + 1, frameCount, Path.GetFileName(filename), elapsed);
                     progressCallback?.Invoke(progress);
                 }
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Failed to export PNG sequence from {lottiePath}", e);
             }
             finally
             {
@@ -182,7 +186,7 @@ namespace Lottie
         {
             Stream rawStream;
             if (Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out var uri)
-                && uri.IsAbsoluteUri && uri.IsFile)
+                && uri is { IsAbsoluteUri: true, IsFile: true })
             {
                 rawStream = File.OpenRead(uri.LocalPath);
             }
@@ -198,16 +202,14 @@ namespace Lottie
             var read = rawStream.Read(header);
             rawStream.Seek(-read, SeekOrigin.Current);
 
-            if (read == 2 && header[0] == 0x1F && header[1] == 0x8B)
-            {
-                using var gzip = new GZipStream(rawStream, CompressionMode.Decompress, leaveOpen: false);
-                var ms = new MemoryStream();
-                gzip.CopyTo(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                return ms;
-            }
+            if (read != 2 || header[0] != 0x1F || header[1] != 0x8B) return rawStream;
+            
+            using var gzip = new GZipStream(rawStream, CompressionMode.Decompress, leaveOpen: false);
+            var ms = new MemoryStream();
+            gzip.CopyTo(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+            return ms;
 
-            return rawStream;
         }
     }
 }

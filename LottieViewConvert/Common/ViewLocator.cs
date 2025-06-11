@@ -20,10 +20,10 @@ public class ViewLocator : IDataTemplate
         if (string.IsNullOrWhiteSpace(fullName))
             return new TextBlock { Text = "Type has no name, or name is empty." };
 
-        // Check if the data is a DTO type (like Action) that isn't meant to have a view
-        if (fullName.Contains(".Models.DTO."))
+        // Check if the data is a model type that isn't meant to have a view
+        if (fullName.Contains(".Models."))
         {
-            // For DTO objects, return a basic TextBlock that just shows the string representation
+            // For model objects, return a basic TextBlock that just shows the string representation
             // This prevents trying to locate views for model objects
             return new TextBlock { Text = data.ToString() ?? fullName };
         }
@@ -47,14 +47,14 @@ public class ViewLocator : IDataTemplate
     public bool Match(object? data)
     {
         // Only match objects that should have views
-        // Exclude DTO objects that are used as data items
+        // Exclude model objects that are used as data items
         if (data == null) return false;
 
         var fullName = data.GetType().FullName;
         if (string.IsNullOrEmpty(fullName)) return false;
 
-        // Don't try to create views for DTO objects
-        if (fullName.Contains(".Models.DTO."))
+        // Don't try to create views for model objects
+        if (fullName.Contains(".Models."))
             return false;
 
         return data is INotifyPropertyChanged;
