@@ -39,7 +39,6 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      # —— 只对主项目做 publish —— 
       - name: Publish LottieViewConvert for ${{ matrix.runtime }}
         shell: bash
         run: |
@@ -93,6 +92,7 @@ jobs:
           name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
-          files: artifacts/*.zip
+          # glob to include ZIPs in subfolders
+          files: artifacts/**/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
