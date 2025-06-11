@@ -49,7 +49,6 @@ jobs:
             --self-contained true \
             -p:UseAppHost=true \
             -p:PublishReadyToRun=true \
-            -p:PublishTrimmed=true \
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
             -p:IncludeAllContentForSelfExtract=true \
