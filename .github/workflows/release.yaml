@@ -1,0 +1,100 @@
+# 在 push 到 master 或者创建 v*.*.* tag 时触发
+name: Build and Release
+
+on:
+  push:
+    branches: [ "master" ]
+    tags:     # 当推送标签 v1.2.3 时触发 release
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    # 针对不同平台和架构做矩阵构建
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        architecture: [x64, arm64]
+        include:
+          - os: ubuntu-latest
+            runtimes: [linux-x64, linux-arm64]
+          - os: macos-latest
+            runtimes: [osx-x64, osx-arm64]
+          - os: windows-latest
+            runtimes: [win-x64]
+    name: Build on ${{ matrix.os }} (${{ matrix.runtimes }})
+    # 这里需要替换为你的项目读取方式，默认假设是 .NET
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Publish for ${{ matrix.runtimes }}
+      run: |
+        dotnet publish -c Release \
+          -r ${{ matrix.runtimes }} \
+          --self-contained false \
+          -o ./artifacts/${{ matrix.runtimes }}
+    - name: Archive artifact
+      # 根据 runner 不同，打包工具也不同
+      if: runner.os == 'Windows'
+      run: |
+        powershell -Command "Compress-Archive -Path artifacts/${{ matrix.runtimes }}/* -DestinationPath artifacts/${{ matrix.runtimes }}.zip"
+    - name: Archive artifact on Linux/macOS
+      if: runner.os != 'Windows'
+      run: |
+        cd artifacts
+        zip -r "${{ matrix.runtimes }}.zip" "${{ matrix.runtimes }}"
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.runtimes }}
+        path: artifacts/${{ matrix.runtimes }}.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: Release ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Assets
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: artifacts
+        asset_name: ${{ item }}
+        asset_content_type: application/zip
+      # 逐个上传 artifacts 目录下的 zip 包
+      env:
+        ASSETS: ${{ join(fromJson('[]'), '') }}
+      # 使用 shell loop 来批量上传
+      run: |
+        for file in artifacts/*.zip; do
+          echo "Uploading $file"
+          gh release upload ${{ github.ref_name }} "$file" --clobber
+        done
+      # 你也可以改用 actions/upload-release-asset 结合 matrix，或写一个小脚本
