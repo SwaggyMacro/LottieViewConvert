@@ -39,8 +39,8 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Publish LottieViewConvert for ${{ matrix.runtime }} (Windows)
-        if: runner.os == 'Windows'
+      # —— 只对主项目做 publish —— 
+      - name: Publish LottieViewConvert for ${{ matrix.runtime }}
         shell: bash
         run: |
           dotnet publish ./LottieViewConvert/LottieViewConvert.csproj \
@@ -48,25 +48,9 @@ jobs:
             -f net8.0 \
             -r ${{ matrix.runtime }} \
             --self-contained true \
+            -p:UseAppHost=true \
             -p:PublishReadyToRun=true \
             -p:PublishTrimmed=true \
-            -p:UseAppHost=true \
-            -p:PublishSingleFile=true \
-            -p:IncludeNativeLibrariesForSelfExtract=true \
-            -p:IncludeAllContentForSelfExtract=true \
-            -o ./artifacts/${{ matrix.runtime }}
-
-      - name: Publish LottieViewConvert for ${{ matrix.runtime }} (Unix)
-        if: runner.os != 'Windows'
-        run: |
-          dotnet publish ./LottieViewConvert/LottieViewConvert.csproj \
-            -c Release \
-            -f net8.0 \
-            -r ${{ matrix.runtime }} \
-            --self-contained true \
-            -p:PublishReadyToRun=true \
-            -p:PublishTrimmed=true \
-            -p:UseAppHost=true \
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
             -p:IncludeAllContentForSelfExtract=true \
