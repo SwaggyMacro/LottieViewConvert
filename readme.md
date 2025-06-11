@@ -14,6 +14,7 @@ A powerful cross-platform desktop application for converting TGS (Telegram Stick
 ### ✨ Features
 ---
 - **Multiple Format Support**: Convert to GIF, WebP, APNG, MP4, MKV, AVIF, WebM
+- **Batch Processing**: Convert multiple files simultaneously
 - **TGS & Lottie Support**: Handle both Telegram stickers (.tgs) and standard Lottie files (.json, .lottie)
 - **Customizable Output**: Adjust playback speed, frame rate, resolution, and conversion quality
 - **Cross-Platform**: Works on Windows, macOS, and Linux
@@ -21,7 +22,6 @@ A powerful cross-platform desktop application for converting TGS (Telegram Stick
 ---
 
 ### 📝 TODO List
-- **Batch Processing**: Convert multiple files simultaneously *(Coming Soon)*
 - **Telegram Integration**: Parse and download Telegram sticker sets directly *(Coming Soon)*
 - **Automatic Installation of Dependencies**: Simplify setup by automating gifski and FFmpeg installation *(Coming Soon)*
 
