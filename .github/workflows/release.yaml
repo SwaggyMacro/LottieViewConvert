@@ -33,7 +33,7 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '9.0.x'
 
       - name: Restore dependencies
         run: dotnet restore
@@ -41,7 +41,7 @@ jobs:
       - name: Publish for ${{ matrix.runtime }}
         run: |
           dotnet publish -c Release \
-            -f net8.0 \
+            -f net9.0 \
             -r ${{ matrix.runtime }} \
             --self-contained true \
             -p:PublishReadyToRun=true \
