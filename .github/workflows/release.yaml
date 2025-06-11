@@ -33,19 +33,22 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
-          include-prerelease: true
+          dotnet-version: '8.0.x'
 
       - name: Restore dependencies
         run: dotnet restore
 
       - name: Publish for ${{ matrix.runtime }}
         run: |
-          dotnet publish \
-            -c Release \
-            -f net9.0 \
+          dotnet publish -c Release \
+            -f net8.0 \
             -r ${{ matrix.runtime }} \
-            --self-contained false \
+            --self-contained true \
+            -p:PublishReadyToRun=true \
+            -p:PublishTrimmed=true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:IncludeAllContentForSelfExtract=true \
             -o ./artifacts/${{ matrix.runtime }}
 
       - name: Archive artifact on Windows
@@ -73,7 +76,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download all artifacts
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
