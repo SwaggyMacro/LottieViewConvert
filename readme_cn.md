@@ -99,7 +99,7 @@ ffmpeg -version
 ---
 ![主界面](./images/main_interface.png)
 
-https://github.com/user-attachments/assets/244dc639-832e-4b98-a6de-5b85f283549d
+https://github.com/user-attachments/assets/1ab300ad-a36b-406c-881a-08b3b5ad423d
 
 ### 📋 支持的格式
 ---
