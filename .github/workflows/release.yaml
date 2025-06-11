@@ -39,9 +39,10 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Publish for ${{ matrix.runtime }}
+      - name: Publish LottieViewConvert for ${{ matrix.runtime }}
         run: |
-          dotnet publish -c Release \
+          dotnet publish ./LottieViewConvert/LottieViewConvert.csproj \
+            -c Release \
             -f net8.0 \
             -r ${{ matrix.runtime }} \
             --self-contained true \
