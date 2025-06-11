@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Avalonia" Version="11.3.1" />
+      <PackageReference Include="Avalonia.Skia" Version="11.3.0" />
+      <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.6.0" />
+      <PackageReference Include="SkiaSharp.Skottie" Version="3.119.0" />
+    </ItemGroup>
+
+</Project>

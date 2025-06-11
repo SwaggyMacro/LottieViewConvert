@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="LottieViewConvert.Controls.CustomTheme.CustomThemeDialogView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:lang="clr-namespace:LottieViewConvert.Lang"
+             xmlns:customTheme="clr-namespace:LottieViewConvert.Controls.CustomTheme"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             x:DataType="customTheme:CustomThemeDialogViewModel"
+             mc:Ignorable="d">
+    <suki:GroupBox Header="Create Custom Theme">
+        <StackPanel Spacing="20">
+            <TextBox Text="{Binding DisplayName}" />
+            <ColorPicker Color="{Binding PrimaryColor}" />
+            <ColorPicker Color="{Binding AccentColor}" />
+            <Button Command="{Binding TryCreateThemeCommand}" Classes="Flat" Content="{x:Static lang:Resources.Create}" />
+            <Button Command="{Binding CancelCommand}" Content="{x:Static lang:Resources.Cancel}" />
+        </StackPanel>
+    </suki:GroupBox>
+</UserControl>

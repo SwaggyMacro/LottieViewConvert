@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="ThemeChangedTitle" xml:space="preserve">
+        <value>Theme</value>
+    </data>
+    <data name="ThemeChangedContent" xml:space="preserve">
+        <value>Theme has been changed</value>
+    </data>
+    <data name="ColorChangedTitle" xml:space="preserve">
+        <value>Color</value>
+    </data>
+    <data name="ColorChangedContent" xml:space="preserve">
+        <value>Theme's color has been changed.</value>
+    </data>
+    <data name="ToggleMode" xml:space="preserve">
+        <value>Toggle mode</value>
+    </data>
+    <data name="TitleBar" xml:space="preserve">
+        <value>Title bar</value>
+    </data>
+    <data name="TitleBarTip" xml:space="preserve">
+        <value>Title bar tip</value>
+    </data>
+    <data name="FullScreen" xml:space="preserve">
+        <value>FullScreen</value>
+    </data>
+    <data name="FullScreenTip" xml:space="preserve">
+        <value>FullScreen now</value>
+    </data>
+    <data name="Theme" xml:space="preserve">
+        <value>Theme</value>
+    </data>
+    <data name="SwitchTo" xml:space="preserve">
+        <value>Switch to</value>
+    </data>
+    <data name="CreateCustom" xml:space="preserve">
+        <value>Create Custom</value>
+    </data>
+    <data name="ToggleMenuTip" xml:space="preserve">
+        <value>Toggle menu</value>
+    </data>
+    <data name="Copyright" xml:space="preserve">
+        <value>SwaggyMacro</value>
+    </data>
+    <data name="AppName" xml:space="preserve">
+        <value>Lottie Converter</value>
+    </data>
+    <data name="OpenOnGithub" xml:space="preserve">
+        <value>Open on Github</value>
+    </data>
+    <data name="Create" xml:space="preserve">
+        <value>Create</value>
+    </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="Home" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="About" xml:space="preserve">
+        <value>About</value>
+    </data>
+    <data name="Welcome" xml:space="preserve">
+        <value>Welcome</value>
+    </data>
+    <data name="Factory" xml:space="preserve">
+        <value>Factory</value>
+    </data>
+    <data name="WhatIsThis" xml:space="preserve">
+        <value>What's this?</value>
+    </data>
+    <data name="BrowseDotDotDot" xml:space="preserve">
+        <value>Browse...</value>
+    </data>
+    <data name="Origin" xml:space="preserve">
+        <value>Origin</value>
+    </data>
+    <data name="Quality" xml:space="preserve">
+        <value>Quality</value>
+    </data>
+    <data name="Width" xml:space="preserve">
+        <value>Width</value>
+    </data>
+    <data name="Height" xml:space="preserve">
+        <value>Height</value>
+    </data>
+    <data name="Output" xml:space="preserve">
+        <value>Output</value>
+    </data>
+    <data name="Start" xml:space="preserve">
+        <value>Start</value>
+    </data>
+    <data name="Stop" xml:space="preserve">
+        <value>Stop</value>
+    </data>
+    <data name="Format" xml:space="preserve">
+        <value>Format</value>
+    </data>
+    <data name="WhatIsThisDescription" xml:space="preserve">
+        <value>This's a simple application to convert Lottie animations to GIF, WEBP, APNG, PNG, MP4.This's a simple application to convert Lottie animations to GIF, WEBP, APNG, PNG, MP4.</value>
+    </data>
+    <data name="DragHereToConvert" xml:space="preserve">
+        <value>Drag here to convert!</value>
+    </data>
+    <data name="DropToConvert" xml:space="preserve">
+        <value>Drop to convet</value>
+    </data>
+    <data name="Processing" xml:space="preserve">
+        <value>Processing</value>
+    </data>
+    <data name="ConversionComplete" xml:space="preserve">
+        <value>Conversion Complete</value>
+    </data>
+    <data name="Error" xml:space="preserve">
+        <value>Error</value>
+    </data>
+    <data name="SupportedFormats" xml:space="preserve">
+        <value>.tgs, .json</value>
+    </data>
+    <data name="FileLoadedSuccessfully" xml:space="preserve">
+        <value>File loaded successfully</value>
+    </data>
+    <data name="InvalidLottieFile" xml:space="preserve">
+        <value>Invalid lottie file</value>
+    </data>
+    <data name="DragLottieFileHere" xml:space="preserve">
+        <value>Drag lottie file here</value>
+    </data>
+    <data name="FileLoadFailed" xml:space="preserve">
+        <value>File load failed</value>
+    </data>
+    <data name="PleaseDragDotTgsOrDotJsonFile" xml:space="preserve">
+        <value>Plase drag .tgs or .json file</value>
+    </data>
+    <data name="HowToUse" xml:space="preserve">
+        <value>How to use?</value>
+    </data>
+    <data name="HowToUseDescription" xml:space="preserve">
+        <value>Just drag your lottie file(.tgs, .json) to the area.</value>
+    </data>
+    <data name="SourceFile" xml:space="preserve">
+        <value>Source</value>
+    </data>
+    <data name="Fps" xml:space="preserve">
+        <value>FPS</value>
+    </data>
+    <data name="PlaySpeed" xml:space="preserve">
+        <value>Play Speed</value>
+    </data>
+    <data name="Convert" xml:space="preserve">
+        <value>Convert</value>
+    </data>
+    <data name="OutputPath" xml:space="preserve">
+        <value>Output Path</value>
+    </data>
+    <data name="ConvertSucceeded" xml:space="preserve">
+        <value>Convert Succeeded</value>
+    </data>
+    <data name="ConvertFailed" xml:space="preserve">
+        <value>Convert Failed</value>
+    </data>
+    <data name="OpenOutputFolder" xml:space="preserve">
+        <value>Open</value>
+    </data>
+    <data name="SelectLottieFile" xml:space="preserve">
+        <value>Select Lottie JSON/TGS</value>
+    </data>
+    <data name="LottieJsonTgs" xml:space="preserve">
+        <value>Lottie JSON/TGS</value>
+    </data>
+    <data name="SelectOutputFolder" xml:space="preserve">
+        <value>Select Output Folder</value>
+    </data>
+    <data name="SaveFile" xml:space="preserve">
+        <value>Save File</value>
+    </data>
+</root>
