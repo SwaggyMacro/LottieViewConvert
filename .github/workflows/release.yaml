@@ -39,8 +39,6 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      # Publish step for Windows: use bash shell so backslashes work,
-      # or switch to PowerShell backtick ` continuation if you prefer.
       - name: Publish LottieViewConvert for ${{ matrix.runtime }} (Windows)
         if: runner.os == 'Windows'
         shell: bash
@@ -58,7 +56,6 @@ jobs:
             -p:IncludeAllContentForSelfExtract=true \
             -o ./artifacts/${{ matrix.runtime }}
 
-      # Publish step for Linux/macOS (default shell is bash)
       - name: Publish LottieViewConvert for ${{ matrix.runtime }} (Unix)
         if: runner.os != 'Windows'
         run: |
@@ -100,24 +97,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download artifacts
+      - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
 
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Create Release and Upload Assets
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
-
-      - name: Upload Release Assets
+          files: artifacts/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          for file in artifacts/*.zip; do
-            gh release upload "${{ github.ref_name }}" "$file" --clobber
-          done
