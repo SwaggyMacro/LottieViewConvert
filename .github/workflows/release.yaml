@@ -33,7 +33,6 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          # Switch to a .NET 9 SDK (preview) so you can target net9.0
           dotnet-version: '9.0.x'
           include-prerelease: true
 
@@ -42,12 +41,14 @@ jobs:
 
       - name: Publish for ${{ matrix.runtime }}
         run: |
-          dotnet publish -c Release \
+          dotnet publish \
+            -c Release \
+            -f net9.0 \
             -r ${{ matrix.runtime }} \
             --self-contained false \
             -o ./artifacts/${{ matrix.runtime }}
 
-      - name: Archive artifact
+      - name: Archive artifact on Windows
         if: runner.os == 'Windows'
         run: |
           powershell -Command "Compress-Archive -Path artifacts/${{ matrix.runtime }}/* -DestinationPath artifacts/${{ matrix.runtime }}.zip"
