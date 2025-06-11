@@ -1,0 +1,100 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ "master" ]
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            runtime: linux-x64
+          - os: ubuntu-latest
+            runtime: linux-arm64
+          - os: macos-latest
+            runtime: osx-x64
+          - os: macos-latest
+            runtime: osx-arm64
+          - os: windows-latest
+            runtime: win-x64
+    name: Build on ${{ matrix.os }} (${{ matrix.runtime }})
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+          include-prerelease: true
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Publish for ${{ matrix.runtime }}
+        run: |
+          dotnet publish -c Release \
+            -f net8.0 \
+            -r ${{ matrix.runtime }} \
+            --self-contained true \
+            -p:PublishReadyToRun=true \
+            -p:PublishTrimmed=true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -p:IncludeAllContentForSelfExtract=true \
+            -o ./artifacts/${{ matrix.runtime }}
+
+      - name: Archive artifact on Windows
+        if: runner.os == 'Windows'
+        run: |
+          powershell -Command "Compress-Archive -Path artifacts/${{ matrix.runtime }}/* -DestinationPath artifacts/${{ matrix.runtime }}.zip"
+
+      - name: Archive artifact on Linux/macOS
+        if: runner.os != 'Windows'
+        run: |
+          cd artifacts
+          zip -r "${{ matrix.runtime }}.zip" "${{ matrix.runtime }}"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.runtime }}
+          path: artifacts/${{ matrix.runtime }}.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for file in artifacts/*.zip; do
+            gh release upload "${{ github.ref_name }}" "$file" --clobber
+          done
