@@ -48,6 +48,7 @@ jobs:
             -r ${{ matrix.runtime }} \
             --self-contained true \
             -p:UseAppHost=true \
+            -p:PublishTrimmed=true \
             -p:PublishReadyToRun=true \
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
