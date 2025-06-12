@@ -1,5 +1,5 @@
-# .github/workflows/build-and-release-single-job.yml
-name: Build and Release (Single Job)
+# .github/workflows/build-and-release-tar.yml
+name: Build and Release (Separate Jobs with tar)
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-release:
-    name: Build and Release on ${{ matrix.os }} / ${{ matrix.runtime }}
+  build:
+    name: Build on ${{ matrix.os }} / ${{ matrix.runtime }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -53,14 +53,41 @@ jobs:
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
             -p:IncludeAllContentForSelfExtract=true \
-            -o artifacts/${{ matrix.runtime }}
+            -o publishes/${{ matrix.runtime }}
+
+      - name: Archive all publishes into tar
+        if: always()
+        run: |
+          tar -czf publishes.tar publishes
+
+      - name: Upload tar artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: publishes
+          path: publishes.tar
+
+  release:
+    name: Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download publishes.tar
+        uses: actions/download-artifact@v4
+        with:
+          name: publishes
+          path: .
+
+      - name: Extract publishes.tar
+        run: tar -xzf publishes.tar
 
       - name: Create GitHub Release and Upload
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/v')
         with:
           tag_name: ${{ github.ref_name }}
-          name: Release-${{ github.ref_name }}-${{ matrix.runtime }}
-          files: artifacts/${{ matrix.runtime }}/*
+          name: Release-${{ github.ref_name }}
+          files: publishes/**/*/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
