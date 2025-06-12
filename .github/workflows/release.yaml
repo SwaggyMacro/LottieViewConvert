@@ -55,22 +55,11 @@ jobs:
             -p:IncludeAllContentForSelfExtract=true \
             -o ./artifacts/${{ matrix.runtime }}
 
-      - name: Archive artifact on Windows
-        if: runner.os == 'Windows'
-        run: |
-          powershell -Command "Compress-Archive -Path artifacts/${{ matrix.runtime }}/* -DestinationPath artifacts/${{ matrix.runtime }}.zip"
-
-      - name: Archive artifact on Linux/macOS
-        if: runner.os != 'Windows'
-        run: |
-          cd artifacts
-          zip -r "${{ matrix.runtime }}.zip" "${{ matrix.runtime }}"
-
-      - name: Upload build artifact
+      - name: Upload build artifact (uncompressed)
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.runtime }}
-          path: artifacts/${{ matrix.runtime }}.zip
+          path: artifacts/${{ matrix.runtime }}
 
   release:
     needs: build
@@ -85,15 +74,21 @@ jobs:
         with:
           path: artifacts
 
-      - name: Move ZIP files to root
+      - name: Create ZIP files from artifacts
         run: |
           cd artifacts
-          # 将每个文件夹中的 zip 文件移动到根目录
+          # 为每个 runtime 文件夹创建 zip 文件
           for dir in */; do
-            mv "$dir"/*.zip ./
+            runtime_name="${dir%/}"
+            zip -r "${runtime_name}.zip" "$dir"
           done
-          # 删除空文件夹
+          
+          # 删除原始文件夹
           rm -rf */
+          
+          # 确认最终文件
+          echo "Final ZIP files:"
+          ls -la *.zip
 
       - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v1
