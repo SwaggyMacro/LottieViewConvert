@@ -1,4 +1,3 @@
-# .github/workflows/build-and-release-multi-upload.yml
 name: Build and Release (Create once, multi-upload)
 
 on:
@@ -37,11 +36,16 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest; runtime: linux-x64
-          - os: ubuntu-latest; runtime: linux-arm64
-          - os: macos-latest; runtime: osx-x64
-          - os: macos-latest; runtime: osx-arm64
-          - os: windows-latest; runtime: win-x64
+          - os: ubuntu-latest
+            runtime: linux-x64
+          - os: ubuntu-latest
+            runtime: linux-arm64
+          - os: macos-latest
+            runtime: osx-x64
+          - os: macos-latest
+            runtime: osx-arm64
+          - os: windows-latest
+            runtime: win-x64
 
     steps:
       - name: Checkout code
