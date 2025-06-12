@@ -55,19 +55,12 @@ jobs:
             -p:IncludeAllContentForSelfExtract=true \
             -o ./artifacts/${{ matrix.runtime }}
 
-      - name: Zip published output
-        shell: bash
-        run: |
-          # go into the specific runtime folder
-          cd artifacts/${{ matrix.runtime }}
-          # zip everything in it up one level, naming the zip after the runtime
-          zip -r ../../${{ matrix.runtime }}.zip ./*
-      
-      - name: Upload build artifact (zip)
+      - name: Upload build artifact (executables only)
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.runtime }}
-          path: artifacts/${{ matrix.runtime }}.zip
+          # 上传输出目录下的所有文件（单文件可执行）
+          path: artifacts/${{ matrix.runtime }}/*
 
   release:
     needs: build
@@ -82,14 +75,14 @@ jobs:
         with:
           path: artifacts
 
-      - name: Create Release and Upload Zips
+      - name: Create Release and Upload Executables
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
-          # Only upload the already-zipped files
-          files: artifacts/*.zip
+          # 把所有运行时文件夹里的可执行文件全部上传
+          files: artifacts/**/* 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
