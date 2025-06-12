@@ -1,14 +1,15 @@
-name: Build and Release
+# .github/workflows/build-and-release-single-job.yml
+name: Build and Release (Single Job)
 
 on:
   push:
-    branches: [ "master" ]
     tags:
       - 'v*.*.*'
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-release:
+    name: Build and Release on ${{ matrix.os }} / ${{ matrix.runtime }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -23,7 +24,7 @@ jobs:
             runtime: osx-arm64
           - os: windows-latest
             runtime: win-x64
-    name: Build on ${{ matrix.os }} (${{ matrix.runtime }})
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -39,10 +40,9 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Publish LottieViewConvert for ${{ matrix.runtime }}
-        shell: bash
+      - name: Publish for ${{ matrix.runtime }}
         run: |
-          dotnet publish ./LottieViewConvert/LottieViewConvert.csproj \
+          dotnet publish LottieViewConvert/LottieViewConvert.csproj \
             -c Release \
             -f net8.0 \
             -r ${{ matrix.runtime }} \
@@ -53,36 +53,14 @@ jobs:
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
             -p:IncludeAllContentForSelfExtract=true \
-            -o ./artifacts/${{ matrix.runtime }}
+            -o artifacts/${{ matrix.runtime }}
 
-      - name: Upload build artifact (executables only)
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.runtime }}
-          # 上传输出目录下的所有文件（单文件可执行）
-          path: artifacts/${{ matrix.runtime }}/*
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-
-      - name: Create Release and Upload Executables
-        uses: softprops/action-gh-release@v1
+      - name: Create GitHub Release and Upload
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/v')
         with:
           tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-          # 把所有运行时文件夹里的可执行文件全部上传
-          files: artifacts/**/* 
+          name: Release-${{ github.ref_name }}-${{ matrix.runtime }}
+          files: artifacts/${{ matrix.runtime }}/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
