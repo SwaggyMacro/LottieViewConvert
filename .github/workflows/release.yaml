@@ -85,13 +85,15 @@ jobs:
         with:
           path: artifacts
 
-      - name: Repackage downloaded artifacts into ZIPs
+      - name: Move ZIP files to root
         run: |
           cd artifacts
-          # each subfolder is named after the runtime, zip it back up
+          # 将每个文件夹中的 zip 文件移动到根目录
           for dir in */; do
-            zip -r "${dir%/}.zip" "$dir"
+            mv "$dir"/*.zip ./
           done
+          # 删除空文件夹
+          rm -rf */
 
       - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v1
