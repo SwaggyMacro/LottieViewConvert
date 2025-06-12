@@ -48,28 +48,19 @@ jobs:
             -r ${{ matrix.runtime }} \
             --self-contained true \
             -p:UseAppHost=true \
+            -p:PublishTrimmed=true \
             -p:PublishReadyToRun=true \
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
             -p:IncludeAllContentForSelfExtract=true \
             -o ./artifacts/${{ matrix.runtime }}
 
-      - name: Archive artifact on Windows
-        if: runner.os == 'Windows'
-        run: |
-          powershell -Command "Compress-Archive -Path artifacts/${{ matrix.runtime }}/* -DestinationPath artifacts/${{ matrix.runtime }}.zip"
-
-      - name: Archive artifact on Linux/macOS
-        if: runner.os != 'Windows'
-        run: |
-          cd artifacts
-          zip -r "${{ matrix.runtime }}.zip" "${{ matrix.runtime }}"
-
-      - name: Upload build artifact
+      - name: Upload build artifact (executables only)
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.runtime }}
-          path: artifacts/${{ matrix.runtime }}.zip
+          # 上传输出目录下的所有文件（单文件可执行）
+          path: artifacts/${{ matrix.runtime }}/*
 
   release:
     needs: build
@@ -84,21 +75,14 @@ jobs:
         with:
           path: artifacts
 
-      - name: Repackage downloaded artifacts into ZIPs
-        run: |
-          cd artifacts
-          # each subfolder is named after the runtime, zip it back up
-          for dir in */; do
-            zip -r "${dir%/}.zip" "$dir"
-          done
-
-      - name: Create Release and Upload Assets
+      - name: Create Release and Upload Executables
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
-          files: artifacts/*.zip
+          # 把所有运行时文件夹里的可执行文件全部上传
+          files: artifacts/**/* 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
