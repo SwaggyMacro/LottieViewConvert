@@ -1,37 +1,14 @@
-name: Build and Release (Create once, multi-upload)
+name: Build and Release
 
 on:
   push:
+    branches: [ "master" ]
     tags:
       - 'v*.*.*'
   workflow_dispatch:
 
 jobs:
-  # 1. 先创建一个空的 Release，输出 upload_url
-  create_release:
-    name: Create Release
-    runs-on: ubuntu-latest
-    outputs:
-      upload_url: ${{ steps.create.outputs.upload_url }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Create GitHub Release
-        id: create
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # 2. 并行的 build matrix，各自 publish + zip + upload to the same release
-  build-and-upload:
-    name: Build & Upload on ${{ matrix.os }} / ${{ matrix.runtime }}
-    needs: create_release
+  build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -46,7 +23,7 @@ jobs:
             runtime: osx-arm64
           - os: windows-latest
             runtime: win-x64
-
+    name: Build on ${{ matrix.os }} (${{ matrix.runtime }})
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -62,9 +39,10 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Publish for ${{ matrix.runtime }}
+      - name: Publish LottieViewConvert for ${{ matrix.runtime }}
+        shell: bash
         run: |
-          dotnet publish LottieViewConvert/LottieViewConvert.csproj \
+          dotnet publish ./LottieViewConvert/LottieViewConvert.csproj \
             -c Release \
             -f net8.0 \
             -r ${{ matrix.runtime }} \
@@ -75,19 +53,43 @@ jobs:
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
             -p:IncludeAllContentForSelfExtract=true \
-            -o artifacts/${{ matrix.runtime }}
+            -o ./artifacts/${{ matrix.runtime }}
 
-      - name: Zip publish output
+      - name: Zip published output
+        shell: bash
         run: |
-          cd artifacts
-          zip -r ../${{ matrix.runtime }}.zip ${{ matrix.runtime }}
-
-      - name: Upload to GitHub Release
-        uses: actions/upload-release-asset@v1
+          # go into the specific runtime folder
+          cd artifacts/${{ matrix.runtime }}
+          # zip everything in it up one level, naming the zip after the runtime
+          zip -r ../../${{ matrix.runtime }}.zip ./*
+      
+      - name: Upload build artifact (zip)
+        uses: actions/upload-artifact@v4
         with:
-          upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: ${{ matrix.runtime }}.zip
-          asset_name: ${{ matrix.runtime }}.zip
-          asset_content_type: application/zip
+          name: ${{ matrix.runtime }}
+          path: artifacts/${{ matrix.runtime }}.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create Release and Upload Zips
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          # Only upload the already-zipped files
+          files: artifacts/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
