@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <root>
     <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <xsd:element name="root" msdata:IsDataSet="true">
@@ -19,444 +18,444 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="ThemeChangedTitle" xml:space="preserve">
-        <value>Theme</value>
+        <value>主题</value>
     </data>
     <data name="ThemeChangedContent" xml:space="preserve">
-        <value>Theme has been changed</value>
+        <value>主题已更改</value>
     </data>
     <data name="ColorChangedTitle" xml:space="preserve">
-        <value>Color</value>
+        <value>颜色</value>
     </data>
     <data name="ColorChangedContent" xml:space="preserve">
-        <value>Theme's color has been changed.</value>
+        <value>主题颜色已更改。</value>
     </data>
     <data name="ToggleMode" xml:space="preserve">
-        <value>Toggle mode</value>
+        <value>切换模式</value>
     </data>
     <data name="TitleBar" xml:space="preserve">
-        <value>Title bar</value>
+        <value>标题栏</value>
     </data>
     <data name="TitleBarTip" xml:space="preserve">
-        <value>Title bar tip</value>
+        <value>标题栏提示</value>
     </data>
     <data name="FullScreen" xml:space="preserve">
-        <value>FullScreen</value>
+        <value>全屏</value>
     </data>
     <data name="FullScreenTip" xml:space="preserve">
-        <value>FullScreen now</value>
+        <value>立即全屏</value>
     </data>
     <data name="Theme" xml:space="preserve">
-        <value>Theme</value>
+        <value>主题</value>
     </data>
     <data name="SwitchTo" xml:space="preserve">
-        <value>Switch to</value>
+        <value>切换到</value>
     </data>
     <data name="CreateCustom" xml:space="preserve">
-        <value>Create Custom</value>
+        <value>创建自定义</value>
     </data>
     <data name="ToggleMenuTip" xml:space="preserve">
-        <value>Toggle menu</value>
+        <value>切换菜单</value>
     </data>
     <data name="Copyright" xml:space="preserve">
         <value>SwaggyMacro</value>
     </data>
     <data name="AppName" xml:space="preserve">
-        <value>Lottie View Convert</value>
+        <value>Lottie 动画转换器</value>
     </data>
     <data name="OpenOnGithub" xml:space="preserve">
-        <value>Open on Github</value>
+        <value>在 Github 上打开</value>
     </data>
     <data name="Create" xml:space="preserve">
-        <value>Create</value>
+        <value>创建</value>
     </data>
     <data name="Cancel" xml:space="preserve">
-        <value>Cancel</value>
+        <value>取消</value>
     </data>
     <data name="Home" xml:space="preserve">
-        <value>Home</value>
+        <value>首页</value>
     </data>
     <data name="About" xml:space="preserve">
-        <value>About</value>
+        <value>关于</value>
     </data>
     <data name="Welcome" xml:space="preserve">
-        <value>Welcome</value>
+        <value>欢迎</value>
     </data>
     <data name="Factory" xml:space="preserve">
-        <value>Factory</value>
+        <value>工厂</value>
     </data>
     <data name="WhatIsThis" xml:space="preserve">
-        <value>What's this?</value>
+        <value>这是什么？</value>
     </data>
     <data name="BrowseDotDotDot" xml:space="preserve">
-        <value>Browse...</value>
+        <value>浏览...</value>
     </data>
     <data name="Origin" xml:space="preserve">
-        <value>Origin</value>
+        <value>原始</value>
     </data>
     <data name="Quality" xml:space="preserve">
-        <value>Quality</value>
+        <value>质量</value>
     </data>
     <data name="Width" xml:space="preserve">
-        <value>Width</value>
+        <value>宽度</value>
     </data>
     <data name="Height" xml:space="preserve">
-        <value>Height</value>
+        <value>高度</value>
     </data>
     <data name="Output" xml:space="preserve">
-        <value>Output</value>
+        <value>输出</value>
     </data>
     <data name="Start" xml:space="preserve">
-        <value>Start</value>
+        <value>开始</value>
     </data>
     <data name="Stop" xml:space="preserve">
-        <value>Stop</value>
+        <value>停止</value>
     </data>
     <data name="Format" xml:space="preserve">
-        <value>Format</value>
+        <value>格式</value>
     </data>
     <data name="WhatIsThisDescription" xml:space="preserve">
-        <value>This's a simple application to convert Lottie animations to GIF, WEBP, APNG, PNG, MP4.This's a simple application to convert Lottie animations to GIF, WEBP, APNG, PNG, MP4.</value>
+        <value>这是一个简单的应用程序，可以将 Lottie 动画转换为 GIF、WEBP、APNG、PNG、MP4 格式。</value>
     </data>
     <data name="DragHereToConvert" xml:space="preserve">
-        <value>Drag here to convert!</value>
+        <value>拖拽到此处进行转换！</value>
     </data>
     <data name="DropToConvert" xml:space="preserve">
-        <value>Drop to convet</value>
+        <value>拖放以转换</value>
     </data>
     <data name="Processing" xml:space="preserve">
-        <value>Processing</value>
+        <value>处理中</value>
     </data>
     <data name="ConversionComplete" xml:space="preserve">
-        <value>Conversion Complete</value>
+        <value>转换完成</value>
     </data>
     <data name="Error" xml:space="preserve">
-        <value>Error</value>
+        <value>错误</value>
     </data>
     <data name="SupportedFormats" xml:space="preserve">
         <value>.tgs, .json</value>
     </data>
     <data name="FileLoadedSuccessfully" xml:space="preserve">
-        <value>File loaded successfully</value>
+        <value>文件加载成功</value>
     </data>
     <data name="InvalidLottieFile" xml:space="preserve">
-        <value>Invalid lottie file</value>
+        <value>无效的 Lottie 文件</value>
     </data>
     <data name="DragLottieFileHere" xml:space="preserve">
-        <value>Drag lottie file here</value>
+        <value>将 Lottie 文件拖拽到此处</value>
     </data>
     <data name="FileLoadFailed" xml:space="preserve">
-        <value>File load failed</value>
+        <value>文件加载失败</value>
     </data>
     <data name="PleaseDragDotTgsOrDotJsonFile" xml:space="preserve">
-        <value>Plase drag .tgs or .json file</value>
+        <value>请拖拽 .tgs 或 .json 文件</value>
     </data>
     <data name="HowToUse" xml:space="preserve">
-        <value>How to use?</value>
+        <value>如何使用？</value>
     </data>
     <data name="HowToUseDescription" xml:space="preserve">
-        <value>Just drag your lottie file(.tgs, .json) to the area.</value>
+        <value>只需将您的 Lottie 文件（.tgs、.json）拖拽到该区域即可。</value>
     </data>
     <data name="SourceFile" xml:space="preserve">
-        <value>Source</value>
+        <value>源文件</value>
     </data>
     <data name="Fps" xml:space="preserve">
-        <value>FPS</value>
+        <value>帧率</value>
     </data>
     <data name="PlaySpeed" xml:space="preserve">
-        <value>Play Speed</value>
+        <value>播放速度</value>
     </data>
     <data name="Convert" xml:space="preserve">
-        <value>Convert</value>
+        <value>转换</value>
     </data>
     <data name="OutputPath" xml:space="preserve">
-        <value>Output Path</value>
+        <value>输出路径</value>
     </data>
     <data name="ConvertSucceeded" xml:space="preserve">
-        <value>Convert Succeeded</value>
+        <value>转换成功</value>
     </data>
     <data name="ConvertFailed" xml:space="preserve">
-        <value>Convert Failed</value>
+        <value>转换失败</value>
     </data>
     <data name="OpenOutputFolder" xml:space="preserve">
-        <value>Open</value>
+        <value>打开</value>
     </data>
     <data name="SelectLottieFile" xml:space="preserve">
-        <value>Select Lottie JSON/TGS</value>
+        <value>选择 Lottie JSON/TGS</value>
     </data>
     <data name="LottieJsonTgs" xml:space="preserve">
         <value>Lottie JSON/TGS</value>
     </data>
     <data name="SelectOutputFolder" xml:space="preserve">
-        <value>Select Output Folder</value>
+        <value>选择输出文件夹</value>
     </data>
     <data name="SaveFile" xml:space="preserve">
-        <value>Save File</value>
+        <value>保存文件</value>
     </data>
     <data name="WaitingForBrowse" xml:space="preserve">
-        <value>Waiting for browse or drop...</value>
+        <value>等待浏览或拖拽...</value>
     </data>
     <data name="DragFolderHere" xml:space="preserve">
-        <value>Drag folder here to convert!</value>
+        <value>将文件夹拖拽到此处进行转换！</value>
     </data>
     <data name="SelectLottieFolder" xml:space="preserve">
-        <value>Select Lottie folder</value>
+        <value>选择 Lottie 文件夹</value>
     </data>
     <data name="SourceFolder" xml:space="preserve">
-        <value>Source Folder</value>
+        <value>源文件夹</value>
     </data>
     <data name="OutputFolder" xml:space="preserve">
-        <value>Output Folder</value>
+        <value>输出文件夹</value>
     </data>
     <data name="StoppingConversion" xml:space="preserve">
-        <value>Stopping conversion...</value>
+        <value>正在停止转换...</value>
     </data>
     <data name="PleaseChooseOutputFolderAndFiles" xml:space="preserve">
-        <value>Please choose output folder andFiles</value>
+        <value>请选择输出文件夹和文件</value>
     </data>
     <data name="StartBatchConvert" xml:space="preserve">
-        <value>Start batch convert</value>
+        <value>开始批量转换</value>
     </data>
     <data name="BatchConvertDone" xml:space="preserve">
-        <value>Batch convert done</value>
+        <value>批量转换完成</value>
     </data>
     <data name="Succeeded" xml:space="preserve">
-        <value>Succeeded</value>
+        <value>成功</value>
     </data>
     <data name="Failed" xml:space="preserve">
-        <value>Failed</value>
+        <value>失败</value>
     </data>
     <data name="BatchConvertError" xml:space="preserve">
-        <value>Batch convert error</value>
+        <value>批量转换错误</value>
     </data>
     <data name="TgsDownload" xml:space="preserve">
-        <value>Tgs Download</value>
+        <value>TGS 下载</value>
     </data>
     <data name="InputStickerSetsNameOrLinkWatermark" xml:space="preserve">
-        <value>Input sticker set name or link e.g (Godzi or https://t.me/addstickers/Godzi)</value>
+        <value>输入贴纸包名称或链接，例如 (Godzi 或 https://t.me/addstickers/Godzi)</value>
     </data>
     <data name="DownloadTgsStickerSetTitle" xml:space="preserve">
-        <value>Download Telegram Sticker Set</value>
+        <value>下载 Telegram 贴纸包</value>
     </data>
     <data name="Download" xml:space="preserve">
-        <value>Download</value>
+        <value>下载</value>
     </data>
     <data name="WaitingForDownloadStickerSetDotDotDot" xml:space="preserve">
-        <value>Waiting for download sticker sets...</value>
+        <value>等待下载贴纸包...</value>
     </data>
     <data name="SelectAll" xml:space="preserve">
-        <value>Select All</value>
+        <value>全选</value>
     </data>
     <data name="Choose" xml:space="preserve">
-        <value>Choose</value>
+        <value>选择</value>
     </data>
     <data name="Save" xml:space="preserve">
-        <value>Save</value>
+        <value>保存</value>
     </data>
     <data name="Selected" xml:space="preserve">
-        <value>Selected</value>
+        <value>已选择</value>
     </data>
     <data name="UnSelected" xml:space="preserve">
-        <value>unselected</value>
+        <value>未选择</value>
     </data>
     <data name="SaveTo" xml:space="preserve">
-        <value>Save to</value>
+        <value>保存到</value>
     </data>
     <data name="Sticker" xml:space="preserve">
-        <value>Sticker</value>
+        <value>贴纸</value>
     </data>
     <data name="ReadyToDownloadDotDotDot" xml:space="preserve">
-        <value>Ready to download...</value>
+        <value>准备下载...</value>
     </data>
     <data name="InvalidStickerSetNameOrLink" xml:space="preserve">
-        <value>Invalid sticker set name or link</value>
+        <value>无效的贴纸包名称或链接</value>
     </data>
     <data name="StickerSet" xml:space="preserve">
-        <value>Stikcer set</value>
+        <value>贴纸包</value>
     </data>
     <data name="Downloading" xml:space="preserve">
-        <value>Downloading</value>
+        <value>下载中</value>
     </data>
     <data name="DownloadingStickerSet" xml:space="preserve">
-        <value>Downloading Sticker set</value>
+        <value>正在下载贴纸包</value>
     </data>
     <data name="DownloadCompleted" xml:space="preserve">
-        <value>Download completed</value>
+        <value>下载完成</value>
     </data>
     <data name="DownloadCancelled" xml:space="preserve">
-        <value>Download cancelled</value>
+        <value>下载已取消</value>
     </data>
     <data name="DownloadFailed" xml:space="preserve">
-        <value>Download failed</value>
+        <value>下载失败</value>
     </data>
     <data name="ChooseSaveLocation" xml:space="preserve">
-        <value>Choose save location</value>
+        <value>选择保存位置</value>
     </data>
     <data name="SaveSucceeded" xml:space="preserve">
-        <value>Save succeeded</value>
+        <value>保存成功</value>
     </data>
     <data name="SaveFailed" xml:space="preserve">
-        <value>Save failed</value>
+        <value>保存失败</value>
     </data>
     <data name="Open" xml:space="preserve">
-        <value>Open</value>
+        <value>打开</value>
     </data>
     <data name="FetchingMetadata" xml:space="preserve">
-        <value>Fetching metadata</value>
+        <value>获取元数据</value>
     </data>
     <data name="StartingDownload" xml:space="preserve">
-        <value>Starting download</value>
+        <value>开始下载</value>
     </data>
     <data name="LoadingDotDotDot" xml:space="preserve">
-        <value>Loading...</value>
+        <value>加载中...</value>
     </data>
     <data name="LoadFailed" xml:space="preserve">
-        <value>Load failed</value>
+        <value>加载失败</value>
     </data>
     <data name="Configuration" xml:space="preserve">
-        <value>Configuration</value>
+        <value>配置</value>
     </data>
     <data name="StickerDownload" xml:space="preserve">
-        <value>Sticker Download</value>
+        <value>贴纸下载</value>
     </data>
     <data name="ResetConfig" xml:space="preserve">
-        <value>Reset</value>
+        <value>重置</value>
     </data>
     <data name="NetworkSettings" xml:space="preserve">
-        <value>Network</value>
+        <value>网络</value>
     </data>
     <data name="Proxy" xml:space="preserve">
-        <value>Proxy</value>
+        <value>代理</value>
     </data>
     <data name="ProxyUrl" xml:space="preserve">
-        <value>Proxy Url</value>
+        <value>代理 URL</value>
     </data>
     <data name="ProxyUrlSettingDesc" xml:space="preserve">
-        <value>Input proxy url, e.g: http://127.0.0.1:7890</value>
+        <value>输入代理 URL，例如：http://127.0.0.1:7890</value>
     </data>
     <data name="SupportHttpAndSocks" xml:space="preserve">
-        <value>Support http and socks</value>
+        <value>支持 HTTP 和 SOCKS</value>
     </data>
     <data name="TelegramSettings" xml:space="preserve">
         <value>Telegram</value>
     </data>
     <data name="BotConfig" xml:space="preserve">
-        <value>Bot Config</value>
+        <value>机器人配置</value>
     </data>
     <data name="InputTelegramBotToken" xml:space="preserve">
-        <value>Input telegram bot token</value>
+        <value>输入 Telegram 机器人令牌</value>
     </data>
     <data name="CreateAndGetFromBotFather" xml:space="preserve">
-        <value>Create a bot from @BotFather, and get the token.</value>
+        <value>从 @BotFather 创建机器人并获取令牌。</value>
     </data>
     <data name="BotTokenExample" xml:space="preserve">
-        <value>e.g: 123456789:ABCdefGHIjklMNOpqrsTUVwxyz</value>
+        <value>例如：123456789:ABCdefGHIjklMNOpqrsTUVwxyz</value>
     </data>
     <data name="Setting" xml:space="preserve">
-        <value>Setting</value>
+        <value>设置</value>
     </data>
     <data name="SettingSaved" xml:space="preserve">
-        <value>Setting saved</value>
+        <value>设置已保存</value>
     </data>
     <data name="ResetFailed" xml:space="preserve">
-        <value>Reset failed</value>
+        <value>重置失败</value>
     </data>
     <data name="SettingReset" xml:space="preserve">
-        <value>Setting reset</value>
+        <value>设置已重置</value>
     </data>
     <data name="PleaseSettingTelegramBotToken" xml:space="preserve">
-        <value>Please setting telegram bot token</value>
+        <value>请设置 Telegram 机器人令牌</value>
     </data>
     <data name="AppSubTitle" xml:space="preserve">
-        <value>Lottie &amp;amp; TGS Animation Converter</value>
+        <value>Lottie &amp; TGS 动画转换器</value>
     </data>
     <data name="AppDesc" xml:space="preserve">
-        <value>A powerful cross-platform desktop application for converting TGS (Telegram Stickers) and Lottie animations to various formats including GIF, WebP, APNG, MP4, MKV, AVIF, and WebM. Support download sticker set from Telegram(name or link) directly. Built with modern technologies for optimal performance and user experience.</value>
+        <value>一款功能强大的跨平台桌面应用程序，用于将 TGS（Telegram 贴纸）和 Lottie 动画转换为各种格式，包括 GIF、WebP、APNG、MP4、MKV、AVIF 和 WebM。支持直接从 Telegram（名称或链接）下载贴纸包。采用现代技术构建，提供最佳性能和用户体验。</value>
     </data>
     <data name="KeyFeatures" xml:space="preserve">
-        <value>✨ Key Features</value>
+        <value>✨ 主要功能</value>
     </data>
     <data name="FeatureLine1" xml:space="preserve">
-        <value>• Multiple Format Support (GIF, WebP, APNG, MP4, MKV, AVIF, WebM)</value>
+        <value>• 多种格式支持（GIF、WebP、APNG、MP4、MKV、AVIF、WebM）</value>
     </data>
     <data name="FeatureLine2" xml:space="preserve">
-        <value>• Batch Processing for multiple files</value>
+        <value>• 批量处理多个文件</value>
     </data>
     <data name="FeatureLine3" xml:space="preserve">
-        <value>• TGS &amp;amp; Lottie file support</value>
+        <value>• TGS &amp; Lottie 文件支持</value>
     </data>
     <data name="FeatureLine4" xml:space="preserve">
-        <value>• Parse &amp;amp; Download Sticker sets from Telegram (including .TGS, .JPG, .WebP, .PNG etc..)</value>
+        <value>• 从 Telegram 解析 &amp; 下载 贴纸包（包括 .TGS、.JPG、.WebP、.PNG 等）</value>
     </data>
     <data name="FeatureLine5" xml:space="preserve">
-        <value>• Customizable output settings</value>
+        <value>• 可自定义的输出设置</value>
     </data>
     <data name="FeatureLine6" xml:space="preserve">
-        <value>• Cross-platform compatibility</value>
+        <value>• 跨平台兼容性</value>
     </data>
     <data name="FeatureLine7" xml:space="preserve">
-        <value>• Modern UI with SukiUI</value>
+        <value>• 现代化 UI 界面（使用 SukiUI）</value>
     </data>
     <data name="TechStack" xml:space="preserve">
-        <value>🛠️ Technology Stack</value>
+        <value>🛠️ 技术栈</value>
     </data>
     <data name="TechStackLine1" xml:space="preserve">
-        <value>• Framework: C# with Avalonia UI</value>
+        <value>• 框架：C# 与 Avalonia UI</value>
     </data>
     <data name="TechStackLine2" xml:space="preserve">
-        <value>• Architecture: ReactiveUI (MVVM)</value>
+        <value>• 架构：ReactiveUI (MVVM)</value>
     </data>
     <data name="TechStackLine3" xml:space="preserve">
-        <value>• UI: SukiUI Components</value>
+        <value>• 界面：SukiUI 组件</value>
     </data>
     <data name="TechStackLine4" xml:space="preserve">
-        <value>• Rendering: SkiaSharp Skottie</value>
+        <value>• 渲染：SkiaSharp Skottie</value>
     </data>
     <data name="TechStackLine5" xml:space="preserve">
-        <value>• Processing: ImageMagick, gifski, FFmpeg</value>
+        <value>• 处理：ImageMagick、gifski、FFmpeg</value>
     </data>
     <data name="Requirements" xml:space="preserve">
-        <value>📋 Requirements</value>
+        <value>📋 系统要求</value>
     </data>
     <data name="RequiredDependencies" xml:space="preserve">
-        <value>Required Dependencies:</value>
+        <value>必需依赖项：</value>
     </data>
     <data name="LinkAndResx" xml:space="preserve">
-        <value>🔗 Links &amp;amp; Resources</value>
+        <value>🔗 链接 &amp; 资源</value>
     </data>
     <data name="LanguageSettings" xml:space="preserve">
-        <value>Language</value>
+        <value>语言</value>
     </data>
     <data name="DisplayLanguage" xml:space="preserve">
-        <value>Display language</value>
+        <value>显示语言</value>
     </data>
     <data name="Language" xml:space="preserve">
-        <value>Language</value>
+        <value>语言</value>
     </data>
     <data name="LanguageChangeDesc" xml:space="preserve">
-        <value>Language Changed</value>
+        <value>语言已切换</value>
     </data>
     <data name="LanguageChanged" xml:space="preserve">
-        <value>Language Changed</value>
+        <value>语言已切换</value>
     </data>
     <data name="AutoDetect" xml:space="preserve">
-        <value>Auto detect</value>
+        <value>自动检测</value>
     </data>
     <data name="LanguageChangedRestart" xml:space="preserve">
-        <value>Language Changed Restart</value>
+        <value>重启切换语言</value>
     </data>
     <data name="LanguageChangedMessage" xml:space="preserve">
-        <value>Please restart your app to switch language.</value>
+        <value>请重启软件以切换语言</value>
     </data>
     <data name="ManualRestartMessage" xml:space="preserve">
-        <value>AutoRestart failed, please restart manual.</value>
+        <value>自动重启失败，请手动重启软件。</value>
     </data>
     <data name="Yes" xml:space="preserve">
-        <value>Yes</value>
+        <value>是</value>
     </data>
     <data name="No" xml:space="preserve">
-        <value>No</value>
+        <value>否</value>
     </data>
     <data name="FeatureLine8" xml:space="preserve">
-        <value>• i18n Support, Only Chinese and English now.</value>
+        <value>• 支持国际化(暂时只有英语、中文)</value>
     </data>
 </root>

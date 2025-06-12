@@ -15,10 +15,15 @@
         <PackageReference Include="NUnit" Version="4.2.2"/>
         <PackageReference Include="NUnit.Analyzers" Version="4.3.0"/>
         <PackageReference Include="NUnit3TestAdapter" Version="4.6.0"/>
+        <PackageReference Include="Telegram.Bot" Version="22.5.2-dev.6" />
     </ItemGroup>
 
     <ItemGroup>
         <Using Include="NUnit.Framework"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LottieViewConvert\LottieViewConvert.csproj" />
     </ItemGroup>
 
 </Project>

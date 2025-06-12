@@ -15,9 +15,9 @@
         <converters:ProgressToBoolConverter x:Key="ProgressToBoolConverter" />
     </UserControl.Resources>
     <Border Margin="10">
-        <!-- 两列，两行布局：拖拽区域在左，跨两行；右侧两行分别为 What's This 和 How To Use -->
+        <!-- Tow columns, two rows layout: DropZone on the left spanning two rows; right side has two rows for What's This and How To Use -->
         <Grid ColumnDefinitions="8*,2*" RowDefinitions="*,*">
-            <!-- DropZone 跨两行 -->
+            <!-- DropZone -->
             <suki:GlassCard Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
                             Margin="0 0 10 0"
                             x:Name="DropZone" DragDrop.AllowDrop="True">
@@ -71,7 +71,7 @@
                             <Button Grid.Column="2"  Cursor="Hand" Classes="Basic Rounded" Click="OutputBrowseButton_Click"
                                     Margin="5 0 0 0">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
-                                    <avalonia:MaterialIcon Kind="OpenInBrowser"/>
+                                    <avalonia:MaterialIcon Kind="FolderOpen"/>
                                     <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.BrowseDotDotDot}"/>
                                 </StackPanel>
                             </Button>

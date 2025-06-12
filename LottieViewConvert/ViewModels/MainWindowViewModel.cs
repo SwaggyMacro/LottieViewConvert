@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
+using System.Runtime.InteropServices;
 using Avalonia.Collections;
-using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
 using Avalonia.Styling;
+using LottieViewConvert.Helper.LogHelper;
 using LottieViewConvert.Lang;
 using LottieViewConvert.Models;
 using LottieViewConvert.Services;
@@ -67,9 +71,6 @@ public class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> ToggleBaseThemeCommand { get; }
     public ReactiveCommand<Unit, Unit> CreateCustomThemeCommand { get; }
     public ReactiveCommand<string, Unit> OpenUrlCommand { get; }
-    public ReactiveCommand<Unit, Unit> OpenDevDebuggingCommand { get; }
-    public ReactiveCommand<Unit, Unit> AboutCommand { get; }
-    public ReactiveCommand<Unit, Unit> ShutdownCommand { get; }
     
     
     public MainWindowViewModel(IEnumerable<Page> pages, PageNavigationService pageNavigationService,
@@ -118,6 +119,40 @@ public class MainWindowViewModel : ViewModelBase
             DialogManager.CreateDialog()
                 .WithViewModel(dialog => new Controls.CustomTheme.CustomThemeDialogViewModel(_theme, dialog))
                 .TryShow();
+        });
+
+        OpenUrlCommand = ReactiveCommand.Create<string>(url =>
+        {
+            try
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = url,
+                        UseShellExecute = true
+                    });
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("open", url);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    Process.Start("xdg-open", url);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Failed to open link: {url}, {ex.Message}");
+                ToastManager.CreateToast()
+                    .WithTitle(Resources.Failed)
+                    .WithContent($"Failed to open link: {url}")
+                    .OfType(NotificationType.Error)
+                    .Dismiss().ByClicking()
+                    .Dismiss().After(TimeSpan.FromSeconds(3))
+                    .Queue();
+            }
         });
     }
     

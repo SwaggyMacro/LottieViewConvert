@@ -1,5 +1,7 @@
 using System;
+using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
@@ -27,6 +29,8 @@ public class App : Application
     }
     public override void OnFrameworkInitializationCompleted()
     {
+        
+        ApplyLanguageFromConfig();
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             BindingPlugins.DataValidators.RemoveAt(0);
@@ -66,5 +70,44 @@ public class App : Application
 
 
         return services.BuildServiceProvider();
+    }
+    
+    private void ApplyLanguageFromConfig()
+    {
+        CultureInfo culture;
+        try
+        {
+            var configService = new ConfigService();
+            var config = configService.LoadConfig();
+        
+            var languageCode = config.Language ?? "auto";
+        
+            culture = languageCode switch
+            {
+                "en" => new CultureInfo("en"),
+                "zh" => new CultureInfo("zh-CN"),
+                "auto" => GetAutoDetectedCulture(),
+                _ => new CultureInfo("en")
+            };
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to load language config: {ex.Message}");
+            culture = new CultureInfo("en");
+        }
+        Lang.Resources.Culture = culture;
+    }
+
+    private CultureInfo GetAutoDetectedCulture()
+    {
+        var systemCulture = CultureInfo.CurrentUICulture;
+        
+        if (systemCulture.TwoLetterISOLanguageName == "zh" || 
+            systemCulture.Name.StartsWith("zh"))
+        {
+            return new CultureInfo("zh-CN");
+        }
+        
+        return new CultureInfo("en");
     }
 }

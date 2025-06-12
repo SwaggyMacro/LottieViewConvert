@@ -3,7 +3,7 @@
 </p>
 <p align="center">
     <a href="readme.md"><img src="https://img.shields.io/badge/Lang-English-blue"></a>
-    <img src="https://img.shields.io/badge/version-1.0.0-yellow">
+    <img src="https://img.shields.io/badge/version-1.1.0-yellow">
     <a href="//github.com/SwaggyMacro/LottieViewConvert"><img src="https://img.shields.io/badge/Repo-LottieViewConvert-green"></a>
 </p>
 
@@ -16,13 +16,13 @@
 - **多格式支持**：转换为 GIF、WebP、APNG、MP4、MKV、AVIF、WebM
 - **批量处理**：同时转换多个文件
 - **TGS & Lottie 支持**：处理 Telegram 贴纸文件（.tgs）和标准 Lottie 文件（.json、.lottie）
+- **Telegram 集成**：直接解析和下载 Telegram 贴纸包
 - **自定义输出**：调整播放速度、帧率、分辨率和转换质量
 - **跨平台**：支持 Windows、macOS 和 Linux
 - **现代化界面**：使用 SukiUI 构建，界面美观且响应迅速
 ---
 
 ### 📝 待办清单
-- **Telegram 集成**：直接解析和下载 Telegram 贴纸包 *（即将推出）*
 - **依赖项自动安装**：通过自动化安装 gifski 和 FFmpeg 来简化设置 *（即将推出）*
 
 ### 📝 系统要求

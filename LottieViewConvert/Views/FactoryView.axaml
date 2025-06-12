@@ -52,7 +52,7 @@
             </suki:GlassCard>
 
             <!-- Parameter -->
-            <suki:GlassCard Grid.Row="2" Grid.Column="0"
+            <suki:GlassCard Grid.Row="1" Grid.Column="0"
                             Margin="0 5 0 0"
                             IsInteractive="True">
                 <suki:GroupBox>
@@ -73,7 +73,7 @@
                                     Command="{Binding BrowseSourceFolderCommand}"
                                     Grid.Column="2">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
-                                    <avalonia:MaterialIcon Kind="OpenInBrowser" />
+                                    <avalonia:MaterialIcon Kind="FolderOpen" />
                                     <TextBlock VerticalAlignment="Center"
                                                Text="{x:Static lang:Resources.BrowseDotDotDot}" />
                                 </StackPanel>
@@ -89,7 +89,7 @@
                                     Command="{Binding BrowseOutputFolderCommand}"
                                     Grid.Column="2">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
-                                    <avalonia:MaterialIcon Kind="OpenInBrowser" />
+                                    <avalonia:MaterialIcon Kind="FolderOpen" />
                                     <TextBlock VerticalAlignment="Center"
                                                Text="{x:Static lang:Resources.BrowseDotDotDot}" />
                                 </StackPanel>

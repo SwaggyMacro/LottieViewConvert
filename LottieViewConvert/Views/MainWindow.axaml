@@ -13,12 +13,13 @@
                    x:Class="LottieViewConvert.Views.MainWindow"
                    x:DataType="viewModels:MainWindowViewModel"
                    Icon="/Assets/icon.ico"
+                   Height="900"
                    CanResize="True"
                    CanMove="True"
                    CanMinimize="True"
                    IsTitleBarVisible="True"
                    WindowStartupLocation="CenterScreen"
-                   Title="Lottie ">
+                   Title="{x:Static lang:Resources.AppName} ">
 
     <suki:SukiWindow.LogoContent>
         <Image Source="/Assets/icon.png"  Width="32"
@@ -140,7 +141,8 @@
                     <!-- ReSharper disable once Xaml.StyleClassNotFound -->
                     <Button Classes="Basic"
                             Cursor="Hand"
-                            CommandParameter="https://github.com/kikipoulet/SukiUI"
+                            Command="{Binding OpenUrlCommand}"
+                            CommandParameter="https://github.com/SwaggyMacro/LottieViewConvert"
                             ToolTip.Tip="{x:Static lang:Resources.OpenOnGithub}">
                         <avalonia:MaterialIcon Kind="Github" />
                     </Button>

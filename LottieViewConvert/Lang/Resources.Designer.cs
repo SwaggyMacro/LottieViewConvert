@@ -69,11 +69,38 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lottie Converter.
+        ///   Looks up a localized string similar to A powerful cross-platform desktop application for converting TGS (Telegram Stickers) and Lottie animations to various formats including GIF, WebP, APNG, MP4, MKV, AVIF, and WebM. Support download sticker set from Telegram(name or link) directly. Built with modern technologies for optimal performance and user experience..
+        /// </summary>
+        public static string AppDesc {
+            get {
+                return ResourceManager.GetString("AppDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lottie View Convert.
         /// </summary>
         public static string AppName {
             get {
                 return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lottie &amp;amp; TGS Animation Converter.
+        /// </summary>
+        public static string AppSubTitle {
+            get {
+                return ResourceManager.GetString("AppSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto detect.
+        /// </summary>
+        public static string AutoDetect {
+            get {
+                return ResourceManager.GetString("AutoDetect", resourceCulture);
             }
         }
         
@@ -96,6 +123,24 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bot Config.
+        /// </summary>
+        public static string BotConfig {
+            get {
+                return ResourceManager.GetString("BotConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to e.g: 123456789:ABCdefGHIjklMNOpqrsTUVwxyz.
+        /// </summary>
+        public static string BotTokenExample {
+            get {
+                return ResourceManager.GetString("BotTokenExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse....
         /// </summary>
         public static string BrowseDotDotDot {
@@ -114,6 +159,24 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose.
+        /// </summary>
+        public static string Choose {
+            get {
+                return ResourceManager.GetString("Choose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose save location.
+        /// </summary>
+        public static string ChooseSaveLocation {
+            get {
+                return ResourceManager.GetString("ChooseSaveLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Theme&apos;s color has been changed..
         /// </summary>
         public static string ColorChangedContent {
@@ -128,6 +191,15 @@ namespace LottieViewConvert.Lang {
         public static string ColorChangedTitle {
             get {
                 return ResourceManager.GetString("ColorChangedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        public static string Configuration {
+            get {
+                return ResourceManager.GetString("Configuration", resourceCulture);
             }
         }
         
@@ -186,11 +258,92 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a bot from @BotFather, and get the token..
+        /// </summary>
+        public static string CreateAndGetFromBotFather {
+            get {
+                return ResourceManager.GetString("CreateAndGetFromBotFather", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create Custom.
         /// </summary>
         public static string CreateCustom {
             get {
                 return ResourceManager.GetString("CreateCustom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Display language.
+        /// </summary>
+        public static string DisplayLanguage {
+            get {
+                return ResourceManager.GetString("DisplayLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        public static string Download {
+            get {
+                return ResourceManager.GetString("Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download cancelled.
+        /// </summary>
+        public static string DownloadCancelled {
+            get {
+                return ResourceManager.GetString("DownloadCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download completed.
+        /// </summary>
+        public static string DownloadCompleted {
+            get {
+                return ResourceManager.GetString("DownloadCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download failed.
+        /// </summary>
+        public static string DownloadFailed {
+            get {
+                return ResourceManager.GetString("DownloadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading.
+        /// </summary>
+        public static string Downloading {
+            get {
+                return ResourceManager.GetString("Downloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading Sticker set.
+        /// </summary>
+        public static string DownloadingStickerSet {
+            get {
+                return ResourceManager.GetString("DownloadingStickerSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Telegram Sticker Set.
+        /// </summary>
+        public static string DownloadTgsStickerSetTitle {
+            get {
+                return ResourceManager.GetString("DownloadTgsStickerSetTitle", resourceCulture);
             }
         }
         
@@ -254,6 +407,87 @@ namespace LottieViewConvert.Lang {
         public static string Failed {
             get {
                 return ResourceManager.GetString("Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Multiple Format Support (GIF, WebP, APNG, MP4, MKV, AVIF, WebM).
+        /// </summary>
+        public static string FeatureLine1 {
+            get {
+                return ResourceManager.GetString("FeatureLine1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Batch Processing for multiple files.
+        /// </summary>
+        public static string FeatureLine2 {
+            get {
+                return ResourceManager.GetString("FeatureLine2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • TGS &amp;amp; Lottie file support.
+        /// </summary>
+        public static string FeatureLine3 {
+            get {
+                return ResourceManager.GetString("FeatureLine3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Parse &amp;amp; Download Sticker sets from Telegram (including .TGS, .JPG, .WebP, .PNG etc..).
+        /// </summary>
+        public static string FeatureLine4 {
+            get {
+                return ResourceManager.GetString("FeatureLine4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Customizable output settings.
+        /// </summary>
+        public static string FeatureLine5 {
+            get {
+                return ResourceManager.GetString("FeatureLine5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Cross-platform compatibility.
+        /// </summary>
+        public static string FeatureLine6 {
+            get {
+                return ResourceManager.GetString("FeatureLine6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Modern UI with SukiUI.
+        /// </summary>
+        public static string FeatureLine7 {
+            get {
+                return ResourceManager.GetString("FeatureLine7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • i18n Support, Only Chinese and English now..
+        /// </summary>
+        public static string FeatureLine8 {
+            get {
+                return ResourceManager.GetString("FeatureLine8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fetching metadata.
+        /// </summary>
+        public static string FetchingMetadata {
+            get {
+                return ResourceManager.GetString("FetchingMetadata", resourceCulture);
             }
         }
         
@@ -348,6 +582,24 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Input sticker set name or link e.g (Godzi or https://t.me/addstickers/Godzi).
+        /// </summary>
+        public static string InputStickerSetsNameOrLinkWatermark {
+            get {
+                return ResourceManager.GetString("InputStickerSetsNameOrLinkWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input telegram bot token.
+        /// </summary>
+        public static string InputTelegramBotToken {
+            get {
+                return ResourceManager.GetString("InputTelegramBotToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid lottie file.
         /// </summary>
         public static string InvalidLottieFile {
@@ -357,11 +609,146 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid sticker set name or link.
+        /// </summary>
+        public static string InvalidStickerSetNameOrLink {
+            get {
+                return ResourceManager.GetString("InvalidStickerSetNameOrLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ✨ Key Features.
+        /// </summary>
+        public static string KeyFeatures {
+            get {
+                return ResourceManager.GetString("KeyFeatures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language Changed.
+        /// </summary>
+        public static string LanguageChanged {
+            get {
+                return ResourceManager.GetString("LanguageChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language Changed.
+        /// </summary>
+        public static string LanguageChangeDesc {
+            get {
+                return ResourceManager.GetString("LanguageChangeDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please restart your app to switch language..
+        /// </summary>
+        public static string LanguageChangedMessage {
+            get {
+                return ResourceManager.GetString("LanguageChangedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language Changed Restart.
+        /// </summary>
+        public static string LanguageChangedRestart {
+            get {
+                return ResourceManager.GetString("LanguageChangedRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string LanguageSettings {
+            get {
+                return ResourceManager.GetString("LanguageSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔗 Links &amp;amp; Resources.
+        /// </summary>
+        public static string LinkAndResx {
+            get {
+                return ResourceManager.GetString("LinkAndResx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load failed.
+        /// </summary>
+        public static string LoadFailed {
+            get {
+                return ResourceManager.GetString("LoadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        public static string LoadingDotDotDot {
+            get {
+                return ResourceManager.GetString("LoadingDotDotDot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lottie JSON/TGS.
         /// </summary>
         public static string LottieJsonTgs {
             get {
                 return ResourceManager.GetString("LottieJsonTgs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AutoRestart failed, please restart manual..
+        /// </summary>
+        public static string ManualRestartMessage {
+            get {
+                return ResourceManager.GetString("ManualRestartMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Network.
+        /// </summary>
+        public static string NetworkSettings {
+            get {
+                return ResourceManager.GetString("NetworkSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        public static string Open {
+            get {
+                return ResourceManager.GetString("Open", resourceCulture);
             }
         }
         
@@ -447,11 +834,47 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please setting telegram bot token.
+        /// </summary>
+        public static string PleaseSettingTelegramBotToken {
+            get {
+                return ResourceManager.GetString("PleaseSettingTelegramBotToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Processing.
         /// </summary>
         public static string Processing {
             get {
                 return ResourceManager.GetString("Processing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proxy.
+        /// </summary>
+        public static string Proxy {
+            get {
+                return ResourceManager.GetString("Proxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proxy Url.
+        /// </summary>
+        public static string ProxyUrl {
+            get {
+                return ResourceManager.GetString("ProxyUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input proxy url, e.g: http://127.0.0.1:7890.
+        /// </summary>
+        public static string ProxyUrlSettingDesc {
+            get {
+                return ResourceManager.GetString("ProxyUrlSettingDesc", resourceCulture);
             }
         }
         
@@ -465,11 +888,110 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ready to download....
+        /// </summary>
+        public static string ReadyToDownloadDotDotDot {
+            get {
+                return ResourceManager.GetString("ReadyToDownloadDotDotDot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required Dependencies:.
+        /// </summary>
+        public static string RequiredDependencies {
+            get {
+                return ResourceManager.GetString("RequiredDependencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📋 Requirements.
+        /// </summary>
+        public static string Requirements {
+            get {
+                return ResourceManager.GetString("Requirements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        public static string ResetConfig {
+            get {
+                return ResourceManager.GetString("ResetConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset failed.
+        /// </summary>
+        public static string ResetFailed {
+            get {
+                return ResourceManager.GetString("ResetFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save failed.
+        /// </summary>
+        public static string SaveFailed {
+            get {
+                return ResourceManager.GetString("SaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save File.
         /// </summary>
         public static string SaveFile {
             get {
                 return ResourceManager.GetString("SaveFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save succeeded.
+        /// </summary>
+        public static string SaveSucceeded {
+            get {
+                return ResourceManager.GetString("SaveSucceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save to.
+        /// </summary>
+        public static string SaveTo {
+            get {
+                return ResourceManager.GetString("SaveTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select All.
+        /// </summary>
+        public static string SelectAll {
+            get {
+                return ResourceManager.GetString("SelectAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected.
+        /// </summary>
+        public static string Selected {
+            get {
+                return ResourceManager.GetString("Selected", resourceCulture);
             }
         }
         
@@ -497,6 +1019,33 @@ namespace LottieViewConvert.Lang {
         public static string SelectOutputFolder {
             get {
                 return ResourceManager.GetString("SelectOutputFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting.
+        /// </summary>
+        public static string Setting {
+            get {
+                return ResourceManager.GetString("Setting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting reset.
+        /// </summary>
+        public static string SettingReset {
+            get {
+                return ResourceManager.GetString("SettingReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting saved.
+        /// </summary>
+        public static string SettingSaved {
+            get {
+                return ResourceManager.GetString("SettingSaved", resourceCulture);
             }
         }
         
@@ -537,6 +1086,42 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Starting download.
+        /// </summary>
+        public static string StartingDownload {
+            get {
+                return ResourceManager.GetString("StartingDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sticker.
+        /// </summary>
+        public static string Sticker {
+            get {
+                return ResourceManager.GetString("Sticker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sticker Download.
+        /// </summary>
+        public static string StickerDownload {
+            get {
+                return ResourceManager.GetString("StickerDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stikcer set.
+        /// </summary>
+        public static string StickerSet {
+            get {
+                return ResourceManager.GetString("StickerSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stop.
         /// </summary>
         public static string Stop {
@@ -555,7 +1140,7 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Succeeded.
         /// </summary>
         public static string Succeeded {
             get {
@@ -573,11 +1158,92 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Support http and socks.
+        /// </summary>
+        public static string SupportHttpAndSocks {
+            get {
+                return ResourceManager.GetString("SupportHttpAndSocks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Switch to.
         /// </summary>
         public static string SwitchTo {
             get {
                 return ResourceManager.GetString("SwitchTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🛠️ Technology Stack.
+        /// </summary>
+        public static string TechStack {
+            get {
+                return ResourceManager.GetString("TechStack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Framework: C# with Avalonia UI.
+        /// </summary>
+        public static string TechStackLine1 {
+            get {
+                return ResourceManager.GetString("TechStackLine1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Architecture: ReactiveUI (MVVM).
+        /// </summary>
+        public static string TechStackLine2 {
+            get {
+                return ResourceManager.GetString("TechStackLine2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • UI: SukiUI Components.
+        /// </summary>
+        public static string TechStackLine3 {
+            get {
+                return ResourceManager.GetString("TechStackLine3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Rendering: SkiaSharp Skottie.
+        /// </summary>
+        public static string TechStackLine4 {
+            get {
+                return ResourceManager.GetString("TechStackLine4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Processing: ImageMagick, gifski, FFmpeg.
+        /// </summary>
+        public static string TechStackLine5 {
+            get {
+                return ResourceManager.GetString("TechStackLine5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telegram.
+        /// </summary>
+        public static string TelegramSettings {
+            get {
+                return ResourceManager.GetString("TelegramSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tgs Download.
+        /// </summary>
+        public static string TgsDownload {
+            get {
+                return ResourceManager.GetString("TgsDownload", resourceCulture);
             }
         }
         
@@ -645,11 +1311,29 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to unselected.
+        /// </summary>
+        public static string UnSelected {
+            get {
+                return ResourceManager.GetString("UnSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Waiting for browse or drop....
         /// </summary>
         public static string WaitingForBrowse {
             get {
                 return ResourceManager.GetString("WaitingForBrowse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting for download sticker sets....
+        /// </summary>
+        public static string WaitingForDownloadStickerSetDotDotDot {
+            get {
+                return ResourceManager.GetString("WaitingForDownloadStickerSetDotDotDot", resourceCulture);
             }
         }
         
@@ -686,6 +1370,15 @@ namespace LottieViewConvert.Lang {
         public static string Width {
             get {
                 return ResourceManager.GetString("Width", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

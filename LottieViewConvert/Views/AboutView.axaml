@@ -2,7 +2,185 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:vm="clr-namespace:LottieViewConvert.ViewModels"
+             xmlns:lang="clr-namespace:LottieViewConvert.Lang"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:DataType="vm:AboutViewModel"
              x:Class="LottieViewConvert.Views.AboutView">
-  Welcome to Avalonia!
+
+  <UserControl.Styles>
+    <Style Selector="TextBlock.AppTitle">
+      <Setter Property="FontSize" Value="32"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Foreground" Value="{DynamicResource SukiPrimaryColor}"/>
+      <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+    
+    <Style Selector="TextBlock.Subtitle">
+      <Setter Property="FontSize" Value="16"/>
+      <Setter Property="FontWeight" Value="Medium"/>
+      <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+      <Setter Property="TextAlignment" Value="Center"/>
+      <Setter Property="Opacity" Value="0.8"/>
+    </Style>
+    
+    <Style Selector="TextBlock.SectionTitle">
+      <Setter Property="FontSize" Value="18"/>
+      <Setter Property="FontWeight" Value="SemiBold"/>
+      <Setter Property="Foreground" Value="{DynamicResource SukiPrimaryColor}"/>
+      <Setter Property="Margin" Value="0,16,0,8"/>
+    </Style>
+    
+    <Style Selector="TextBlock.FeatureText">
+      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+      <Setter Property="Margin" Value="4,2"/>
+    </Style>
+    
+    <Style Selector="TextBlock.VersionText">
+      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="FontWeight" Value="Medium"/>
+      <Setter Property="Foreground" Value="{DynamicResource SukiAccentColor}"/>
+    </Style>
+    
+    <Style Selector="Button.LinkButton">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Foreground" Value="{DynamicResource SukiPrimaryColor}"/>
+      <Setter Property="FontWeight" Value="Medium"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Padding" Value="8,4"/>
+    </Style>
+    
+    <Style Selector="Button.LinkButton:pointerover">
+      <Setter Property="Background" Value="{DynamicResource SukiCardBackground}"/>
+    </Style>
+  </UserControl.Styles>
+
+  <ScrollViewer>
+    <suki:GlassCard Margin="20" MaxWidth="700">
+      <StackPanel Spacing="24" Margin="32">
+        
+        <!-- Header Section -->
+        <StackPanel Spacing="8">
+          <!-- App Icon/Logo Placeholder -->
+          <Border Width="80" Height="80" 
+                  Background="{DynamicResource SukiPrimaryColor}"
+                  CornerRadius="16"
+                  HorizontalAlignment="Center">
+            <TextBlock Text="🎬" FontSize="40" 
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"/>
+          </Border>
+          
+          <TextBlock Text="{x:Static lang:Resources.AppName}" Classes="AppTitle"/>
+          <TextBlock Text="{x:Static lang:Resources.AppSubTitle}" Classes="Subtitle"/>
+          <TextBlock Text="Version 1.1.0" Classes="VersionText" 
+                     HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <Separator/>
+
+        <!-- Description Section -->
+        <StackPanel Spacing="12">
+          <TextBlock Classes="SectionTitle" Text="📖 About"/>
+          <TextBlock TextWrapping="Wrap" FontSize="14" 
+                     Foreground="{DynamicResource SukiText}"
+                     LineHeight="20" Text="{x:Static lang:Resources.AppDesc}"/>
+        </StackPanel>
+
+        <Separator/>
+
+        <!-- Features Section -->
+        <StackPanel Spacing="12">
+          <TextBlock Classes="SectionTitle" Text="{x:Static lang:Resources.KeyFeatures}"/>
+          <StackPanel Spacing="4">
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine1}"/>
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine2}"/>
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine3}"/>
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine4}"/>
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine5}"/>
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine6}"/>
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine7}"/>
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine8}"/>
+          </StackPanel>
+        </StackPanel>
+
+        <Separator/>
+
+        <!-- Tech Stack Section -->
+        <StackPanel Spacing="12">
+          <TextBlock Classes="SectionTitle" Text="{x:Static lang:Resources.TechStack}"/>
+          <StackPanel Spacing="4">
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.TechStackLine1}"/>
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.TechStackLine2}"/>
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.TechStackLine3}"/>
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.TechStackLine4}"/>
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.TechStackLine5}"/>
+          </StackPanel>
+        </StackPanel>
+
+        <Separator/>
+
+        <!-- Requirements -->
+        <StackPanel Spacing="12">
+          <TextBlock Classes="SectionTitle" Text="{x:Static lang:Resources.Requirements}"/>
+          <StackPanel Spacing="8">
+            <TextBlock Classes="FeatureText" FontWeight="Medium" Text="{x:Static lang:Resources.RequiredDependencies}"/>
+            <StackPanel Spacing="2" Margin="16,0,0,0">
+              <TextBlock Classes="FeatureText" Text="• gifski - For high-quality GIF conversion"/>
+              <TextBlock Classes="FeatureText" Text="• FFmpeg - For video format conversion"/>
+            </StackPanel>
+          </StackPanel>
+        </StackPanel>
+
+        <Separator/>
+
+        <!-- Links Section -->
+        <StackPanel Spacing="12">
+          <TextBlock Classes="SectionTitle" Text="{x:Static lang:Resources.LinkAndResx}"/>
+          <UniformGrid Columns="2" HorizontalAlignment="Center">
+            <Button Classes="LinkButton" Content="GitHub Repository" 
+                    Command="{Binding OpenLinkCommand}" 
+                    CommandParameter="https://github.com/SwaggyMacro/LottieViewConvert"/>
+            <Button Classes="LinkButton" Content="Report Issues" 
+                    Command="{Binding OpenLinkCommand}" 
+                    CommandParameter="https://github.com/SwaggyMacro/LottieViewConvert/issues"/>
+            <Button Classes="LinkButton" Content="Discussions" 
+                    Command="{Binding OpenLinkCommand}" 
+                    CommandParameter="https://github.com/SwaggyMacro/LottieViewConvert/discussions"/>
+            <Button Classes="LinkButton" Content="Releases" 
+                    Command="{Binding OpenLinkCommand}" 
+                    CommandParameter="https://github.com/SwaggyMacro/LottieViewConvert/releases"/>
+          </UniformGrid>
+        </StackPanel>
+
+        <Separator/>
+
+        <!-- Developer Info -->
+        <StackPanel Spacing="8">
+          <TextBlock Classes="SectionTitle" Text="👤 Developer" HorizontalAlignment="Center"/>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+            <TextBlock Text="Made with ❤️ by" FontSize="14" 
+                       Foreground="{DynamicResource SukiText}"
+                       VerticalAlignment="Center"/>
+            <Button Classes="LinkButton" Content="SwaggyMacro" 
+                    Command="{Binding OpenLinkCommand}" 
+                    CommandParameter="https://github.com/SwaggyMacro"/>
+          </StackPanel>
+        </StackPanel>
+
+        <!-- License -->
+        <StackPanel Spacing="8">
+          <TextBlock Text="📄 License: MIT License" 
+                     FontSize="12" 
+                     Opacity="0.7"
+                     HorizontalAlignment="Center"
+                     Foreground="{DynamicResource SukiText}"/>
+        </StackPanel>
+
+      </StackPanel>
+    </suki:GlassCard>
+  </ScrollViewer>
 </UserControl>

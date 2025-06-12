@@ -1,0 +1,361 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:vm="clr-namespace:LottieViewConvert.ViewModels"
+             xmlns:lottie="clr-namespace:Lottie;assembly=Lottie"
+             xmlns:lang="clr-namespace:LottieViewConvert.Lang"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+             x:DataType="vm:TgsDownloadViewModel"
+             x:Class="LottieViewConvert.Views.TgsDownloadView">
+  <Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto">
+
+    <!-- Input name or link -->
+    <suki:GlassCard Grid.Row="0" Margin="20,20,20,10">
+      <StackPanel Spacing="15" Margin="20">
+        <TextBlock Text="{x:Static lang:Resources.DownloadTgsStickerSetTitle}" 
+                   FontSize="20" 
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"/>
+        
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          
+          <TextBox Grid.Column="0"
+                   Text="{Binding StickerInput}"
+                   Watermark="{x:Static lang:Resources.InputStickerSetsNameOrLinkWatermark}"
+                   FontSize="14"
+                   Margin="0,0,10,0"/>
+          
+          <Button Grid.Column="1"
+                  Command="{Binding DownloadCommand}"
+                  IsEnabled="{Binding !IsDownloading}"
+                  Classes="Accent"
+                  Height="40">
+            <Button.Content>
+              <StackPanel Orientation="Horizontal" Spacing="8">
+                <material:MaterialIcon Kind="Download" Width="16" Height="16"/>
+                <TextBlock Text="{x:Static lang:Resources.Download}"/>
+              </StackPanel>
+            </Button.Content>
+          </Button>
+        </Grid>
+      </StackPanel>
+    </suki:GlassCard>
+    
+    <!-- Metadata Loading Progress -->
+    <suki:GlassCard Grid.Row="1" 
+                    Margin="20,0,20,10"
+                    IsVisible="{Binding IsLoadingMetadata}">
+      <StackPanel Spacing="15" Margin="20">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          
+          <!-- Circle Progress for Metadata -->
+          <suki:CircleProgressBar Grid.Column="0"
+                                  Value="{Binding MetadataProgress}"
+                                  Width="60"
+                                  Height="60"
+                                  StrokeWidth="3"
+                                  Margin="0,0,15,0">
+            <TextBlock Margin="0,2,0,0" 
+                       Text="{Binding MetadataProgress, StringFormat={}{0:#0}%}" />
+          </suki:CircleProgressBar>
+          
+          <!-- Metadata Progress Info -->
+          <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="5">
+            <TextBlock Text="{Binding MetadataProgressText}" FontWeight="SemiBold"/>
+            <ProgressBar Value="{Binding MetadataProgress}" 
+                        Height="4" 
+                        Classes="Accent"/>
+          </StackPanel>
+          
+          <!-- Cancel -->
+          <Button Grid.Column="2"
+                  Content="{x:Static lang:Resources.Cancel}"
+                  Command="{Binding CancelDownloadCommand}"
+                  Classes="Basic"
+                  VerticalAlignment="Center"/>
+        </Grid>
+      </StackPanel>
+    </suki:GlassCard>
+    
+    <!-- Download Progress -->
+    <suki:GlassCard Grid.Row="2" 
+                    Margin="20,0,20,10"
+                    IsVisible="{Binding IsDownloading}">
+      <StackPanel Spacing="15" Margin="20">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          
+          <!-- Circle Progress for Download -->
+          <suki:CircleProgressBar Grid.Column="0"
+                                  Value="{Binding OverallProgress}"
+                                  Width="60"
+                                  Height="60"
+                                  StrokeWidth="3"
+                                  Margin="0,0,20,0">
+            <TextBlock Margin="0,2,0,0"
+                       Text="{Binding OverallProgress, StringFormat={}{0:#0}%}" />
+          </suki:CircleProgressBar>
+          
+          <!-- Download Progress Info -->
+          <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="5">
+            <TextBlock Text="{Binding DownloadStatusText}" FontWeight="SemiBold"/>
+            <TextBlock Text="{Binding ProgressText}" FontSize="12" Opacity="0.7"/>
+            <ProgressBar Value="{Binding OverallProgress}" 
+                        Height="6" 
+                        Classes="Accent"/>
+          </StackPanel>
+          
+          <!-- Cancel -->
+          <Button Grid.Column="2"
+                  Content="{x:Static lang:Resources.Cancel}"
+                  Command="{Binding CancelDownloadCommand}"
+                  Classes="Basic"
+                  VerticalAlignment="Center"/>
+        </Grid>
+      </StackPanel>
+    </suki:GlassCard>
+    
+    <!-- Skeleton -->
+    <suki:GlassCard Grid.Row="3" 
+                    Margin="20,0,20,10"
+                    IsVisible="{Binding ShowWaitingState}">
+      <StackPanel Spacing="15" Margin="40" HorizontalAlignment="Center">
+        <material:MaterialIcon Kind="CloudDownload" 
+                              Width="64" 
+                              Height="64" 
+                              Opacity="0.5"/>
+        <TextBlock Text="{x:Static lang:Resources.WaitingForDownloadStickerSetDotDotDot}" 
+                   FontSize="16" 
+                   HorizontalAlignment="Center"
+                   Opacity="0.7"/>
+      </StackPanel>
+    </suki:GlassCard>
+    
+    <!-- Preview -->
+    <suki:GlassCard Grid.Row="4" 
+                    Margin="20,0,20,10"
+                    IsVisible="{Binding HasStickers}">
+      <Grid Margin="20">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Title and SelectAll -->
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+          
+          <TextBlock Grid.Column="0"
+                     Text="{Binding StickerPackTitle}" 
+                     FontSize="18" 
+                     FontWeight="SemiBold"
+                     VerticalAlignment="Center"/>
+          
+          <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
+            <CheckBox Content="{x:Static lang:Resources.SelectAll}" 
+                      IsChecked="{Binding IsAllSelected, Mode=OneWay}"
+                      Command="{Binding ToggleAllSelectionCommand}"/>
+            <TextBlock Text="{Binding SelectionCountText}" 
+                       VerticalAlignment="Center"
+                       Opacity="0.7"/>
+          </StackPanel>
+        </Grid>
+        
+        <!-- Sticker grid -->
+        <ScrollViewer Grid.Row="1" 
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+          <ItemsControl ItemsSource="{Binding StickerItems}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal" 
+                          ItemWidth="160" 
+                          ItemHeight="180"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:StickerItemViewModel">
+                <suki:GlassCard Margin="8" 
+                               Classes.Selected="{Binding IsSelected}"
+                               Cursor="Hand">
+                  <suki:GlassCard.Styles>
+                    <Style Selector="suki|GlassCard.Selected">
+                      <Setter Property="BorderBrush" Value="{DynamicResource SukiAccentColor}"/>
+                      <Setter Property="BorderThickness" Value="2"/>
+                    </Style>
+                  </suki:GlassCard.Styles>
+                  
+                  <Grid>
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="*"/>
+                      <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Preview Container -->
+                    <Border Grid.Row="0" 
+                           Margin="8"
+                           ToolTip.Tip="{Binding FileName}"
+                           CornerRadius="8"
+                           ClipToBounds="True">
+                      <Grid>
+                        <!-- TGS Animation Preview -->
+                        <lottie:LottieView Source="{Binding FilePath}"
+                                           Fill="Fill"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           IsVisible="{Binding IsTgsFile}"/>
+                        
+                        <!-- Image Preview -->
+                        <Image Source="{Binding PreviewImage}"
+                               Stretch="Uniform"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               IsVisible="{Binding IsImageFile}"/>
+                        
+                        <!-- Loading -->
+                        <Grid IsVisible="{Binding IsImageLoading}">
+                          <StackPanel HorizontalAlignment="Center" 
+                                     VerticalAlignment="Center"
+                                     Spacing="8">
+                            <material:MaterialIcon Kind="Loading" 
+                                                 Width="24" 
+                                                 Height="24" 
+                                                 Opacity="0.5">
+                              <material:MaterialIcon.RenderTransform>
+                                <RotateTransform>
+                                  <RotateTransform.Angle>
+                                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                      <Binding Path="IsImageLoading"/>
+                                      <Binding Source="0"/>
+                                    </MultiBinding>
+                                  </RotateTransform.Angle>
+                                </RotateTransform>
+                              </material:MaterialIcon.RenderTransform>
+                            </material:MaterialIcon>
+                            <TextBlock Text="{x:Static lang:Resources.LoadingDotDotDot}" 
+                                      FontSize="10" 
+                                      Opacity="0.7"
+                                      HorizontalAlignment="Center"/>
+                          </StackPanel>
+                        </Grid>
+                        
+                        <!-- Loading Failed -->
+                        <StackPanel HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   Spacing="8"
+                                   IsVisible="{Binding ImageLoadFailed}">
+                          <material:MaterialIcon Kind="ImageBroken" 
+                                               Width="32" 
+                                               Height="32" 
+                                               Opacity="0.5"/>
+                          <TextBlock Text="{x:Static lang:Resources.LoadFailed}" 
+                                    FontSize="10" 
+                                    Opacity="0.7"
+                                    HorizontalAlignment="Center"/>
+                        </StackPanel>
+                      </Grid>
+                    </Border>
+                    
+                    <!-- Checkbox and info -->
+                    <Grid Grid.Row="1" Margin="8,0,8,8">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                      </Grid.ColumnDefinitions>
+                      
+                      <CheckBox Grid.Column="0"
+                               IsChecked="{Binding IsSelected}"
+                               VerticalAlignment="Center"/>
+                      
+                      <StackPanel Grid.Column="1" 
+                                 Margin="8,0,0,0"
+                                 VerticalAlignment="Center">
+                        <TextBlock Text="{Binding FileName}" 
+                                  FontSize="11"
+                                  TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding FileSizeText}" 
+                                  FontSize="10"
+                                  Opacity="0.6"/>
+                      </StackPanel>
+                    </Grid>
+                  </Grid>
+                  
+                  <Interaction.Behaviors>
+                    <EventTriggerBehavior EventName="Tapped">
+                      <InvokeCommandAction Command="{Binding $parent[ItemsControl].((vm:TgsDownloadViewModel)DataContext).ToggleStickerSelectionCommand}"
+                                          CommandParameter="{Binding}"/>
+                    </EventTriggerBehavior>
+                  </Interaction.Behaviors>
+                </suki:GlassCard>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </Grid>
+    </suki:GlassCard>
+    
+    <!-- Save -->
+    <suki:GlassCard Grid.Row="5" 
+                    Margin="20,0,20,20"
+                    IsVisible="{Binding HasSelectedStickers}">
+      <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+          <TextBlock Text="{Binding SaveLocationText}" FontWeight="SemiBold"/>
+          <TextBlock Text="{Binding SelectedCountText}" 
+                     FontSize="12" 
+                     Opacity="0.7"/>
+        </StackPanel>
+        
+        <Button Grid.Column="1"
+                Command="{Binding SelectSaveLocationCommand}"
+                Classes="Basic"
+                Margin="0,0,10,0">
+          <Button.Content>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="FolderOpen" Width="16" Height="16"/>
+              <TextBlock Text="{x:Static lang:Resources.Choose}"/>
+            </StackPanel>
+          </Button.Content>
+        </Button>
+        
+        <Button Grid.Column="2"
+                Command="{Binding SaveSelectedStickersCommand}"
+                Classes="Accent"
+                IsEnabled="{Binding CanSave}">
+          <Button.Content>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="ContentSave" Width="16" Height="16"/>
+              <TextBlock Text="{x:Static lang:Resources.Save}"/>
+            </StackPanel>
+          </Button.Content>
+        </Button>
+      </Grid>
+    </suki:GlassCard>
+  </Grid>
+</UserControl>

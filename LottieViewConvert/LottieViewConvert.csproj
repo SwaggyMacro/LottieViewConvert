@@ -7,6 +7,9 @@
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
         <TargetFrameworks>net8.0</TargetFrameworks>
+        <Version>1.1.0</Version>
+        <Copyright>SwaggyMacro</Copyright>
+        <RepositoryUrl>https://github.com/SwaggyMacro/LottieViewConvert</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
@@ -34,9 +37,11 @@
         <PackageReference Include="Markdown.Avalonia" Version="11.0.3-a1" />
         <PackageReference Include="Material.Icons.Avalonia" Version="3.0.0-preview1.1" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0-preview.5.25277.114" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="SkiaSharp" Version="3.119.0" />
         <PackageReference Include="SkiaSharp.Skottie" Version="3.119.0" />
         <PackageReference Include="SukiUI" Version="6.0.2" />
+        <PackageReference Include="Telegram.Bot" Version="22.5.2-dev.6" />
         <PackageReference Include="Xaml.Behaviors.Avalonia" Version="11.3.0.10" />
         <PackageReference Include="Xaml.Behaviors.Interactivity" Version="11.3.0.10" />
     </ItemGroup>
@@ -45,6 +50,9 @@
       <EmbeddedResource Update="Lang\Resources.resx">
         <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Lang\Resources.zh.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
       </EmbeddedResource>
     </ItemGroup>
 
