@@ -1,5 +1,5 @@
-# .github/workflows/build-and-release-tar.yml
-name: Build and Release (Separate Jobs with tar)
+# .github/workflows/build-and-release-rezip.yml
+name: Build and Release (Separate Jobs with Re‑zip)
 
 on:
   push:
@@ -53,41 +53,40 @@ jobs:
             -p:PublishSingleFile=true \
             -p:IncludeNativeLibrariesForSelfExtract=true \
             -p:IncludeAllContentForSelfExtract=true \
-            -o publishes/${{ matrix.runtime }}
+            -o artifacts/${{ matrix.runtime }}
 
-      - name: Archive all publishes into tar
-        if: always()
-        run: |
-          tar -czf publishes.tar publishes
-
-      - name: Upload tar artifact
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: publishes
-          path: publishes.tar
+          name: ${{ matrix.runtime }}
+          path: artifacts/${{ matrix.runtime }}/*
 
   release:
     name: Release
     needs: build
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download publishes.tar
+      - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: publishes
-          path: .
+          path: artifacts
 
-      - name: Extract publishes.tar
-        run: tar -xzf publishes.tar
+      - name: Flatten and Re‑zip per runtime
+        run: |
+          cd artifacts
+          for dir in */ ; do
+            zip -r "${dir%/}.zip" "$dir"
+          done
 
-      - name: Create GitHub Release and Upload
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           name: Release-${{ github.ref_name }}
-          files: publishes/**/*/*
+          files: artifacts/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
