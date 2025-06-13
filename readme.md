@@ -41,7 +41,7 @@ Just run the application, and go to `Settings` -> `Dependencies`, and it will in
 
 `gifski` automatically install `only support x64 platforms`, if you are using ARM64 platform, please install it manually.
 
-`Only tested on Windows now.`
+`Only tested on Windows, Ubuntu now.`
 
 For **manual installation**, follow the instructions below based on your operating system:
 
