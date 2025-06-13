@@ -269,6 +269,7 @@ public class FactoryViewModel : Page
                             .WithTitle(Resources.BatchConvertDone)
                             .WithContent(StatusText)
                             .OfType(NotificationType.Success)
+                            .WithActionButton(Resources.OpenOutputFolder, _ => OpenOutputFolder(), true)
                             .Dismiss().ByClicking()
                             .Dismiss().After(TimeSpan.FromSeconds(5))
                             .Queue();
@@ -289,6 +290,31 @@ public class FactoryViewModel : Page
         });
     }
 
+    private void OpenOutputFolder()
+    {
+        try
+        {
+            var uri = new Uri(OutputFolder!);
+            if (uri.IsAbsoluteUri && uri.IsFile)
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = uri.LocalPath,
+                    UseShellExecute = true
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            Global.GetToastManager().CreateToast()
+                .WithTitle(Resources.Error)
+                .WithContent($"Failed to open folder: {ex.Message}")
+                .OfType(NotificationType.Error)
+                .Dismiss().ByClicking()
+                .Dismiss().After(TimeSpan.FromSeconds(3)).Queue();
+        }
+    }
+    
     private async Task ConvertSingleFileAsync(FileItemModel fileItem, CancellationToken cancellationToken)
     {
         try

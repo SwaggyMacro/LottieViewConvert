@@ -458,4 +458,247 @@
     <data name="FeatureLine8" xml:space="preserve">
         <value>• 支持国际化(暂时只有英语、中文)</value>
     </data>
+    <data name="SelectFFmpegExecutable" xml:space="preserve">
+        <value>选择 FFmpeg 可执行文件</value>
+    </data>
+    <data name="ExecutableFiles" xml:space="preserve">
+        <value>可执行文件</value>
+    </data>
+    <data name="FailedTobrowse" xml:space="preserve">
+        <value>无法选择</value>
+    </data>
+    <data name="FFmpegDirectoryRemoved" xml:space="preserve">
+        <value>成功删除 FFmpeg， 重启软件生效。</value>
+    </data>
+    <data name="FailedToRemove" xml:space="preserve">
+        <value>无法删除</value>
+    </data>
+    <data name="FFmpegIsAlreadyAvailableOnYourSystemAt" xml:space="preserve">
+        <value>FFmpeg 已安装，位于</value>
+    </data>
+    <data name="DoYouStillWantToInstallALocalCopyAndAddItToPATH" xml:space="preserve">
+        <value>请问你是否还想再安装一份FFmpeg?</value>
+    </data>
+    <data name="YesInstallAndAddToPATH" xml:space="preserve">
+        <value>是的，安装</value>
+    </data>
+    <data name="NoUseSystemFFmpeg" xml:space="preserve">
+        <value>否，使用原有FFmpeg</value>
+    </data>
+    <data name="Installing" xml:space="preserve">
+        <value>安装中</value>
+    </data>
+    <data name="FFmpegInstalledSuccessfully" xml:space="preserve">
+        <value>FFmpeg 安装成功！</value>
+    </data>
+    <data name="YouShouldRestartTheApplicationToApplyChanges" xml:space="preserve">
+        <value>你需要重启软件使安装生效</value>
+    </data>
+    <data name="DoYouWantToRestartNow" xml:space="preserve">
+        <value>是否现在重启</value>
+    </data>
+    <data name="YesRestart" xml:space="preserve">
+        <value>是的，重启</value>
+    </data>
+    <data name="NoLater" xml:space="preserve">
+        <value>稍后重启</value>
+    </data>
+    <data name="InstallationFailed" xml:space="preserve">
+        <value>安装失败</value>
+    </data>
+    <data name="UnsupportedPlatform" xml:space="preserve">
+        <value>不支持的平台，请尝试手动安装</value>
+    </data>
+    <data name="FFmpegNotWorking" xml:space="preserve">
+        <value>FFmpeg 没有正常工作</value>
+    </data>
+    <data name="FFmpegHasBeenAddedToYourPathEnvironmentVariable" xml:space="preserve">
+        <value>FFmpeg 成功添加到您的系统环境变量中</value>
+    </data>
+    <data name="Warning" xml:space="preserve">
+        <value>警告</value>
+    </data>
+    <data name="CouldNotAddToPATH" xml:space="preserve">
+        <value>无法添加到 PATH</value>
+    </data>
+    <data name="InstalledSuccessfully" xml:space="preserve">
+        <value>成功安装</value>
+    </data>
+    <data name="LocalFfmpegDirectoryDoesNotExist" xml:space="preserve">
+        <value>本地 FFmpeg 目录不存在</value>
+    </data>
+    <data name="FfmpegExecutableNotFoundInLocalDirectory" xml:space="preserve">
+        <value>FFmpeg 执行文件未找到</value>
+    </data>
+    <data name="FfmpegDirectoryIsAlreadyInPath" xml:space="preserve">
+        <value>FFmpeg 已存在于环境变量</value>
+    </data>
+    <data name="FailedToAddToPath" xml:space="preserve">
+        <value>添加至 Path 失败</value>
+    </data>
+    <data name="FfmpegDirectoryAddedToPathSuccessfullyYouMayNeedToRestartApplicationsToSeeTheChange" xml:space="preserve">
+        <value>FFmpeg 成功添加至环境变量，您需要重启软件使其生效。</value>
+    </data>
+    <data name="UnableToAccessUserEnvironmentRegistryKey" xml:space="preserve">
+        <value>无法访问用户环境变量注册表</value>
+    </data>
+    <data name="FailedToAddToPathViaRegistry" xml:space="preserve">
+        <value>通过注册表添加环境变量失败</value>
+    </data>
+    <data name="FfmpegDirectoryIsAlreadyConfiguredInShellProfiles" xml:space="preserve">
+        <value>FFmpeg 已经添加至 Profile</value>
+    </data>
+    <data name="FfmpegDirectoryAddedToShellProfiles" xml:space="preserve">
+        <value>FFmpeg 已添加至 Profile</value>
+    </data>
+    <data name="FailedToUpdateAnyShellProfileFiles" xml:space="preserve">
+        <value>无法更新 Profile</value>
+    </data>
+    <data name="FailedToRemoveFromPath" xml:space="preserve">
+        <value>从 Path 删除失败</value>
+    </data>
+    <data name="FfmpegDirectoryRemovedFromPathSuccessfully" xml:space="preserve">
+        <value>成功从 Path 移除 FFmepg</value>
+    </data>
+    <data name="NoFfmpegEntriesFoundInShellProfilesToRemove" xml:space="preserve">
+        <value>未找到需要移除的 FFmpeg</value>
+    </data>
+    <data name="Notfound" xml:space="preserve">
+        <value>未找到</value>
+    </data>
+    <data name="Available" xml:space="preserve">
+        <value>可用</value>
+    </data>
+    <data name="InvalidOrNotWorking" xml:space="preserve">
+        <value>无效或无法工作</value>
+    </data>
+    <data name="CheckFailed" xml:space="preserve">
+        <value>检测失败</value>
+    </data>
+    <data name="Dependencies" xml:space="preserve">
+        <value>依赖</value>
+    </data>
+    <data name="FFmpegConfiguration" xml:space="preserve">
+        <value>FFmpeg 配置</value>
+    </data>
+    <data name="FFmpegPath" xml:space="preserve">
+        <value>FFmpeg 路径</value>
+    </data>
+    <data name="FFmpegPathPlaceholder" xml:space="preserve">
+        <value>自动检测或手动选择FFmpeg可执行文件</value>
+    </data>
+    <data name="Status" xml:space="preserve">
+        <value>状态</value>
+    </data>
+    <data name="EnvironmentPATH" xml:space="preserve">
+        <value>环境 Path</value>
+    </data>
+    <data name="ManageFfmpegInSystemPathForOtherApplications" xml:space="preserve">
+        <value>管理 FFmpeg 的环境变量</value>
+    </data>
+    <data name="CurrentStatus" xml:space="preserve">
+        <value>当前状态: </value>
+    </data>
+    <data name="AddToPath" xml:space="preserve">
+        <value>添加到PATH</value>
+    </data>
+    <data name="RemoveFromPath" xml:space="preserve">
+        <value>从 Path 移除</value>
+    </data>
+    <data name="AddingToPathAllowsOtherApplicationsAndCommandLineToolsToFindFfmpegAutomatically" xml:space="preserve">
+        <value>添加到 PATH 后，其他应用程序和命令行工具也可直接使用 FFmpe。</value>
+    </data>
+    <data name="AutomaticallyDownloadsAndInstallsFfmpegForYourPlatform" xml:space="preserve">
+        <value>自动为你的系统下载并安装 FFmpeg</value>
+    </data>
+    <data name="InstallFFmpegAutomatically" xml:space="preserve">
+        <value>自动安装 FFmpeg</value>
+    </data>
+    <data name="AutoInstallation" xml:space="preserve">
+        <value>自动安装</value>
+    </data>
+    <data name="GifskiAutoInstallOnlySupportsx64PlatformPleaseInstallManually" xml:space="preserve">
+        <value>Arm 平台不支持自动安装，请手动安装 gifski</value>
+    </data>
+    <data name="GifskiNotWorking" xml:space="preserve">
+        <value>gifski 不在工作</value>
+    </data>
+    <data name="GifskiHasBeenAddedToYourPathEnvironmentVariable" xml:space="preserve">
+        <value>gifski 已添加至您的环境变量中</value>
+    </data>
+    <data name="LocalGifskiDirectoryDoesNotExist" xml:space="preserve">
+        <value>本地 gifski 目录不存在</value>
+    </data>
+    <data name="GifskiExecutableNotFoundInLocalDirectory" xml:space="preserve">
+        <value>未找到 gifski 可执行文件</value>
+    </data>
+    <data name="GifskiDirectoryIsAlreadyInPath" xml:space="preserve">
+        <value>Path 已存在 gifski </value>
+    </data>
+    <data name="GifskiDirectoryAddedToPathSuccessfully" xml:space="preserve">
+        <value>gifski 已成功添加至 Path</value>
+    </data>
+    <data name="GifskiDirectoryIsAlreadyConfiguredInShellProfiles" xml:space="preserve">
+        <value>gifski 已在 Profile 中配置</value>
+    </data>
+    <data name="GifskiDirectoryAddedToShellProfiles" xml:space="preserve">
+        <value>gifski 已成功添加至 Profile</value>
+    </data>
+    <data name="GifskiDirectoryRemovedFromPathSuccessfully" xml:space="preserve">
+        <value>成功从 Path 中移除 gifski </value>
+    </data>
+    <data name="NoGifskiEntriesFoundInShellProfilesToRemove" xml:space="preserve">
+        <value>未找到需要移除的 gifski</value>
+    </data>
+    <data name="InstallGifskiAutomatically" xml:space="preserve">
+        <value>自动安装 gifski</value>
+    </data>
+    <data name="AutomaticallyDownloadsAndInstallsGifskiForYourPlatformX64Only" xml:space="preserve">
+        <value>自动为您的系统下载并安装 gifsk (仅支持x64平台)</value>
+    </data>
+    <data name="AddingToPathAllowsOtherApplicationsAndCommandLineToolsToFindGifskiAutomatically" xml:space="preserve">
+        <value>添加到 PATH 后，其他应用程序和命令行工具也可直接使用 gifski。</value>
+    </data>
+    <data name="ManageGifskiInSystemPathForOtherApplications" xml:space="preserve">
+        <value>管理 gifski 的环境变量</value>
+    </data>
+    <data name="PathToGifskiExecutableAutoDetectedIfEmpty" xml:space="preserve">
+        <value>gifski 的可执行文件路径(为空则自动检测)</value>
+    </data>
+    <data name="GifskiPath" xml:space="preserve">
+        <value>gifski 路径</value>
+    </data>
+    <data name="GifskiConfiguration" xml:space="preserve">
+        <value>gifski 配置</value>
+    </data>
+    <data name="Browse" xml:space="preserve">
+        <value>浏览</value>
+    </data>
+    <data name="Detect" xml:space="preserve">
+        <value>检测</value>
+    </data>
+    <data name="GifskiIsAlreadyAvailableOnYourSystemAt" xml:space="preserve">
+        <value>gifski 已正常配置于</value>
+    </data>
+    <data name="NoUseSystemGifski" xml:space="preserve">
+        <value>否，使用原有gifski</value>
+    </data>
+    <data name="GifskiInstalledSuccessfully" xml:space="preserve">
+        <value>gifski 安装成功</value>
+    </data>
+    <data name="FeatureLine9" xml:space="preserve">
+        <value>依赖项自动安装：通过自动化安装 gifski 和 FFmpeg 来简化设置</value>
+    </data>
+    <data name="FFmpegNotFoundContent" xml:space="preserve">
+        <value>未检测到 FFmpeg，请去设置页面中配置 FFmpeg（支持自动安装），若未安装 FFmpeg，将无法进行 MKV、MP4、AVIF、APNG、WebM 等格式的转换操作。</value>
+    </data>
+    <data name="GifskiNotFoundContent" xml:space="preserve">
+        <value>未检测到 gifski，请去设置页面中配置gifski（支持自动安装），若未安装 gifski，将无法进行 gif 格式的转换操作。</value>
+    </data>
+    <data name="GotIt" xml:space="preserve">
+        <value>知道了</value>
+    </data>
+    <data name="Readme" xml:space="preserve">
+        <value>使用说明</value>
+    </data>
 </root>

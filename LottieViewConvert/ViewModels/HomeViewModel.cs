@@ -21,6 +21,7 @@ namespace LottieViewConvert.ViewModels
     public class HomeViewModel : Page
     {
         private string? _lottieSource;
+
         public string? LottieSource
         {
             get => _lottieSource;
@@ -28,12 +29,13 @@ namespace LottieViewConvert.ViewModels
         }
 
         private string _statusText = Resources.DragHereToConvert;
+
         public string StatusText
         {
             get => _statusText;
             set => this.RaiseAndSetIfChanged(ref _statusText, value);
         }
-        
+
         public ObservableCollection<string> AvailableFormats { get; } =
         [
             "gif",
@@ -46,6 +48,7 @@ namespace LottieViewConvert.ViewModels
         ];
 
         private string _selectedFormat = "gif";
+
         public string SelectedFormat
         {
             get => _selectedFormat;
@@ -53,6 +56,7 @@ namespace LottieViewConvert.ViewModels
         }
 
         private int _quality = 100;
+
         public int Quality
         {
             get => _quality;
@@ -65,6 +69,7 @@ namespace LottieViewConvert.ViewModels
         }
 
         private int _width = 512;
+
         public int Width
         {
             get => _width;
@@ -76,6 +81,7 @@ namespace LottieViewConvert.ViewModels
         }
 
         private int _height = 512;
+
         public int Height
         {
             get => _height;
@@ -87,6 +93,7 @@ namespace LottieViewConvert.ViewModels
         }
 
         private int _fps = 90;
+
         public int Fps
         {
             get => _fps;
@@ -98,6 +105,7 @@ namespace LottieViewConvert.ViewModels
         }
 
         private double _playSpeed = 1.0;
+
         public double PlaySpeed
         {
             get => _playSpeed;
@@ -109,6 +117,7 @@ namespace LottieViewConvert.ViewModels
         }
 
         private double _progressValue;
+
         public double ProgressValue
         {
             get => _progressValue;
@@ -116,13 +125,15 @@ namespace LottieViewConvert.ViewModels
         }
 
         private string? _outputFolder;
+
         public string? OutputFolder
         {
             get => _outputFolder;
             set => this.RaiseAndSetIfChanged(ref _outputFolder, value);
         }
-        
+
         public ReactiveCommand<Unit, Unit> ConvertCommand { get; }
+        public ReactiveCommand<Unit, Unit> OpenReadmeCommand { get; }
 
         public HomeViewModel()
             : base(Resources.Home, Material.Icons.MaterialIconKind.Home)
@@ -133,6 +144,31 @@ namespace LottieViewConvert.ViewModels
             );
 
             ConvertCommand = ReactiveCommand.CreateFromTask(DoConvertAsync, canConvert);
+            OpenReadmeCommand = ReactiveCommand.Create(() =>
+            {
+                try
+                {
+                    var uri = new Uri(
+                        "https://github.com/SwaggyMacro/LottieViewConvert/blob/master/readme.md#-getting-started");
+                    if (uri.IsAbsoluteUri && uri.IsFile)
+                    {
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = uri.LocalPath,
+                            UseShellExecute = true
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Global.GetToastManager().CreateToast()
+                        .WithTitle(Resources.Error)
+                        .WithContent($"{Resources.Failed}: {ex.Message}")
+                        .OfType(NotificationType.Error)
+                        .Dismiss().ByClicking()
+                        .Dismiss().After(TimeSpan.FromSeconds(3)).Queue();
+                }
+            });
         }
 
         private async Task DoConvertAsync()
@@ -142,12 +178,14 @@ namespace LottieViewConvert.ViewModels
                 StatusText = Resources.InvalidLottieFile;
                 return;
             }
+
             Directory.CreateDirectory(OutputFolder!);
-            await Task.Run(async () => {
+            await Task.Run(async () =>
+            {
                 try
                 {
                     StatusText = "Starting conversion...";
-                    
+
                     var converter = new Converter(
                         LottieSource,
                         OutputFolder,
@@ -164,11 +202,9 @@ namespace LottieViewConvert.ViewModels
                     var cts = new CancellationTokenSource();
                     converter.DetailedProgressUpdated += (progress) =>
                     {
-                        Dispatcher.UIThread.Post(() => {
-                            ProgressValue = progress.OverallProgress;
-                        });
+                        Dispatcher.UIThread.Post(() => { ProgressValue = progress.OverallProgress; });
                     };
-                    
+
                     var success = false;
                     switch (SelectedFormat.ToLowerInvariant())
                     {
@@ -207,7 +243,6 @@ namespace LottieViewConvert.ViewModels
                                 .Dismiss().After(TimeSpan.FromSeconds(3))
                                 .WithActionButton(Resources.OpenOutputFolder, _ => OpenOutputFolder(), true).Queue();
                         });
-
                     }
                     else
                     {
@@ -221,16 +256,18 @@ namespace LottieViewConvert.ViewModels
                                 .Dismiss().After(TimeSpan.FromSeconds(3)).Queue();
                         });
                     }
-                    StatusText = success ? $"Conversion succeeded. Output in {OutputFolder}" : "Conversion failed or cancelled.";
+
+                    StatusText = success
+                        ? $"Conversion succeeded. Output in {OutputFolder}"
+                        : "Conversion failed or cancelled.";
                 }
                 catch (Exception ex)
                 {
                     StatusText = $"Error: {ex.Message}";
                 }
             });
-            
         }
-        
+
         private void OpenOutputFolder()
         {
             try
@@ -255,7 +292,7 @@ namespace LottieViewConvert.ViewModels
                     .Dismiss().After(TimeSpan.FromSeconds(3)).Queue();
             }
         }
-        
+
         public async Task HandleFileDrop(System.Collections.Generic.IEnumerable<IStorageItem> files)
         {
             var file = files.FirstOrDefault();

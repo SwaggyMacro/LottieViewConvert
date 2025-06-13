@@ -22,42 +22,42 @@
             <TextBlock Text="{Binding StatusMessage}"
                        FontWeight="Medium"
                        HorizontalAlignment="Center"
-                       Foreground="{DynamicResource SukiAccentColor}"/>
+                       Foreground="{DynamicResource SukiAccentColor}" />
         </Border>
 
         <!-- Loading overlay -->
         <Border Background="Black"
                 Opacity="0.3"
                 ZIndex="2"
-                IsVisible="{Binding IsLoading}"/>
-        
-        <StackPanel HorizontalAlignment="Center" 
+                IsVisible="{Binding IsLoading}" />
+
+        <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Spacing="10"
                     ZIndex="3"
                     IsVisible="{Binding IsLoading}">
-            <suki:CircleProgressBar IsIndeterminate="True" 
-                                      Width="32" 
-                                      StrokeWidth="2"
-                                      Height="32"/>
+            <suki:CircleProgressBar IsIndeterminate="True"
+                                    Width="32"
+                                    StrokeWidth="2"
+                                    Height="32" />
             <TextBlock Text="{x:Static lang:Resources.Processing}"
-                       HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center" />
         </StackPanel>
 
         <!-- MainContent -->
         <DockPanel IsEnabled="{Binding !IsLoading}">
             <!-- Operation button -->
             <StackPanel DockPanel.Dock="Bottom"
-                        Orientation="Horizontal" 
+                        Orientation="Horizontal"
                         Spacing="10"
                         HorizontalAlignment="Right"
                         Margin="16">
                 <Button Content="{x:Static lang:Resources.ResetConfig}"
                         Command="{Binding ResetCommand}"
-                        Classes="Outlined"/>
+                        Classes="Outlined" />
                 <Button Content="{x:Static lang:Resources.Save}"
                         Command="{Binding SaveCommand}"
-                        Classes="Accent"/>
+                        Classes="Accent" />
             </StackPanel>
 
             <!-- SettingsLayout -->
@@ -70,20 +70,281 @@
                                 <suki:GroupBox Header="{x:Static lang:Resources.DisplayLanguage}" Margin="0,10">
                                     <StackPanel Spacing="15">
                                         <StackPanel Spacing="8">
-                                            <TextBlock Text="{x:Static lang:Resources.Language}" 
-                                                       FontWeight="Medium"/>
+                                            <TextBlock Text="{x:Static lang:Resources.Language}"
+                                                       FontWeight="Medium" />
                                             <ComboBox SelectedValue="{Binding SelectedLanguage}"
                                                       ItemsSource="{Binding AvailableLanguages}"
                                                       DisplayMemberBinding="{Binding DisplayName}"
                                                       SelectedValueBinding="{Binding Code}"
-                                                      MinWidth="200"/>
+                                                      MinWidth="200" />
                                             <TextBlock Text="{x:Static lang:Resources.LanguageChangeDesc}"
                                                        FontSize="12"
                                                        Foreground="{DynamicResource SukiText}"
-                                                       Opacity="0.7"/>
+                                                       Opacity="0.7" />
                                         </StackPanel>
                                     </StackPanel>
                                 </suki:GroupBox>
+                            </suki:SettingsLayoutItem.Content>
+                        </suki:SettingsLayoutItem>
+
+                        <!-- Dependencies Settings -->
+                        <suki:SettingsLayoutItem Header="{x:Static lang:Resources.Dependencies}">
+                            <suki:SettingsLayoutItem.Content>
+                                <StackPanel Spacing="20">
+                                    <!-- FFmpeg Configuration -->
+                                    <suki:GroupBox Header="{x:Static lang:Resources.FFmpegConfiguration}" Margin="0,10">
+                                        <StackPanel Spacing="15">
+                                            <!-- FFmpeg Path -->
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="{x:Static lang:Resources.FFmpegPath}" FontWeight="Medium" />
+                                                <Grid ColumnDefinitions="*,Auto">
+                                                    <TextBox Grid.Column="0"
+                                                             Text="{Binding FFmpegPath}"
+                                                             Watermark="{x:Static lang:Resources.FFmpegPathPlaceholder}"
+                                                             Margin="0,0,8,0" />
+                                                    <Button Grid.Column="1"
+                                                            Content="{x:Static lang:Resources.Browse}"
+                                                            Command="{Binding BrowseFFmpegCommand}"
+                                                            Classes="Outlined" />
+                                                </Grid>
+                                            </StackPanel>
+
+                                            <!-- FFmpeg Status -->
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="{x:Static lang:Resources.Status}" FontWeight="Medium" />
+                                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                                    <StackPanel Grid.Column="0" Spacing="4">
+                                                        <TextBlock Text="{Binding FFmpegStatus}"
+                                                                   VerticalAlignment="Center"
+                                                                   FontWeight="Medium" />
+                                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                                            <TextBlock
+                                                                Text="{Binding FFmpegSource, StringFormat='Source: {0}'}"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="11"
+                                                                Foreground="{DynamicResource SukiText}"
+                                                                Opacity="0.6" />
+                                                            <Border Background="{DynamicResource SukiAccentColor}"
+                                                                    CornerRadius="8"
+                                                                    Padding="4,2"
+                                                                    IsVisible="{Binding IsFFmpegInPath}">
+                                                                <TextBlock Text="In PATH"
+                                                                           FontSize="10"
+                                                                           Foreground="White"
+                                                                           FontWeight="Medium" />
+                                                            </Border>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                    <TextBlock Grid.Column="1"
+                                                               Text="{Binding FFmpegVersion, StringFormat='Version: {0}'}"
+                                                               VerticalAlignment="Center"
+                                                               FontSize="12"
+                                                               Foreground="{DynamicResource SukiText}"
+                                                               Opacity="0.7"
+                                                               Margin="12,0" />
+                                                    <Button Grid.Column="2"
+                                                            Content="{x:Static lang:Resources.Detect}"
+                                                            Command="{Binding CheckFFmpegCommand}"
+                                                            Classes="Outlined"
+                                                            Margin="8,0,0,0" />
+                                                </Grid>
+                                            </StackPanel>
+
+                                            <!-- FFmpeg PATH Management section -->
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="{x:Static lang:Resources.EnvironmentPATH}" FontWeight="Medium" />
+                                                <StackPanel Spacing="8">
+                                                    <Grid ColumnDefinitions="*,Auto,Auto">
+                                                        <TextBlock Grid.Column="0"
+                                                                   VerticalAlignment="Center">
+                                                            <Run Text="{x:Static lang:Resources.ManageFfmpegInSystemPathForOtherApplications}" />
+                                                            <LineBreak />
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock
+                                                                    Text="{x:Static lang:Resources.CurrentStatus}"
+                                                                    FontSize="11"
+                                                                    Foreground="{DynamicResource SukiText}" />
+                                                                <TextBlock
+                                                                    Text="{Binding IsFFmpegInPath}"
+                                                                    FontSize="11"
+                                                                    Foreground="{DynamicResource SukiText}" />
+                                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <Button Grid.Column="1"
+                                                                Content="{x:Static lang:Resources.AddToPath}"
+                                                                Command="{Binding AddToPathCommand}"
+                                                                Classes="Outlined"
+                                                                IsVisible="{Binding !IsFFmpegInPath}"
+                                                                VerticalAlignment="Center"
+                                                                Margin="0,0,8,0" />
+                                                        <Button Grid.Column="2"
+                                                                Content="{x:Static lang:Resources.RemoveFromPath}"
+                                                                Command="{Binding RemoveFromPathCommand}"
+                                                                Classes="Outlined"
+                                                                IsVisible="{Binding IsFFmpegInPath}"
+                                                                VerticalAlignment="Center" />
+                                                    </Grid>
+                                                    <TextBlock
+                                                        Text="{x:Static lang:Resources.AddingToPathAllowsOtherApplicationsAndCommandLineToolsToFindFfmpegAutomatically}"
+                                                        FontSize="12"
+                                                        Foreground="{DynamicResource SukiText}"
+                                                        Opacity="0.7" />
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                            <!-- FFmpeg Auto Install -->
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="{x:Static lang:Resources.AutoInstallation}" FontWeight="Medium" />
+                                                <StackPanel Spacing="8">
+                                                    <Button Content="{x:Static lang:Resources.InstallFFmpegAutomatically}"
+                                                            Command="{Binding InstallFFmpegCommand}"
+                                                            Classes="Accent"
+                                                            IsEnabled="{Binding !IsFFmpegInstalling}"
+                                                            HorizontalAlignment="Left" />
+
+                                                    <!-- Progress Bar -->
+                                                    <ProgressBar Value="{Binding FFmpegInstallProgress}"
+                                                                 Maximum="100"
+                                                                 Height="4"
+                                                                 IsVisible="{Binding IsFFmpegInstalling}" />
+
+                                                    <TextBlock
+                                                        Text="{x:Static lang:Resources.AutomaticallyDownloadsAndInstallsFfmpegForYourPlatform}"
+                                                        FontSize="12"
+                                                        Foreground="{DynamicResource SukiText}"
+                                                        Opacity="0.7" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </suki:GroupBox>
+
+                                    <!-- Gifski Configuration -->
+                                    <suki:GroupBox Header="{x:Static lang:Resources.GifskiConfiguration}" Margin="0,10">
+                                        <StackPanel Spacing="15">
+                                            <!-- Gifski Path -->
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="{x:Static lang:Resources.GifskiPath}" FontWeight="Medium" />
+                                                <Grid ColumnDefinitions="*,Auto">
+                                                    <TextBox Grid.Column="0"
+                                                             Text="{Binding GifskiPath}"
+                                                             Watermark="{x:Static lang:Resources.PathToGifskiExecutableAutoDetectedIfEmpty}"
+                                                             Margin="0,0,8,0" />
+                                                    <Button Grid.Column="1"
+                                                            Content="{x:Static lang:Resources.Browse}"
+                                                            Command="{Binding BrowseGifskiCommand}"
+                                                            Classes="Outlined" />
+                                                </Grid>
+                                            </StackPanel>
+
+                                            <!-- Gifski Status -->
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="Status" FontWeight="Medium" />
+                                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                                    <StackPanel Grid.Column="0" Spacing="4">
+                                                        <TextBlock Text="{Binding GifskiStatus}"
+                                                                   VerticalAlignment="Center"
+                                                                   FontWeight="Medium" />
+                                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                                            <TextBlock
+                                                                Text="{Binding GifskiSource, StringFormat='Source: {0}'}"
+                                                                VerticalAlignment="Center"
+                                                                FontSize="11"
+                                                                Foreground="{DynamicResource SukiText}"
+                                                                Opacity="0.6" />
+                                                            <Border Background="{DynamicResource SukiAccentColor}"
+                                                                    CornerRadius="8"
+                                                                    Padding="4,2"
+                                                                    IsVisible="{Binding IsGifskiInPath}">
+                                                                <TextBlock Text="In PATH"
+                                                                           FontSize="10"
+                                                                           Foreground="White"
+                                                                           FontWeight="Medium" />
+                                                            </Border>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                    <TextBlock Grid.Column="1"
+                                                               Text="{Binding GifskiVersion, StringFormat='Version: {0}'}"
+                                                               VerticalAlignment="Center"
+                                                               FontSize="12"
+                                                               Foreground="{DynamicResource SukiText}"
+                                                               Opacity="0.7"
+                                                               Margin="12,0" />
+                                                    <Button Grid.Column="2"
+                                                            Content="{x:Static lang:Resources.Detect}"
+                                                            Command="{Binding CheckGifskiCommand}"
+                                                            Classes="Outlined"
+                                                            Margin="8,0,0,0" />
+                                                </Grid>
+                                            </StackPanel>
+
+                                            <!-- Gifski PATH Management section -->
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="{x:Static lang:Resources.EnvironmentPATH}" FontWeight="Medium" />
+                                                <StackPanel Spacing="8">
+                                                    <Grid ColumnDefinitions="*,Auto,Auto">
+                                                        <TextBlock Grid.Column="0"
+                                                                   VerticalAlignment="Center">
+                                                            <Run Text="{x:Static lang:Resources.ManageGifskiInSystemPathForOtherApplications}" />
+                                                            <LineBreak />
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock
+                                                                    Text="{x:Static lang:Resources.CurrentStatus}"
+                                                                    FontSize="11"
+                                                                    Foreground="{DynamicResource SukiText}" />
+                                                                <TextBlock
+                                                                    Text="{Binding IsGifskiInPath}"
+                                                                    FontSize="11"
+                                                                    Foreground="{DynamicResource SukiText}" />
+                                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <Button Grid.Column="1"
+                                                                Content="{x:Static lang:Resources.AddToPath}"
+                                                                Command="{Binding AddGifskiToPathCommand}"
+                                                                Classes="Outlined"
+                                                                IsVisible="{Binding !IsGifskiInPath}"
+                                                                VerticalAlignment="Center"
+                                                                Margin="0,0,8,0" />
+                                                        <Button Grid.Column="2"
+                                                                Content="{x:Static lang:Resources.RemoveFromPath}"
+                                                                Command="{Binding RemoveGifskiFromPathCommand}"
+                                                                Classes="Outlined"
+                                                                IsVisible="{Binding IsGifskiInPath}"
+                                                                VerticalAlignment="Center" />
+                                                    </Grid>
+                                                    <TextBlock
+                                                        Text="{x:Static lang:Resources.AddingToPathAllowsOtherApplicationsAndCommandLineToolsToFindGifskiAutomatically}"
+                                                        FontSize="12"
+                                                        Foreground="{DynamicResource SukiText}"
+                                                        Opacity="0.7" />
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                            <!-- Gifski Auto Install -->
+                                            <StackPanel Spacing="8">
+                                                <TextBlock Text="{x:Static lang:Resources.AutoInstallation}" FontWeight="Medium" />
+                                                <StackPanel Spacing="8">
+                                                    <Button Content="{x:Static lang:Resources.InstallGifskiAutomatically}"
+                                                            Command="{Binding InstallGifskiCommand}"
+                                                            Classes="Accent"
+                                                            IsEnabled="{Binding !IsGifskiInstalling}"
+                                                            HorizontalAlignment="Left" />
+
+                                                    <!-- Progress Bar -->
+                                                    <ProgressBar Value="{Binding GifskiInstallProgress}"
+                                                                 Maximum="100"
+                                                                 Height="4"
+                                                                 IsVisible="{Binding IsGifskiInstalling}" />
+
+                                                    <TextBlock
+                                                        Text="{x:Static lang:Resources.AutomaticallyDownloadsAndInstallsGifskiForYourPlatformX64Only}"
+                                                        FontSize="12"
+                                                        Foreground="{DynamicResource SukiText}"
+                                                        Opacity="0.7" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </suki:GroupBox>
+                                </StackPanel>
                             </suki:SettingsLayoutItem.Content>
                         </suki:SettingsLayoutItem>
 
@@ -93,14 +354,14 @@
                                 <suki:GroupBox Header="{x:Static lang:Resources.Proxy}" Margin="0,10">
                                     <StackPanel Spacing="15">
                                         <StackPanel Spacing="8">
-                                            <TextBlock Text="{x:Static lang:Resources.ProxyUrl}" 
-                                                       FontWeight="Medium"/>
+                                            <TextBlock Text="{x:Static lang:Resources.ProxyUrl}"
+                                                       FontWeight="Medium" />
                                             <TextBox Text="{Binding ProxyAddress}"
-                                                     Watermark="{x:Static lang:Resources.ProxyUrlSettingDesc}"/>
+                                                     Watermark="{x:Static lang:Resources.ProxyUrlSettingDesc}" />
                                             <TextBlock Text="{x:Static lang:Resources.SupportHttpAndSocks}"
                                                        FontSize="12"
                                                        Foreground="{DynamicResource SukiText}"
-                                                       Opacity="0.7"/>
+                                                       Opacity="0.7" />
                                         </StackPanel>
                                     </StackPanel>
                                 </suki:GroupBox>
@@ -113,17 +374,17 @@
                                 <suki:GroupBox Header="{x:Static lang:Resources.BotConfig}" Margin="0,10">
                                     <StackPanel Spacing="15">
                                         <StackPanel Spacing="8">
-                                            <TextBlock Text="Bot Token" 
-                                                       FontWeight="Medium"/>
+                                            <TextBlock Text="Bot Token"
+                                                       FontWeight="Medium" />
                                             <TextBox Text="{Binding TelegramBotToken}"
                                                      Watermark="{x:Static lang:Resources.InputTelegramBotToken}"
-                                                     PasswordChar="*"/>
+                                                     PasswordChar="*" />
                                             <TextBlock FontSize="12"
                                                        Foreground="{DynamicResource SukiText}"
                                                        Opacity="0.7">
-                                                <Run Text="{x:Static lang:Resources.CreateAndGetFromBotFather}"/>
-                                                <LineBreak/>
-                                                <Run Text="{x:Static lang:Resources.BotTokenExample}"/>
+                                                <Run Text="{x:Static lang:Resources.CreateAndGetFromBotFather}" />
+                                                <LineBreak />
+                                                <Run Text="{x:Static lang:Resources.BotTokenExample}" />
                                             </TextBlock>
                                         </StackPanel>
                                     </StackPanel>

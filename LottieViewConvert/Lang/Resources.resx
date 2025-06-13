@@ -459,4 +459,247 @@
     <data name="FeatureLine8" xml:space="preserve">
         <value>• i18n Support, Only Chinese and English now.</value>
     </data>
+    <data name="SelectFFmpegExecutable" xml:space="preserve">
+        <value>Select FFmpeg Executable</value>
+    </data>
+    <data name="ExecutableFiles" xml:space="preserve">
+        <value>Executable Files</value>
+    </data>
+    <data name="FailedTobrowse" xml:space="preserve">
+        <value>Failed to browse</value>
+    </data>
+    <data name="FFmpegDirectoryRemoved" xml:space="preserve">
+        <value>FFmpeg directory removed from shell profiles. Please restart your app to apply changes.</value>
+    </data>
+    <data name="FailedToRemove" xml:space="preserve">
+        <value>Failed to remove </value>
+    </data>
+    <data name="FFmpegIsAlreadyAvailableOnYourSystemAt" xml:space="preserve">
+        <value>FFmpeg is already available on your system at</value>
+    </data>
+    <data name="DoYouStillWantToInstallALocalCopyAndAddItToPATH" xml:space="preserve">
+        <value>Do you still want to install a local copy and add it to PATH?</value>
+    </data>
+    <data name="YesInstallAndAddToPATH" xml:space="preserve">
+        <value>Yes, Install &amp; Add to PATH</value>
+    </data>
+    <data name="NoUseSystemFFmpeg" xml:space="preserve">
+        <value>No, Use System FFmpeg</value>
+    </data>
+    <data name="Installing" xml:space="preserve">
+        <value>Installing</value>
+    </data>
+    <data name="FFmpegInstalledSuccessfully" xml:space="preserve">
+        <value>FFmpeg installed successfully!</value>
+    </data>
+    <data name="YouShouldRestartTheApplicationToApplyChanges" xml:space="preserve">
+        <value>You should restart the application to apply changes</value>
+    </data>
+    <data name="DoYouWantToRestartNow" xml:space="preserve">
+        <value>Do you want to restart now?</value>
+    </data>
+    <data name="YesRestart" xml:space="preserve">
+        <value>Yes, Restart</value>
+    </data>
+    <data name="NoLater" xml:space="preserve">
+        <value>No, Later</value>
+    </data>
+    <data name="InstallationFailed" xml:space="preserve">
+        <value>Installation failed</value>
+    </data>
+    <data name="UnsupportedPlatform" xml:space="preserve">
+        <value>Unsupported platform, try install it manually.</value>
+    </data>
+    <data name="FFmpegNotWorking" xml:space="preserve">
+        <value>FFmpeg not working</value>
+    </data>
+    <data name="FFmpegHasBeenAddedToYourPathEnvironmentVariable" xml:space="preserve">
+        <value>FFmpeg has been added to your PATH environment variable.</value>
+    </data>
+    <data name="Warning" xml:space="preserve">
+        <value>Warning</value>
+    </data>
+    <data name="CouldNotAddToPATH" xml:space="preserve">
+        <value>Could not add to PATH</value>
+    </data>
+    <data name="InstalledSuccessfully" xml:space="preserve">
+        <value>Installed successfully</value>
+    </data>
+    <data name="LocalFfmpegDirectoryDoesNotExist" xml:space="preserve">
+        <value>Local FFmpeg directory does not exist</value>
+    </data>
+    <data name="FfmpegExecutableNotFoundInLocalDirectory" xml:space="preserve">
+        <value>Ffmpeg Executable Not Found In Local Directory</value>
+    </data>
+    <data name="FfmpegDirectoryIsAlreadyInPath" xml:space="preserve">
+        <value>FFmpeg directory is already in PATH</value>
+    </data>
+    <data name="FailedToAddToPath" xml:space="preserve">
+        <value>Failed to add to PATH</value>
+    </data>
+    <data name="FfmpegDirectoryAddedToPathSuccessfullyYouMayNeedToRestartApplicationsToSeeTheChange" xml:space="preserve">
+        <value>Ffmpeg Directory Added To Path Successfully. You May Need To Restart Applications To See The Change.</value>
+    </data>
+    <data name="UnableToAccessUserEnvironmentRegistryKey" xml:space="preserve">
+        <value>Unable To Access User Environment Registry Key</value>
+    </data>
+    <data name="FailedToAddToPathViaRegistry" xml:space="preserve">
+        <value>Failed To Add To Path Via Registry</value>
+    </data>
+    <data name="FfmpegDirectoryIsAlreadyConfiguredInShellProfiles" xml:space="preserve">
+        <value>FfmpegDirectoryIsAlreadyConfiguredInShellProfiles</value>
+    </data>
+    <data name="FfmpegDirectoryAddedToShellProfiles" xml:space="preserve">
+        <value>Ffmpeg Directory Added To Shell Profiles</value>
+    </data>
+    <data name="FailedToUpdateAnyShellProfileFiles" xml:space="preserve">
+        <value>Failed To Update Any Shell Profile Files</value>
+    </data>
+    <data name="FailedToRemoveFromPath" xml:space="preserve">
+        <value>Failed To Remove From Path</value>
+    </data>
+    <data name="FfmpegDirectoryRemovedFromPathSuccessfully" xml:space="preserve">
+        <value>Ffmpeg Directory Removed From Path Successfully</value>
+    </data>
+    <data name="NoFfmpegEntriesFoundInShellProfilesToRemove" xml:space="preserve">
+        <value>No Ffmpeg Entries Found In Shell Profiles To Remove</value>
+    </data>
+    <data name="Notfound" xml:space="preserve">
+        <value>Not found</value>
+    </data>
+    <data name="Available" xml:space="preserve">
+        <value>Available</value>
+    </data>
+    <data name="InvalidOrNotWorking" xml:space="preserve">
+        <value>Invalid or not working</value>
+    </data>
+    <data name="CheckFailed" xml:space="preserve">
+        <value>Check failed</value>
+    </data>
+    <data name="Dependencies" xml:space="preserve">
+        <value>Dependencies</value>
+    </data>
+    <data name="FFmpegConfiguration" xml:space="preserve">
+        <value>FFmpeg Configuration</value>
+    </data>
+    <data name="FFmpegPath" xml:space="preserve">
+        <value>FFmpeg Path</value>
+    </data>
+    <data name="FFmpegPathPlaceholder" xml:space="preserve">
+        <value>Auto-detect or browse to select FFmpeg executable</value>
+    </data>
+    <data name="Status" xml:space="preserve">
+        <value>Status</value>
+    </data>
+    <data name="EnvironmentPATH" xml:space="preserve">
+        <value>Environment PATH</value>
+    </data>
+    <data name="ManageFfmpegInSystemPathForOtherApplications" xml:space="preserve">
+        <value>Manage Ffmpeg In System Path For Other Applications</value>
+    </data>
+    <data name="CurrentStatus" xml:space="preserve">
+        <value>Current status: </value>
+    </data>
+    <data name="AddToPath" xml:space="preserve">
+        <value>Add to Path</value>
+    </data>
+    <data name="RemoveFromPath" xml:space="preserve">
+        <value>Remove from PATH</value>
+    </data>
+    <data name="AddingToPathAllowsOtherApplicationsAndCommandLineToolsToFindFfmpegAutomatically" xml:space="preserve">
+        <value>Adding To Path Allows Other Applications And Command Line Tools To Find Ffmpeg Automatically</value>
+    </data>
+    <data name="AutomaticallyDownloadsAndInstallsFfmpegForYourPlatform" xml:space="preserve">
+        <value>Automatically Downloads And Installs Ffmpeg For Your Platform</value>
+    </data>
+    <data name="InstallFFmpegAutomatically" xml:space="preserve">
+        <value>Install FFmpeg Automatically</value>
+    </data>
+    <data name="AutoInstallation" xml:space="preserve">
+        <value>Auto Installation</value>
+    </data>
+    <data name="GifskiAutoInstallOnlySupportsx64PlatformPleaseInstallManually" xml:space="preserve">
+        <value>ARM platform not supported for auto-installation, Please install manually</value>
+    </data>
+    <data name="GifskiNotWorking" xml:space="preserve">
+        <value>gifski not working</value>
+    </data>
+    <data name="GifskiHasBeenAddedToYourPathEnvironmentVariable" xml:space="preserve">
+        <value>gifski has been added to your path environment variable</value>
+    </data>
+    <data name="LocalGifskiDirectoryDoesNotExist" xml:space="preserve">
+        <value>Local gifski directory does not exist</value>
+    </data>
+    <data name="GifskiExecutableNotFoundInLocalDirectory" xml:space="preserve">
+        <value>gifski executable not found in local directory</value>
+    </data>
+    <data name="GifskiDirectoryIsAlreadyInPath" xml:space="preserve">
+        <value>gifski directory is already in PATH</value>
+    </data>
+    <data name="GifskiDirectoryAddedToPathSuccessfully" xml:space="preserve">
+        <value>gifski directory added to PATH successfully</value>
+    </data>
+    <data name="GifskiDirectoryIsAlreadyConfiguredInShellProfiles" xml:space="preserve">
+        <value>gifski directory is already configured in shell profiles</value>
+    </data>
+    <data name="GifskiDirectoryAddedToShellProfiles" xml:space="preserve">
+        <value>gifski directory added to shell profiles.</value>
+    </data>
+    <data name="GifskiDirectoryRemovedFromPathSuccessfully" xml:space="preserve">
+        <value>gifski directory removed from PATH successfully.</value>
+    </data>
+    <data name="NoGifskiEntriesFoundInShellProfilesToRemove" xml:space="preserve">
+        <value>No gifski entries found in shell profiles to remove</value>
+    </data>
+    <data name="InstallGifskiAutomatically" xml:space="preserve">
+        <value>Install Gifski Automatically</value>
+    </data>
+    <data name="AutomaticallyDownloadsAndInstallsGifskiForYourPlatformX64Only" xml:space="preserve">
+        <value>Automatically downloads and installs Gifski for your platform (x64 only)</value>
+    </data>
+    <data name="AddingToPathAllowsOtherApplicationsAndCommandLineToolsToFindGifskiAutomatically" xml:space="preserve">
+        <value>Adding to PATH allows other applications and command-line tools to find Gifski automatically</value>
+    </data>
+    <data name="ManageGifskiInSystemPathForOtherApplications" xml:space="preserve">
+        <value>Manage Gifski in system PATH for other applications</value>
+    </data>
+    <data name="PathToGifskiExecutableAutoDetectedIfEmpty" xml:space="preserve">
+        <value>Path to gifski executable (auto-detected if empty)</value>
+    </data>
+    <data name="GifskiPath" xml:space="preserve">
+        <value>gifski Path</value>
+    </data>
+    <data name="GifskiConfiguration" xml:space="preserve">
+        <value>gifski Configuration</value>
+    </data>
+    <data name="Browse" xml:space="preserve">
+        <value>Browse</value>
+    </data>
+    <data name="Detect" xml:space="preserve">
+        <value>Detect</value>
+    </data>
+    <data name="GifskiIsAlreadyAvailableOnYourSystemAt" xml:space="preserve">
+        <value>gifski Is Already Available On Your System At</value>
+    </data>
+    <data name="NoUseSystemGifski" xml:space="preserve">
+        <value>No, Use System gifski</value>
+    </data>
+    <data name="GifskiInstalledSuccessfully" xml:space="preserve">
+        <value>gifski installed successfully</value>
+    </data>
+    <data name="FeatureLine9" xml:space="preserve">
+        <value>Automatic Installation of Dependencies: Simplify setup by automating gifski and FFmpeg installation</value>
+    </data>
+    <data name="FFmpegNotFoundContent" xml:space="preserve">
+        <value>FFmpeg not found, please go to setting and install it by automatically or manually, without FFmpeg, converting to formats such as MKV, MP4, AVIF, APNG, and WebM is not supported.</value>
+    </data>
+    <data name="GifskiNotFoundContent" xml:space="preserve">
+        <value>gifski not found, please go to setting and install it by automatically or manually, without gifski, converting to formats such as gif is not supported.</value>
+    </data>
+    <data name="GotIt" xml:space="preserve">
+        <value>Got it</value>
+    </data>
+    <data name="Readme" xml:space="preserve">
+        <value>Readme</value>
+    </data>
 </root>

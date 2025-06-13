@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls.Notifications;
 using Avalonia.Styling;
@@ -11,6 +12,7 @@ using LottieViewConvert.Helper.LogHelper;
 using LottieViewConvert.Lang;
 using LottieViewConvert.Models;
 using LottieViewConvert.Services;
+using LottieViewConvert.Services.Dependency;
 using ReactiveUI;
 using SukiUI;
 using SukiUI.Dialogs;
@@ -88,6 +90,8 @@ public class MainWindowViewModel : ViewModelBase
         Themes = _theme.ColorThemes;
         BaseTheme = _theme.ActiveBaseTheme;
 
+        _ = CheckDependencies();
+        
         pageNavigationService.NavigationRequested += pageType =>
         {
             var page = Pages.FirstOrDefault(x => x.GetType() == pageType);
@@ -154,6 +158,44 @@ public class MainWindowViewModel : ViewModelBase
                     .Queue();
             }
         });
+    }
+    
+    private async Task CheckDependencies()
+    {
+        // Check if FFmpeg is installed
+        var ffmpegService = new FFmpegService();
+        var gifskiService = new GifskiService();
+
+        var ffmpegPath = await ffmpegService.DetectFFmpegPathAsync();
+        if (string.IsNullOrEmpty(ffmpegPath))
+        {
+            ToastManager.CreateToast()
+                .WithTitle("FFmpeg")
+                .WithContent(Resources.FFmpegNotFoundContent)
+                .OfType(NotificationType.Warning)
+                .WithActionButton(Resources.GotIt, _ => { }, dismissOnClick: true)
+                .Dismiss().ByClicking()
+                .Queue();
+        }
+        else
+        {
+            Logger.Info("FFmpeg is installed and detected.");
+        }
+        var gifskiPath = await gifskiService.DetectGifskiPathAsync();
+        if (string.IsNullOrEmpty(gifskiPath))
+        {
+            ToastManager.CreateToast()
+                .WithTitle("Gifski")
+                .WithContent(Resources.GifskiNotFoundContent)
+                .OfType(NotificationType.Warning)
+                .WithActionButton(Resources.GotIt, _ => {}, dismissOnClick: true)
+                .Dismiss().ByClicking()
+                .Queue();
+        }
+        else
+        {
+            Logger.Info("Gifski is installed and detected.");
+        }
     }
     
     public void ChangeTheme(SukiColorTheme theme) => _theme.ChangeColorTheme(theme);

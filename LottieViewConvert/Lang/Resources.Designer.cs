@@ -69,6 +69,33 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adding To Path Allows Other Applications And Command Line Tools To Find Ffmpeg Automatically.
+        /// </summary>
+        public static string AddingToPathAllowsOtherApplicationsAndCommandLineToolsToFindFfmpegAutomatically {
+            get {
+                return ResourceManager.GetString("AddingToPathAllowsOtherApplicationsAndCommandLineToolsToFindFfmpegAutomatically", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding to PATH allows other applications and command-line tools to find Gifski automatically.
+        /// </summary>
+        public static string AddingToPathAllowsOtherApplicationsAndCommandLineToolsToFindGifskiAutomatically {
+            get {
+                return ResourceManager.GetString("AddingToPathAllowsOtherApplicationsAndCommandLineToolsToFindGifskiAutomatically", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add to Path.
+        /// </summary>
+        public static string AddToPath {
+            get {
+                return ResourceManager.GetString("AddToPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A powerful cross-platform desktop application for converting TGS (Telegram Stickers) and Lottie animations to various formats including GIF, WebP, APNG, MP4, MKV, AVIF, and WebM. Support download sticker set from Telegram(name or link) directly. Built with modern technologies for optimal performance and user experience..
         /// </summary>
         public static string AppDesc {
@@ -101,6 +128,42 @@ namespace LottieViewConvert.Lang {
         public static string AutoDetect {
             get {
                 return ResourceManager.GetString("AutoDetect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto Installation.
+        /// </summary>
+        public static string AutoInstallation {
+            get {
+                return ResourceManager.GetString("AutoInstallation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically Downloads And Installs Ffmpeg For Your Platform.
+        /// </summary>
+        public static string AutomaticallyDownloadsAndInstallsFfmpegForYourPlatform {
+            get {
+                return ResourceManager.GetString("AutomaticallyDownloadsAndInstallsFfmpegForYourPlatform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically downloads and installs Gifski for your platform (x64 only).
+        /// </summary>
+        public static string AutomaticallyDownloadsAndInstallsGifskiForYourPlatformX64Only {
+            get {
+                return ResourceManager.GetString("AutomaticallyDownloadsAndInstallsGifskiForYourPlatformX64Only", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available.
+        /// </summary>
+        public static string Available {
+            get {
+                return ResourceManager.GetString("Available", resourceCulture);
             }
         }
         
@@ -141,6 +204,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browse.
+        /// </summary>
+        public static string Browse {
+            get {
+                return ResourceManager.GetString("Browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse....
         /// </summary>
         public static string BrowseDotDotDot {
@@ -155,6 +227,15 @@ namespace LottieViewConvert.Lang {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check failed.
+        /// </summary>
+        public static string CheckFailed {
+            get {
+                return ResourceManager.GetString("CheckFailed", resourceCulture);
             }
         }
         
@@ -249,6 +330,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not add to PATH.
+        /// </summary>
+        public static string CouldNotAddToPATH {
+            get {
+                return ResourceManager.GetString("CouldNotAddToPATH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
         public static string Create {
@@ -272,6 +362,33 @@ namespace LottieViewConvert.Lang {
         public static string CreateCustom {
             get {
                 return ResourceManager.GetString("CreateCustom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current status: .
+        /// </summary>
+        public static string CurrentStatus {
+            get {
+                return ResourceManager.GetString("CurrentStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dependencies.
+        /// </summary>
+        public static string Dependencies {
+            get {
+                return ResourceManager.GetString("Dependencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detect.
+        /// </summary>
+        public static string Detect {
+            get {
+                return ResourceManager.GetString("Detect", resourceCulture);
             }
         }
         
@@ -348,6 +465,24 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you still want to install a local copy and add it to PATH?.
+        /// </summary>
+        public static string DoYouStillWantToInstallALocalCopyAndAddItToPATH {
+            get {
+                return ResourceManager.GetString("DoYouStillWantToInstallALocalCopyAndAddItToPATH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to restart now?.
+        /// </summary>
+        public static string DoYouWantToRestartNow {
+            get {
+                return ResourceManager.GetString("DoYouWantToRestartNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drag folder here to convert!.
         /// </summary>
         public static string DragFolderHere {
@@ -384,11 +519,29 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Environment PATH.
+        /// </summary>
+        public static string EnvironmentPATH {
+            get {
+                return ResourceManager.GetString("EnvironmentPATH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Executable Files.
+        /// </summary>
+        public static string ExecutableFiles {
+            get {
+                return ResourceManager.GetString("ExecutableFiles", resourceCulture);
             }
         }
         
@@ -407,6 +560,60 @@ namespace LottieViewConvert.Lang {
         public static string Failed {
             get {
                 return ResourceManager.GetString("Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to add to PATH.
+        /// </summary>
+        public static string FailedToAddToPath {
+            get {
+                return ResourceManager.GetString("FailedToAddToPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed To Add To Path Via Registry.
+        /// </summary>
+        public static string FailedToAddToPathViaRegistry {
+            get {
+                return ResourceManager.GetString("FailedToAddToPathViaRegistry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to browse.
+        /// </summary>
+        public static string FailedTobrowse {
+            get {
+                return ResourceManager.GetString("FailedTobrowse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to remove .
+        /// </summary>
+        public static string FailedToRemove {
+            get {
+                return ResourceManager.GetString("FailedToRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed To Remove From Path.
+        /// </summary>
+        public static string FailedToRemoveFromPath {
+            get {
+                return ResourceManager.GetString("FailedToRemoveFromPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed To Update Any Shell Profile Files.
+        /// </summary>
+        public static string FailedToUpdateAnyShellProfileFiles {
+            get {
+                return ResourceManager.GetString("FailedToUpdateAnyShellProfileFiles", resourceCulture);
             }
         }
         
@@ -483,11 +690,156 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatic Installation of Dependencies: Simplify setup by automating gifski and FFmpeg installation.
+        /// </summary>
+        public static string FeatureLine9 {
+            get {
+                return ResourceManager.GetString("FeatureLine9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fetching metadata.
         /// </summary>
         public static string FetchingMetadata {
             get {
                 return ResourceManager.GetString("FetchingMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FFmpeg Configuration.
+        /// </summary>
+        public static string FFmpegConfiguration {
+            get {
+                return ResourceManager.GetString("FFmpegConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ffmpeg Directory Added To Path Successfully. You May Need To Restart Applications To See The Change..
+        /// </summary>
+        public static string FfmpegDirectoryAddedToPathSuccessfullyYouMayNeedToRestartApplicationsToSeeTheChange {
+            get {
+                return ResourceManager.GetString("FfmpegDirectoryAddedToPathSuccessfullyYouMayNeedToRestartApplicationsToSeeTheChan" +
+                        "ge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ffmpeg Directory Added To Shell Profiles.
+        /// </summary>
+        public static string FfmpegDirectoryAddedToShellProfiles {
+            get {
+                return ResourceManager.GetString("FfmpegDirectoryAddedToShellProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FfmpegDirectoryIsAlreadyConfiguredInShellProfiles.
+        /// </summary>
+        public static string FfmpegDirectoryIsAlreadyConfiguredInShellProfiles {
+            get {
+                return ResourceManager.GetString("FfmpegDirectoryIsAlreadyConfiguredInShellProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FFmpeg directory is already in PATH.
+        /// </summary>
+        public static string FfmpegDirectoryIsAlreadyInPath {
+            get {
+                return ResourceManager.GetString("FfmpegDirectoryIsAlreadyInPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FFmpeg directory removed from shell profiles. Please restart your app to apply changes..
+        /// </summary>
+        public static string FFmpegDirectoryRemoved {
+            get {
+                return ResourceManager.GetString("FFmpegDirectoryRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ffmpeg Directory Removed From Path Successfully.
+        /// </summary>
+        public static string FfmpegDirectoryRemovedFromPathSuccessfully {
+            get {
+                return ResourceManager.GetString("FfmpegDirectoryRemovedFromPathSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ffmpeg Executable Not Found In Local Directory.
+        /// </summary>
+        public static string FfmpegExecutableNotFoundInLocalDirectory {
+            get {
+                return ResourceManager.GetString("FfmpegExecutableNotFoundInLocalDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FFmpeg has been added to your PATH environment variable..
+        /// </summary>
+        public static string FFmpegHasBeenAddedToYourPathEnvironmentVariable {
+            get {
+                return ResourceManager.GetString("FFmpegHasBeenAddedToYourPathEnvironmentVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FFmpeg installed successfully!.
+        /// </summary>
+        public static string FFmpegInstalledSuccessfully {
+            get {
+                return ResourceManager.GetString("FFmpegInstalledSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FFmpeg is already available on your system at.
+        /// </summary>
+        public static string FFmpegIsAlreadyAvailableOnYourSystemAt {
+            get {
+                return ResourceManager.GetString("FFmpegIsAlreadyAvailableOnYourSystemAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FFmpeg not found, please go to setting and install it by automatically or manually, without FFmpeg, converting to formats such as MKV, MP4, AVIF, APNG, and WebM is not supported..
+        /// </summary>
+        public static string FFmpegNotFoundContent {
+            get {
+                return ResourceManager.GetString("FFmpegNotFoundContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FFmpeg not working.
+        /// </summary>
+        public static string FFmpegNotWorking {
+            get {
+                return ResourceManager.GetString("FFmpegNotWorking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FFmpeg Path.
+        /// </summary>
+        public static string FFmpegPath {
+            get {
+                return ResourceManager.GetString("FFmpegPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-detect or browse to select FFmpeg executable.
+        /// </summary>
+        public static string FFmpegPathPlaceholder {
+            get {
+                return ResourceManager.GetString("FFmpegPathPlaceholder", resourceCulture);
             }
         }
         
@@ -546,6 +898,141 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ARM platform not supported for auto-installation, Please install manually.
+        /// </summary>
+        public static string GifskiAutoInstallOnlySupportsx64PlatformPleaseInstallManually {
+            get {
+                return ResourceManager.GetString("GifskiAutoInstallOnlySupportsx64PlatformPleaseInstallManually", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gifski Configuration.
+        /// </summary>
+        public static string GifskiConfiguration {
+            get {
+                return ResourceManager.GetString("GifskiConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gifski directory added to PATH successfully.
+        /// </summary>
+        public static string GifskiDirectoryAddedToPathSuccessfully {
+            get {
+                return ResourceManager.GetString("GifskiDirectoryAddedToPathSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gifski directory added to shell profiles..
+        /// </summary>
+        public static string GifskiDirectoryAddedToShellProfiles {
+            get {
+                return ResourceManager.GetString("GifskiDirectoryAddedToShellProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gifski directory is already configured in shell profiles.
+        /// </summary>
+        public static string GifskiDirectoryIsAlreadyConfiguredInShellProfiles {
+            get {
+                return ResourceManager.GetString("GifskiDirectoryIsAlreadyConfiguredInShellProfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gifski directory is already in PATH.
+        /// </summary>
+        public static string GifskiDirectoryIsAlreadyInPath {
+            get {
+                return ResourceManager.GetString("GifskiDirectoryIsAlreadyInPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gifski directory removed from PATH successfully..
+        /// </summary>
+        public static string GifskiDirectoryRemovedFromPathSuccessfully {
+            get {
+                return ResourceManager.GetString("GifskiDirectoryRemovedFromPathSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gifski executable not found in local directory.
+        /// </summary>
+        public static string GifskiExecutableNotFoundInLocalDirectory {
+            get {
+                return ResourceManager.GetString("GifskiExecutableNotFoundInLocalDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gifski has been added to your path environment variable.
+        /// </summary>
+        public static string GifskiHasBeenAddedToYourPathEnvironmentVariable {
+            get {
+                return ResourceManager.GetString("GifskiHasBeenAddedToYourPathEnvironmentVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gifski installed successfully.
+        /// </summary>
+        public static string GifskiInstalledSuccessfully {
+            get {
+                return ResourceManager.GetString("GifskiInstalledSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gifski Is Already Available On Your System At.
+        /// </summary>
+        public static string GifskiIsAlreadyAvailableOnYourSystemAt {
+            get {
+                return ResourceManager.GetString("GifskiIsAlreadyAvailableOnYourSystemAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gifski not found, please go to setting and install it by automatically or manually, without gifski, converting to formats such as gif is not supported..
+        /// </summary>
+        public static string GifskiNotFoundContent {
+            get {
+                return ResourceManager.GetString("GifskiNotFoundContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gifski not working.
+        /// </summary>
+        public static string GifskiNotWorking {
+            get {
+                return ResourceManager.GetString("GifskiNotWorking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gifski Path.
+        /// </summary>
+        public static string GifskiPath {
+            get {
+                return ResourceManager.GetString("GifskiPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Got it.
+        /// </summary>
+        public static string GotIt {
+            get {
+                return ResourceManager.GetString("GotIt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Height.
         /// </summary>
         public static string Height {
@@ -600,11 +1087,65 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Installation failed.
+        /// </summary>
+        public static string InstallationFailed {
+            get {
+                return ResourceManager.GetString("InstallationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installed successfully.
+        /// </summary>
+        public static string InstalledSuccessfully {
+            get {
+                return ResourceManager.GetString("InstalledSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install FFmpeg Automatically.
+        /// </summary>
+        public static string InstallFFmpegAutomatically {
+            get {
+                return ResourceManager.GetString("InstallFFmpegAutomatically", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install Gifski Automatically.
+        /// </summary>
+        public static string InstallGifskiAutomatically {
+            get {
+                return ResourceManager.GetString("InstallGifskiAutomatically", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installing.
+        /// </summary>
+        public static string Installing {
+            get {
+                return ResourceManager.GetString("Installing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid lottie file.
         /// </summary>
         public static string InvalidLottieFile {
             get {
                 return ResourceManager.GetString("InvalidLottieFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid or not working.
+        /// </summary>
+        public static string InvalidOrNotWorking {
+            get {
+                return ResourceManager.GetString("InvalidOrNotWorking", resourceCulture);
             }
         }
         
@@ -708,11 +1249,47 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Local FFmpeg directory does not exist.
+        /// </summary>
+        public static string LocalFfmpegDirectoryDoesNotExist {
+            get {
+                return ResourceManager.GetString("LocalFfmpegDirectoryDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local gifski directory does not exist.
+        /// </summary>
+        public static string LocalGifskiDirectoryDoesNotExist {
+            get {
+                return ResourceManager.GetString("LocalGifskiDirectoryDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lottie JSON/TGS.
         /// </summary>
         public static string LottieJsonTgs {
             get {
                 return ResourceManager.GetString("LottieJsonTgs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage Ffmpeg In System Path For Other Applications.
+        /// </summary>
+        public static string ManageFfmpegInSystemPathForOtherApplications {
+            get {
+                return ResourceManager.GetString("ManageFfmpegInSystemPathForOtherApplications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage Gifski in system PATH for other applications.
+        /// </summary>
+        public static string ManageGifskiInSystemPathForOtherApplications {
+            get {
+                return ResourceManager.GetString("ManageGifskiInSystemPathForOtherApplications", resourceCulture);
             }
         }
         
@@ -740,6 +1317,60 @@ namespace LottieViewConvert.Lang {
         public static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Ffmpeg Entries Found In Shell Profiles To Remove.
+        /// </summary>
+        public static string NoFfmpegEntriesFoundInShellProfilesToRemove {
+            get {
+                return ResourceManager.GetString("NoFfmpegEntriesFoundInShellProfilesToRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No gifski entries found in shell profiles to remove.
+        /// </summary>
+        public static string NoGifskiEntriesFoundInShellProfilesToRemove {
+            get {
+                return ResourceManager.GetString("NoGifskiEntriesFoundInShellProfilesToRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No, Later.
+        /// </summary>
+        public static string NoLater {
+            get {
+                return ResourceManager.GetString("NoLater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not found.
+        /// </summary>
+        public static string Notfound {
+            get {
+                return ResourceManager.GetString("Notfound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No, Use System FFmpeg.
+        /// </summary>
+        public static string NoUseSystemFFmpeg {
+            get {
+                return ResourceManager.GetString("NoUseSystemFFmpeg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No, Use System gifski.
+        /// </summary>
+        public static string NoUseSystemGifski {
+            get {
+                return ResourceManager.GetString("NoUseSystemGifski", resourceCulture);
             }
         }
         
@@ -803,6 +1434,15 @@ namespace LottieViewConvert.Lang {
         public static string OutputPath {
             get {
                 return ResourceManager.GetString("OutputPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path to gifski executable (auto-detected if empty).
+        /// </summary>
+        public static string PathToGifskiExecutableAutoDetectedIfEmpty {
+            get {
+                return ResourceManager.GetString("PathToGifskiExecutableAutoDetectedIfEmpty", resourceCulture);
             }
         }
         
@@ -888,11 +1528,29 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Readme.
+        /// </summary>
+        public static string Readme {
+            get {
+                return ResourceManager.GetString("Readme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ready to download....
         /// </summary>
         public static string ReadyToDownloadDotDotDot {
             get {
                 return ResourceManager.GetString("ReadyToDownloadDotDotDot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove from PATH.
+        /// </summary>
+        public static string RemoveFromPath {
+            get {
+                return ResourceManager.GetString("RemoveFromPath", resourceCulture);
             }
         }
         
@@ -996,6 +1654,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select FFmpeg Executable.
+        /// </summary>
+        public static string SelectFFmpegExecutable {
+            get {
+                return ResourceManager.GetString("SelectFFmpegExecutable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Lottie JSON/TGS.
         /// </summary>
         public static string SelectLottieFile {
@@ -1091,6 +1758,15 @@ namespace LottieViewConvert.Lang {
         public static string StartingDownload {
             get {
                 return ResourceManager.GetString("StartingDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
             }
         }
         
@@ -1311,11 +1987,29 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable To Access User Environment Registry Key.
+        /// </summary>
+        public static string UnableToAccessUserEnvironmentRegistryKey {
+            get {
+                return ResourceManager.GetString("UnableToAccessUserEnvironmentRegistryKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to unselected.
         /// </summary>
         public static string UnSelected {
             get {
                 return ResourceManager.GetString("UnSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsupported platform, try install it manually..
+        /// </summary>
+        public static string UnsupportedPlatform {
+            get {
+                return ResourceManager.GetString("UnsupportedPlatform", resourceCulture);
             }
         }
         
@@ -1334,6 +2028,15 @@ namespace LottieViewConvert.Lang {
         public static string WaitingForDownloadStickerSetDotDotDot {
             get {
                 return ResourceManager.GetString("WaitingForDownloadStickerSetDotDotDot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string Warning {
+            get {
+                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
         
@@ -1379,6 +2082,33 @@ namespace LottieViewConvert.Lang {
         public static string Yes {
             get {
                 return ResourceManager.GetString("Yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes, Install &amp; Add to PATH.
+        /// </summary>
+        public static string YesInstallAndAddToPATH {
+            get {
+                return ResourceManager.GetString("YesInstallAndAddToPATH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes, Restart.
+        /// </summary>
+        public static string YesRestart {
+            get {
+                return ResourceManager.GetString("YesRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You should restart the application to apply changes.
+        /// </summary>
+        public static string YouShouldRestartTheApplicationToApplyChanges {
+            get {
+                return ResourceManager.GetString("YouShouldRestartTheApplicationToApplyChanges", resourceCulture);
             }
         }
     }

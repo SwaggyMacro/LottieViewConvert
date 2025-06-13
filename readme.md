@@ -35,6 +35,15 @@ Install the following dependencies and ensure they are available in your PATH:
 
 #### Installation Instructions
 
+Now, You can `install it automatically` by the application, or you can install it manually.
+Just run the application, and go to `Settings` -> `Dependencies`, and it will install gifski and ffmpeg automatically.
+
+`gifski` automatically install `only support x64 platforms`, if you are using ARM64 platform, please install it manually.
+
+`Only tested on Windows now.`
+
+For **manual installation**, follow the instructions below based on your operating system:
+
 **Windows:**
 ```bash
 # Install via Chocolatey

@@ -11,7 +11,7 @@
         <Copyright>SwaggyMacro</Copyright>
         <RepositoryUrl>https://github.com/SwaggyMacro/LottieViewConvert</RepositoryUrl>
     </PropertyGroup>
-
+    
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />
     </ItemGroup>

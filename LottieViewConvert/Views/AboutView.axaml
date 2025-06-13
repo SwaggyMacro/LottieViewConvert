@@ -76,7 +76,7 @@
           
           <TextBlock Text="{x:Static lang:Resources.AppName}" Classes="AppTitle"/>
           <TextBlock Text="{x:Static lang:Resources.AppSubTitle}" Classes="Subtitle"/>
-          <TextBlock Text="Version 1.1.0" Classes="VersionText" 
+          <TextBlock Text="Version 1.1.1" Classes="VersionText" 
                      HorizontalAlignment="Center"/>
         </StackPanel>
 
@@ -104,6 +104,7 @@
             <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine6}"/>
             <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine7}"/>
             <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine8}"/>
+            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine9}"/>
           </StackPanel>
         </StackPanel>
 
