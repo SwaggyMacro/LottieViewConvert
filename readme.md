@@ -108,8 +108,9 @@ ffmpeg -version
 ### 🖼️ Screenshots
 ---
 ![Main Interface](./images/main_interface.png)
+![Tgs Download](./images/tgs_download.gif)
 
-https://github.com/user-attachments/assets/1ab300ad-a36b-406c-881a-08b3b5ad423d
+https://github.com/user-attachments/assets/604e787f-e663-4a6d-afa3-c4818e07439c
 
 ### 📋 Supported Formats
 ---

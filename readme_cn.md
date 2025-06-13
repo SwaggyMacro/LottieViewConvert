@@ -106,8 +106,9 @@ ffmpeg -version
 ### 🖼️ 界面截图
 ---
 ![主界面](./images/main_interface.png)
+![电报贴纸下载](./images/tgs_download.gif)
 
-https://github.com/user-attachments/assets/1ab300ad-a36b-406c-881a-08b3b5ad423d
+https://github.com/user-attachments/assets/604e787f-e663-4a6d-afa3-c4818e07439c
 
 ### 📋 支持的格式
 ---
