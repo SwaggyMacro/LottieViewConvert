@@ -15,19 +15,19 @@ jobs:
         include:
           - os: ubuntu-latest
             runtime: linux-x64
-            archive_name: LottieViewConvert.Linux.X64.zip
+            archive_name: LottieViewConvert.Linux.X64
           - os: ubuntu-latest
             runtime: linux-arm64
-            archive_name: LottieViewConvert.Linux.Arm64.zip
+            archive_name: LottieViewConvert.Linux.Arm64
           - os: macos-latest
             runtime: osx-x64
-            archive_name: LottieViewConvert.MacOS.X64.zip
+            archive_name: LottieViewConvert.MacOS.X64
           - os: macos-latest
             runtime: osx-arm64
-            archive_name: LottieViewConvert.MacOS.Arm64.zip
+            archive_name: LottieViewConvert.MacOS.Arm64
           - os: windows-latest
             runtime: win-x64
-            archive_name: LottieViewConvert.Win.X64.zip
+            archive_name: LottieViewConvert.Win.X64
     name: Build on ${{ matrix.os }} (${{ matrix.runtime }})
     steps:
       - name: Checkout code
@@ -57,32 +57,24 @@ jobs:
             -p:PublishSingleFile=true \
             -o ./artifacts/${{ matrix.runtime }}
 
-      - name: Create archive for ${{ matrix.runtime }}
-        shell: bash
-        run: |
-          cd artifacts/${{ matrix.runtime }}
-          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            # On Windows, use PowerShell to create zip
-            powershell -Command "Compress-Archive -Path * -DestinationPath ../${{ matrix.archive_name }}"
-          else
-            # On Linux/macOS, use zip command
-            zip -r ../${{ matrix.archive_name }} *
-          fi
+      - name: Create ZIP archive
+        uses: thedoctor0/zip-release@0.7.5
+        with:
+          type: 'zip'
+          filename: '${{ matrix.archive_name }}.zip'
+          path: './artifacts/${{ matrix.runtime }}'
 
-      - name: Upload build artifact (compressed archive)
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.runtime }}-archive
-          path: artifacts/${{ matrix.archive_name }}
+          path: ${{ matrix.archive_name }}.zip
 
   release:
     needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
