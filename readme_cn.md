@@ -141,7 +141,6 @@ ffmpeg -version
 4. **输入贴纸包 URL**：粘贴 Telegram 贴纸包 URL（例如，`https://t.me/addstickers/Godzi`）
 5. **下载**：点击“下载”以获取贴纸包中的所有贴纸
 
-   
 
 #### 3. 高级功能
 - **质量预设**：自定义质量设置
@@ -152,9 +151,9 @@ ffmpeg -version
 
 ### 🖼️ 界面截图
 ---
-![主界面](./images/main_interface.png)
+![主界面](./images/main_interface_cn.png)
 
-https://github.com/user-attachments/assets/b8afe3d4-2301-4c07-9735-6a5238922f6b
+https://github.com/user-attachments/assets/bb3291db-fbae-4850-ae57-4898a68ea074
 
 ### 📋 支持的格式
 ---
