@@ -367,7 +367,7 @@
         <value>Please setting telegram bot token</value>
     </data>
     <data name="AppSubTitle" xml:space="preserve">
-        <value>Lottie &amp;amp; TGS Animation Converter</value>
+        <value>Lottie &amp; TGS Animation Converter</value>
     </data>
     <data name="AppDesc" xml:space="preserve">
         <value>A powerful cross-platform desktop application for converting TGS (Telegram Stickers) and Lottie animations to various formats including GIF, WebP, APNG, MP4, MKV, AVIF, and WebM. Support download sticker set from Telegram(name or link) directly. Built with modern technologies for optimal performance and user experience.</value>

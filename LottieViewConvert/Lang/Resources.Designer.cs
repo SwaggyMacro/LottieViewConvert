@@ -114,7 +114,7 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lottie &amp;amp; TGS Animation Converter.
+        ///   Looks up a localized string similar to Lottie &amp; TGS Animation Converter.
         /// </summary>
         public static string AppSubTitle {
             get {
