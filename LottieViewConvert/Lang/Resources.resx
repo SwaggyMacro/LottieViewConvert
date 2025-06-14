@@ -702,4 +702,13 @@
     <data name="Readme" xml:space="preserve">
         <value>Readme</value>
     </data>
+    <data name="ExportCurrentFrame" xml:space="preserve">
+        <value>Export current frame</value>
+    </data>
+    <data name="Export" xml:space="preserve">
+        <value>Export</value>
+    </data>
+    <data name="ExportSucceeded" xml:space="preserve">
+        <value>Export succeeded</value>
+    </data>
 </root>

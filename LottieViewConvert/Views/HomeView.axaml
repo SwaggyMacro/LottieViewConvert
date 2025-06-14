@@ -30,17 +30,57 @@
                     </suki:GroupBox.Header>
                     <Grid RowDefinitions="*, Auto, Auto, Auto, Auto">
                         <!-- Lottie Preview -->
-                        <lottie:LottieView Grid.Row="0"
-                                           Source="{Binding LottieSource}"
-                                           Fps="{Binding Fps}"
-                                           Speed="{Binding PlaySpeed}"
-                                           IsVisible="{Binding LottieSource, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                        <Grid RowDefinitions="*, Auto, Auto" ColumnDefinitions="*,Auto"
+                              IsVisible="{Binding LottieSource, Converter={x:Static ObjectConverters.IsNotNull}}">
+                            <lottie:LottieView Grid.Row="0"
+                                               Grid.Column="0"
+                                               Grid.ColumnSpan="2"
+                                               x:Name="LottieView"
+                                               Source="{Binding LottieSource}"
+                                               Fps="{Binding Fps}"
+                                               CurrentFrame="{Binding LottieViewCurrentFrame}"
+                                               TotalFrames="{Binding LottieViewTotalFrames, Mode=OneWayToSource}"
+                                               IsPaused="{Binding IsLottieViewPaused}"
+                                               Speed="{Binding PlaySpeed}" />
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Classes="Basic" Width="60" Height="60"
+                                        Command="{Binding LottieViewPauseResumeCommand}">
+                                    <Button.Content>
+                                        <avalonia:MaterialIcon Width="30" Height="30"
+                                                               Kind="{Binding IsLottieViewPaused, Converter={x:Static converters:BoolToIconConverters.Animation}}" />
+                                    </Button.Content>
+                                </Button>
+                            
+                                <Button Classes="Basic" Width="60" Height="60"
+                                        Command="{Binding ExportCurrentFrameCommand}"
+                                        ToolTip.Tip="{x:Static lang:Resources.ExportCurrentFrame}">
+                                    <Button.Content>
+                                        <avalonia:MaterialIcon Width="30" Height="30"
+                                                               Kind="ContentSave" />
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+
+                            <Slider Grid.Row="2" Grid.Column="0"
+                                    Maximum="{Binding ElementName=LottieView, Path=TotalFrames}"
+                                    Value="{Binding LottieViewCurrentFrame}" Cursor="Hand"
+                                    x:Name="Slider">
+                            </Slider>
+                            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                                <TextBlock Width="30" VerticalAlignment="Center"
+                                           Text="{Binding LottieViewCurrentFrame}" />
+                                <TextBlock Width="10" VerticalAlignment="Center" Text="/" />
+                                <TextBlock Width="30" VerticalAlignment="Center" Text="{Binding LottieViewTotalFrames}" />
+                            </StackPanel>
+
+                        </Grid>
                         <Border Grid.Row="0"
                                 Background="Transparent"
                                 IsVisible="{Binding LottieSource, Converter={x:Static ObjectConverters.IsNull}}">
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"
                                         Opacity="0.6">
-                                <avalonia:MaterialIcon Kind="CloudUpload" 
+                                <avalonia:MaterialIcon Kind="CloudUpload"
                                                        Width="64" Height="64"
                                                        HorizontalAlignment="Center" />
                                 <TextBlock Text="{x:Static lang:Resources.DragLottieFileHere}"
@@ -50,75 +90,87 @@
                         </Border>
                         <!-- Source File Choose -->
                         <Grid Grid.Row="1" ColumnDefinitions="Auto, *, Auto" Margin="0 5 0 0">
-                            <TextBlock Width="80" VerticalAlignment="Center" Text="{x:Static lang:Resources.SourceFile}"/>
+                            <TextBlock Width="80" VerticalAlignment="Center"
+                                       Text="{x:Static lang:Resources.SourceFile}" />
                             <TextBox Grid.Column="1" Margin="5 0 0 0"
                                      Text="{Binding LottieSource, Mode=TwoWay}"
-                                     IsReadOnly="True"/>
-                            <Button Grid.Column="2" Cursor="Hand" Classes="Basic Rounded" Click="SourceBrowseButton_Click"
+                                     IsReadOnly="True" />
+                            <Button Grid.Column="2" Cursor="Hand" Classes="Basic Rounded"
+                                    Click="SourceBrowseButton_Click"
                                     Margin="5 0 0 0">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
-                                    <avalonia:MaterialIcon Kind="OpenInBrowser"/>
-                                    <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.BrowseDotDotDot}"/>
+                                    <avalonia:MaterialIcon Kind="OpenInBrowser" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="{x:Static lang:Resources.BrowseDotDotDot}" />
                                 </StackPanel>
                             </Button>
                         </Grid>
                         <!-- Output Folder Choose -->
                         <Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto" Margin="0 5 0 0">
-                            <TextBlock Width="80" VerticalAlignment="Center" Text="{x:Static lang:Resources.OutputPath}"/>
+                            <TextBlock Width="80" VerticalAlignment="Center"
+                                       Text="{x:Static lang:Resources.OutputPath}" />
                             <TextBox Grid.Column="1" Margin="5 0 0 0"
                                      Text="{Binding OutputFolder, Mode=TwoWay}"
-                                     IsReadOnly="True"/>
-                            <Button Grid.Column="2"  Cursor="Hand" Classes="Basic Rounded" Click="OutputBrowseButton_Click"
+                                     IsReadOnly="True" />
+                            <Button Grid.Column="2" Cursor="Hand" Classes="Basic Rounded"
+                                    Click="OutputBrowseButton_Click"
                                     Margin="5 0 0 0">
                                 <StackPanel Orientation="Horizontal" Spacing="5">
-                                    <avalonia:MaterialIcon Kind="FolderOpen"/>
-                                    <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.BrowseDotDotDot}"/>
+                                    <avalonia:MaterialIcon Kind="FolderOpen" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="{x:Static lang:Resources.BrowseDotDotDot}" />
                                 </StackPanel>
                             </Button>
                         </Grid>
                         <!-- Parameter -->
-                        <Grid Grid.Row="3" Margin="0 10 0 0" ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">
+                        <Grid Grid.Row="3" Margin="0 10 0 0" ColumnDefinitions="*,*"
+                              RowDefinitions="Auto,Auto,Auto,Auto">
                             <!-- Format and Quality -->
-                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-                                <TextBlock Width="75" VerticalAlignment="Center" Text="{x:Static lang:Resources.Format}"/>
+                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Spacing="5"
+                                        VerticalAlignment="Center">
+                                <TextBlock Width="75" VerticalAlignment="Center"
+                                           Text="{x:Static lang:Resources.Format}" />
                                 <ComboBox Width="120"
                                           ItemsSource="{Binding AvailableFormats}"
-                                          SelectedItem="{Binding SelectedFormat, Mode=TwoWay}"/>
+                                          SelectedItem="{Binding SelectedFormat, Mode=TwoWay}" />
                             </StackPanel>
                             <StackPanel Grid.Row="0" Grid.Column="1" Margin="0 5 0 0"
                                         Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-                                <TextBlock Width="60"  VerticalAlignment="Center" Text="{x:Static lang:Resources.Quality}"/>
+                                <TextBlock Width="60" VerticalAlignment="Center"
+                                           Text="{x:Static lang:Resources.Quality}" />
                                 <Slider Minimum="1" Maximum="100" Width="180"
-                                        Value="{Binding Quality, Mode=TwoWay}"/>
+                                        Value="{Binding Quality, Mode=TwoWay}" />
                                 <NumericUpDown Minimum="1" Maximum="100" Width="80"
-                                               Value="{Binding Quality, Mode=TwoWay}"/>
+                                               Value="{Binding Quality, Mode=TwoWay}" />
                             </StackPanel>
                             <!-- Resolution and Fps -->
-                            <StackPanel Grid.Row="1" Grid.Column="0"  Margin="0 5 0 0"
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0 5 0 0"
                                         Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-                                <TextBlock Width="80"  VerticalAlignment="Center" Text="{x:Static lang:Resources.Width}"/>
+                                <TextBlock Width="80" VerticalAlignment="Center" Text="{x:Static lang:Resources.Width}" />
                                 <NumericUpDown Minimum="0.1" Maximum="10000" Increment="0.1" Width="100"
-                                               Value="{Binding Width, Mode=TwoWay}"/>
-                                <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.Height}" Margin="10 0 0 0"/>
+                                               Value="{Binding Width, Mode=TwoWay}" />
+                                <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.Height}"
+                                           Margin="10 0 0 0" />
                                 <NumericUpDown Minimum="0.1" Maximum="10000" Increment="0.1" Width="100"
-                                               Value="{Binding Height, Mode=TwoWay}"/>
+                                               Value="{Binding Height, Mode=TwoWay}" />
                             </StackPanel>
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="0 5 0 0"
                                         Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-                                <TextBlock Width="60" VerticalAlignment="Center" Text="{x:Static lang:Resources.Fps}"/>
+                                <TextBlock Width="60" VerticalAlignment="Center" Text="{x:Static lang:Resources.Fps}" />
                                 <Slider Minimum="1" Maximum="240" Width="180"
-                                        Value="{Binding Fps, Mode=TwoWay}"/>
+                                        Value="{Binding Fps, Mode=TwoWay}" />
                                 <NumericUpDown Minimum="1" Maximum="240" Width="80"
-                                               Value="{Binding Fps, Mode=TwoWay}"/>
+                                               Value="{Binding Fps, Mode=TwoWay}" />
                             </StackPanel>
                             <!-- PlaySpeed and convert -->
                             <StackPanel Grid.Row="2" Grid.Column="0" Margin="0 5 0 0"
                                         Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
-                                <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.PlaySpeed}"/>
+                                <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.PlaySpeed}" />
                                 <Slider Minimum="0.1" Maximum="10.0" Width="180" SmallChange="0.1" LargeChange="1"
-                                        Value="{Binding PlaySpeed, Mode=TwoWay}"/>
-                                <NumericUpDown Minimum="0.1" Maximum="10.0" Increment="0.1" FormatString="0.00" Width="100" suki:NumericUpDownExtensions.Unit="×"
-                                               Value="{Binding PlaySpeed, Mode=TwoWay}"/>
+                                        Value="{Binding PlaySpeed, Mode=TwoWay}" />
+                                <NumericUpDown Minimum="0.1" Maximum="10.0" Increment="0.1" FormatString="0.00"
+                                               Width="100" suki:NumericUpDownExtensions.Unit="×"
+                                               Value="{Binding PlaySpeed, Mode=TwoWay}" />
                             </StackPanel>
                             <StackPanel Grid.Row="2" Grid.Column="1" Margin="0 5 0 0"
                                         Orientation="Horizontal" HorizontalAlignment="Right">
@@ -131,7 +183,8 @@
                                 </Button>
                             </StackPanel>
                         </Grid>
-                        <ProgressBar Grid.Row="4" Margin="0 5 0 0" ShowProgressText="True" Value="{Binding ProgressValue}"/>
+                        <ProgressBar Grid.Row="4" Margin="0 5 0 0" ShowProgressText="True"
+                                     Value="{Binding ProgressValue}" />
                     </Grid>
                 </suki:GroupBox>
             </suki:GlassCard>
@@ -144,7 +197,7 @@
                             <TextBlock Text="{x:Static lang:Resources.WhatIsThis}" />
                         </StackPanel>
                     </suki:GroupBox.Header>
-                    <TextBlock TextWrapping="Wrap" Text="{x:Static lang:Resources.WhatIsThisDescription}"/>
+                    <TextBlock TextWrapping="Wrap" Text="{x:Static lang:Resources.WhatIsThisDescription}" />
                 </suki:GroupBox>
             </suki:GlassCard>
             <suki:GlassCard Grid.Column="1" Grid.Row="1">
@@ -156,15 +209,16 @@
                         </StackPanel>
                     </suki:GroupBox.Header>
                     <StackPanel>
-                        <TextBlock TextWrapping="Wrap" Text="{x:Static lang:Resources.HowToUseDescription}"/>
-                            
-                            <Button Margin="0 10 0 0" Classes="Basic" Command="{Binding OpenReadmeCommand}">
-                                <Button.Content>
-                                    <StackPanel Orientation="Horizontal" Spacing="5">
-                                        <avalonia:MaterialIcon Kind="Link" />
-                                        <TextBlock Text="{x:Static lang:Resources.Readme}"/></StackPanel>
-                                </Button.Content>
-                            </Button>
+                        <TextBlock TextWrapping="Wrap" Text="{x:Static lang:Resources.HowToUseDescription}" />
+
+                        <Button Margin="0 10 0 0" Classes="Basic" Command="{Binding OpenReadmeCommand}">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal" Spacing="5">
+                                    <avalonia:MaterialIcon Kind="Link" />
+                                    <TextBlock Text="{x:Static lang:Resources.Readme}" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
                     </StackPanel>
                 </suki:GroupBox>
             </suki:GlassCard>

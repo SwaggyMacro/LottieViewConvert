@@ -13,13 +13,15 @@ internal class Renderer : CompositionCustomVisualHandler
     private StretchDirection _dir = StretchDirection.Both;
     private int _loops;
     private bool _playing;
+    private bool _paused;
     private TimeSpan _elapsed;
     private TimeSpan? _lastHost;
     private int _doneCount;
     private readonly object _lock = new();
     private double _speed = 1.0;
-    private int _fps;
+    private int _fps = 30;
     private TimeSpan? _lastRenderTime;
+    private Action<int, double>? _frameUpdateCallback;
 
     public override void OnMessage(object msg)
     {
@@ -34,8 +36,9 @@ internal class Renderer : CompositionCustomVisualHandler
                     _dir = m.Direction!.Value;
                     _loops = m.RepeatCount!.Value;
                     _speed = m.Speed ?? 1.0;
-                    _fps = m.Fps ?? 0;
+                    _fps = m.Fps ?? 30;
                     _playing = true;
+                    _paused = false; // Default to playing when started
                     _elapsed = TimeSpan.Zero;
                     _doneCount = 0;
                     _lastHost = null;
@@ -45,9 +48,38 @@ internal class Renderer : CompositionCustomVisualHandler
 
                 case AnimationAction.Stop:
                     _playing = false;
+                    _paused = false;
                     break;
+
+                case AnimationAction.Pause:
+                    _paused = true;
+                    break;
+
+                case AnimationAction.Resume:
+                    _paused = false;
+                    _lastHost = null; // Reset timing to avoid jumps
+                    if (_playing)
+                        RegisterForNextAnimationFrameUpdate();
+                    break;
+
+                case AnimationAction.Seek:
+                    if (m.SeekTime.HasValue)
+                    {
+                        _elapsed = m.SeekTime.Value;
+                        // Reset loop count when seeking
+                        if (_clip != null)
+                        {
+                            _doneCount = (int)(_elapsed.TotalSeconds / _clip.Duration.TotalSeconds);
+                            _elapsed = TimeSpan.FromSeconds(_elapsed.TotalSeconds % _clip.Duration.TotalSeconds);
+                        }
+                        UpdateFrameCallback();
+                        Invalidate();
+                    }
+                    break;
+
                 case AnimationAction.Terminate:
                     _playing = false;
+                    _paused = false;
                     if (_clip != null)
                     {
                         _clip.Dispose();
@@ -67,13 +99,17 @@ internal class Renderer : CompositionCustomVisualHandler
                     if (m.RepeatCount.HasValue)
                         _loops = m.RepeatCount.Value;
                     break;
+
+                case AnimationAction.SetFrameUpdateCallback:
+                    _frameUpdateCallback = m.FrameUpdateCallback;
+                    break;
             }
         }
     }
 
     public override void OnAnimationFrameUpdate()
     {
-        if (!_playing) return;
+        if (!_playing || _paused) return;
 
         // fps limiting
         if (_fps > 0 && _lastRenderTime.HasValue)
@@ -98,25 +134,35 @@ internal class Renderer : CompositionCustomVisualHandler
         {
             if (_clip == null) return;
 
-            // time elapsed, * speed
-            if (_lastHost.HasValue)
+            // Only update elapsed time if not paused and playing
+            if (_playing && !_paused)
             {
-                var delta = CompositionNow - _lastHost.Value;
-                _elapsed += TimeSpan.FromTicks((long)(delta.Ticks * _speed));
-            }
-            _lastHost = CompositionNow;
-
-            // looping logic
-            var dur = _clip.Duration;
-            if (_elapsed > dur)
-            {
-                _elapsed -= dur;
-                _doneCount++;
-                if (_loops >= 0 && _doneCount >= _loops)
+                if (_lastHost.HasValue)
                 {
-                    _playing = false;
-                    _elapsed = dur;
+                    var delta = CompositionNow - _lastHost.Value;
+                    _elapsed += TimeSpan.FromTicks((long)(delta.Ticks * _speed));
                 }
+                _lastHost = CompositionNow;
+
+                // looping logic
+                var dur = _clip.Duration;
+                if (_elapsed > dur)
+                {
+                    _elapsed -= dur;
+                    _doneCount++;
+                    if (_loops >= 0 && _doneCount >= _loops)
+                    {
+                        _playing = false;
+                        _elapsed = dur;
+                    }
+                }
+
+                UpdateFrameCallback();
+            }
+            else if (_paused)
+            {
+                // Reset timing when paused to avoid jumps when resumed
+                _lastHost = null;
             }
 
             if (context.TryGetFeature(typeof(ISkiaSharpApiLeaseFeature)) is not ISkiaSharpApiLeaseFeature leaseFeature)
@@ -138,5 +184,17 @@ internal class Renderer : CompositionCustomVisualHandler
             _clip.Render(canvas, new SKRect(0, 0, _clip.Size.Width, _clip.Size.Height));
             canvas.Restore();
         }
+    }
+
+    private void UpdateFrameCallback()
+    {
+        if (_frameUpdateCallback == null || _clip == null)
+            return;
+
+        var position = _clip.Duration.TotalSeconds > 0 ? _elapsed.TotalSeconds / _clip.Duration.TotalSeconds : 0;
+        var totalFrames = (int)Math.Ceiling(_clip.Duration.TotalSeconds * _fps);
+        var currentFrame = totalFrames > 1 ? (int)(position * (totalFrames - 1)) : 0;
+        
+        _frameUpdateCallback.Invoke(currentFrame, position);
     }
 }

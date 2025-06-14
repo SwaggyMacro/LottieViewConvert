@@ -1,9 +1,11 @@
 using System.IO.Compression;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Rendering.Composition;
+using Avalonia.Threading;
 using SkiaSharp;
 using SkiaSharp.Skottie;
 
@@ -35,16 +37,51 @@ namespace Lottie
                 nameof(Speed), 1.0);
 
         public static readonly StyledProperty<int> FpsProperty =
-            AvaloniaProperty.Register<LottieView, int>(nameof(Fps));
+            AvaloniaProperty.Register<LottieView, int>(nameof(Fps), 30);
 
         public static readonly StyledProperty<IBrush> BackgroundProperty =
             AvaloniaProperty.Register<LottieView, IBrush>(
                 nameof(Background), Brushes.Transparent);
 
+        public static readonly StyledProperty<bool> IsPausedProperty =
+            AvaloniaProperty.Register<LottieView, bool>(nameof(IsPaused));
+
+        public static readonly StyledProperty<double> PositionProperty =
+            AvaloniaProperty.Register<LottieView, double>(nameof(Position), coerce: CoercePosition);
+
+        // 改为 DirectProperty 以支持双向绑定
+        public static readonly DirectProperty<LottieView, int> CurrentFrameProperty =
+            AvaloniaProperty.RegisterDirect<LottieView, int>(
+                nameof(CurrentFrame),
+                o => o.CurrentFrame,
+                (o, v) => o.CurrentFrame = v,
+                defaultBindingMode: BindingMode.TwoWay);
+
+        public static readonly DirectProperty<LottieView, TimeSpan> DurationProperty =
+            AvaloniaProperty.RegisterDirect<LottieView, TimeSpan>(
+                nameof(Duration),
+                o => o.Duration);
+
+        public static readonly DirectProperty<LottieView, int> TotalFramesProperty =
+            AvaloniaProperty.RegisterDirect<LottieView, int>(
+                nameof(TotalFrames),
+                o => o.TotalFrames);
+
+        // 添加属性用于控制是否允许外部控制
+        public static readonly StyledProperty<bool> AllowExternalControlProperty =
+            AvaloniaProperty.Register<LottieView, bool>(nameof(AllowExternalControl), true);
+
         private readonly Uri _contextBase;
         private CompositionCustomVisual? _childVisual;
         private Animation? _current;
         private int _targetLoops;
+        private TimeSpan _duration;
+        private int _totalFrames;
+        private int _currentFrame;
+        private bool _isUpdatingInternally;
+        private bool _isPausedSetExternally;
+        private DateTime _lastExternalFrameUpdate = DateTime.MinValue;
+        private readonly object _updateLock = new object();
 
         public string? Source
         {
@@ -88,8 +125,99 @@ namespace Lottie
             set => SetValue(BackgroundProperty, value);
         }
 
+        public bool IsPaused
+        {
+            get => GetValue(IsPausedProperty);
+            set => SetValue(IsPausedProperty, value);
+        }
+
+        public double Position
+        {
+            get => GetValue(PositionProperty);
+            set => SetValue(PositionProperty, value);
+        }
+
+        public bool AllowExternalControl
+        {
+            get => GetValue(AllowExternalControlProperty);
+            set => SetValue(AllowExternalControlProperty, value);
+        }
+
+        public int CurrentFrame
+        {
+            get => _currentFrame;
+            set
+            {
+                var coercedValue = CoerceCurrentFrameValue(value);
+                if (_currentFrame != coercedValue)
+                {
+                    var oldValue = _currentFrame;
+                    
+                    lock (_updateLock)
+                    {
+                        _currentFrame = coercedValue;
+                        
+                        // 检测外部设置
+                        if (!_isUpdatingInternally && AllowExternalControl)
+                        {
+                            _lastExternalFrameUpdate = DateTime.UtcNow;
+                            
+                            // 处理外部设置的帧跳转
+                            if (_totalFrames > 0)
+                            {
+                                var position = _totalFrames > 1 ? (double)coercedValue / (_totalFrames - 1) : 0;
+                                var seekTime = TimeSpan.FromSeconds(_duration.TotalSeconds * position);
+                                _childVisual?.SendHandlerMessage(
+                                    new Message(AnimationAction.Seek, SeekTime: seekTime));
+                            }
+                        }
+                    }
+                    
+                    RaisePropertyChanged(CurrentFrameProperty, oldValue, coercedValue);
+                }
+            }
+        }
+
+        public TimeSpan Duration
+        {
+            get => _duration;
+            private set => SetAndRaise(DurationProperty, ref _duration, value);
+        }
+
+        public int TotalFrames
+        {
+            get => _totalFrames;
+            private set => SetAndRaise(TotalFramesProperty, ref _totalFrames, value);
+        }
+
         public LottieView(Uri baseUri) => _contextBase = baseUri;
         public LottieView(IServiceProvider sp) => _contextBase = sp.GetContextBaseUri();
+
+        private static double CoercePosition(AvaloniaObject instance, double value)
+        {
+            return Math.Clamp(value, 0.0, 1.0);
+        }
+
+        private int CoerceCurrentFrameValue(int value)
+        {
+            if (_totalFrames > 0)
+            {
+                return Math.Clamp(value, 0, _totalFrames - 1);
+            }
+            return Math.Max(0, value);
+        }
+
+        /// <summary>
+        /// 检查是否在外部控制模式下
+        /// 如果最近的外部更新是在 500ms 内，则认为仍在外部控制中
+        /// </summary>
+        private bool IsInExternalControlMode()
+        {
+            if (!AllowExternalControl) return false;
+            
+            var timeSinceLastUpdate = DateTime.UtcNow - _lastExternalFrameUpdate;
+            return timeSinceLastUpdate.TotalMilliseconds < 500; // 500ms 缓冲时间
+        }
 
         public override void Render(DrawingContext context)
         {
@@ -125,6 +253,7 @@ namespace Lottie
                 return;
 
             _childVisual = comp.CreateCustomVisual(new Renderer());
+            _childVisual.SendHandlerMessage(new Message(AnimationAction.SetFrameUpdateCallback, FrameUpdateCallback: OnFrameUpdated));
             ElementComposition.SetElementChildVisual(this, _childVisual);
             LayoutUpdated += HandleLayout;
 
@@ -148,9 +277,48 @@ namespace Lottie
             _current = null;
         }
 
+        private void OnFrameUpdated(int currentFrame, double position)
+        {
+            if (_isUpdatingInternally)
+                return;
+
+            // 确保在UI线程执行
+            if (!Dispatcher.UIThread.CheckAccess())
+            {
+                Dispatcher.UIThread.Post(() => OnFrameUpdated(currentFrame, position));
+                return;
+            }
+
+            // 检查是否在外部控制模式
+            bool inExternalControl = IsInExternalControlMode();
+
+            _isUpdatingInternally = true;
+            try
+            {
+                // 总是更新 CurrentFrame，除非正在外部控制中
+                if (!inExternalControl)
+                {
+                    CurrentFrame = currentFrame;
+                }
+                
+                // 更新 Position（如果没有被外部控制或者没有暂停控制）
+                if (!_isPausedSetExternally && Math.Abs(Position - position) > 0.001)
+                {
+                    SetCurrentValue(PositionProperty, position);
+                }
+            }
+            finally
+            {
+                _isUpdatingInternally = false;
+            }
+        }
+
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
+
+            if (_isUpdatingInternally)
+                return;
 
             if (change.Property == SourceProperty)
             {
@@ -175,6 +343,29 @@ namespace Lottie
             {
                 _childVisual?.SendHandlerMessage(
                     new Message(AnimationAction.Refresh, Fps: Fps));
+            }
+            else if (change.Property == IsPausedProperty)
+            {
+                // Detect external setting
+                if (!_isUpdatingInternally)
+                {
+                    _isPausedSetExternally = true;
+                }
+
+                var isPaused = change.GetNewValue<bool>();
+                _childVisual?.SendHandlerMessage(
+                    new Message(isPaused ? AnimationAction.Pause : AnimationAction.Resume));
+            }
+            else if (change.Property == PositionProperty)
+            {
+                // Only process if explicitly set externally
+                if (!_isUpdatingInternally)
+                {
+                    var position = change.GetNewValue<double>();
+                    var seekTime = TimeSpan.FromSeconds(_duration.TotalSeconds * position);
+                    _childVisual?.SendHandlerMessage(
+                        new Message(AnimationAction.Seek, SeekTime: seekTime));
+                }
             }
         }
 
@@ -201,6 +392,23 @@ namespace Lottie
             // terminate the current animation if any, and apply the new source
             _childVisual?.SendHandlerMessage(new Message(AnimationAction.Terminate));
             _current = null;
+            Duration = TimeSpan.Zero;
+            TotalFrames = 0;
+            
+            // Reset control states
+            _isPausedSetExternally = false;
+            _lastExternalFrameUpdate = DateTime.MinValue;
+            
+            _isUpdatingInternally = true;
+            try
+            {
+                SetCurrentValue(PositionProperty, 0.0);
+                CurrentFrame = 0;
+            }
+            finally
+            {
+                _isUpdatingInternally = false;
+            }
 
             if (string.IsNullOrEmpty(path))
                 return;
@@ -212,10 +420,17 @@ namespace Lottie
                     return;
 
                 _current = anim;
+                Duration = anim.Duration;
+                
+                // Calculate total frames based on duration and fps
+                var fps = Fps > 0 ? Fps : 30; // Default to 30 fps if not specified
+                TotalFrames = (int)Math.Ceiling(anim.Duration.TotalSeconds * fps);
+                
                 InvalidateMeasure();
                 _childVisual!.Size = new System.Numerics.Vector2(
                     (float)Bounds.Width, (float)Bounds.Height);
 
+                // Start animation - it will auto-play
                 _childVisual.SendHandlerMessage(
                     new Message(
                         AnimationAction.Start,
@@ -224,7 +439,13 @@ namespace Lottie
                         Direction: Direction,
                         RepeatCount: Loops,
                         Speed: Speed,
-                        Fps: Fps));
+                        Fps: fps));
+
+                // Apply the current pause state if set
+                if (_isPausedSetExternally && IsPaused)
+                {
+                    _childVisual.SendHandlerMessage(new Message(AnimationAction.Pause));
+                }
             }
             catch
             {

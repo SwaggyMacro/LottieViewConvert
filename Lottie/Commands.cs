@@ -6,5 +6,9 @@ internal enum AnimationAction
     Stop,
     Refresh,
     RefreshLoops,
-    Terminate
+    Terminate,
+    Pause,
+    Resume,
+    Seek,
+    SetFrameUpdateCallback
 }

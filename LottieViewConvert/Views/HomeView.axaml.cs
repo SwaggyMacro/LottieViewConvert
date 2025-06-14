@@ -1,4 +1,8 @@
+using System;
+using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
@@ -10,11 +14,35 @@ namespace LottieViewConvert.Views;
 
 public partial class HomeView : UserControl
 {
+    private bool _lastLottieViewPauseState;
     public HomeView()
     {
         InitializeComponent();
         SetupDragDrop();
+        Slider.AddHandler(PointerPressedEvent, OnSliderPointerPressed, RoutingStrategies.Tunnel);
+        Slider.AddHandler(PointerReleasedEvent, OnSliderPointerReleased, RoutingStrategies.Tunnel);
     }
+
+    private void OnSliderPointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        if (DataContext is HomeViewModel vm)
+        {
+            // Restore the pause state of the LottieView
+            vm.IsLottieViewPaused = _lastLottieViewPauseState;
+        }
+        // Reset the last pause state
+        _lastLottieViewPauseState = false;
+    }
+
+    private void OnSliderPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        _lastLottieViewPauseState = LottieView.IsPaused;
+        if (DataContext is HomeViewModel vm)
+        {
+            vm.IsLottieViewPaused = true; 
+        }
+    }
+
 
     private void SetupDragDrop()
     {
@@ -95,5 +123,5 @@ public partial class HomeView : UserControl
         DropZone.Classes.Remove("drag-over");
         e.Handled = true;
     }
-
+    
 }

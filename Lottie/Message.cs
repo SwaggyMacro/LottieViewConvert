@@ -3,7 +3,6 @@ using SkiaSharp.Skottie;
 
 namespace Lottie;
 
-
 internal readonly record struct Message(
     AnimationAction Action,
     Animation? Clip = null,
@@ -11,4 +10,6 @@ internal readonly record struct Message(
     StretchDirection? Direction = null,
     int? RepeatCount = null,
     double? Speed = null,
-    int? Fps = null);
+    int? Fps = null,
+    TimeSpan? SeekTime = null,
+    Action<int, double>? FrameUpdateCallback = null);

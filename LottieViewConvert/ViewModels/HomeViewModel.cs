@@ -9,7 +9,9 @@ using Avalonia.Controls.Notifications;
 using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using Lottie;
 using LottieViewConvert.Helper.Convert;
+using LottieViewConvert.Helper.LogHelper;
 using LottieViewConvert.Lang;
 using LottieViewConvert.Models;
 using LottieViewConvert.Utils;
@@ -26,6 +28,33 @@ namespace LottieViewConvert.ViewModels
         {
             get => _lottieSource;
             set => this.RaiseAndSetIfChanged(ref _lottieSource, value);
+        }
+
+        private bool _isLottieViewPaused;
+
+        public bool IsLottieViewPaused
+        {
+            get => _isLottieViewPaused;
+            set => this.RaiseAndSetIfChanged(ref _isLottieViewPaused, value);
+        }
+
+        private int _lottieViewCurrentFrame;
+
+        public int LottieViewCurrentFrame
+        {
+            get => _lottieViewCurrentFrame;
+            set => this.RaiseAndSetIfChanged(ref _lottieViewCurrentFrame, value);
+        }
+
+        private int _lottieViewTotalFrames;
+
+        public int LottieViewTotalFrames
+        {
+            get => _lottieViewTotalFrames;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _lottieViewTotalFrames, value);
+            }
         }
 
         private string _statusText = Resources.DragHereToConvert;
@@ -134,6 +163,8 @@ namespace LottieViewConvert.ViewModels
 
         public ReactiveCommand<Unit, Unit> ConvertCommand { get; }
         public ReactiveCommand<Unit, Unit> OpenReadmeCommand { get; }
+        public ReactiveCommand<Unit, Unit> LottieViewPauseResumeCommand { get; }
+        public ReactiveCommand<Unit, Unit> ExportCurrentFrameCommand { get; }
 
         public HomeViewModel()
             : base(Resources.Home, Material.Icons.MaterialIconKind.Home)
@@ -169,6 +200,41 @@ namespace LottieViewConvert.ViewModels
                         .Dismiss().After(TimeSpan.FromSeconds(3)).Queue();
                 }
             });
+
+            LottieViewPauseResumeCommand = ReactiveCommand.Create(() => { IsLottieViewPaused = !IsLottieViewPaused; });
+            ExportCurrentFrameCommand = ReactiveCommand.Create(ExportCurrentFrame);
+        }
+        
+        private void ExportCurrentFrame()
+        {
+            try
+            {
+                PngExporter.ExportSingleFrame(
+                    LottieSource!,
+                    Path.Combine(OutputFolder!, $"{Path.GetFileNameWithoutExtension(LottieSource)}_frame{LottieViewCurrentFrame}.png"),
+                    LottieViewCurrentFrame,
+                    Fps,
+                    PlaySpeed,
+                    Width,
+                    Height
+                );
+                Global.GetToastManager().CreateToast()
+                    .WithTitle(Resources.Export)
+                    .WithContent(Resources.ExportSucceeded)
+                    .OfType(NotificationType.Success)
+                    .Dismiss().ByClicking()
+                    .Dismiss().After(TimeSpan.FromSeconds(3))
+                    .WithActionButton(Resources.OpenOutputFolder, _ => OpenOutputFolder(), true).Queue();
+            } catch (Exception ex)
+            {
+                Logger.Error($"Failed to export current frame: {ex.Message}");
+                Global.GetToastManager().CreateToast()
+                    .WithTitle(Resources.Error)
+                    .WithContent($"{Resources.Failed}: {ex.Message}")
+                    .OfType(NotificationType.Error)
+                    .Dismiss().ByClicking()
+                    .Dismiss().After(TimeSpan.FromSeconds(3)).Queue();
+            }
         }
 
         private async Task DoConvertAsync()
@@ -188,7 +254,7 @@ namespace LottieViewConvert.ViewModels
 
                     var converter = new Converter(
                         LottieSource,
-                        OutputFolder,
+                        OutputFolder!,
                         new ConversionOptions
                         {
                             PlaySpeed = PlaySpeed,

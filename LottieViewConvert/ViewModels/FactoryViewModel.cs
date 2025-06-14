@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
@@ -10,12 +11,12 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Notifications;
 using Avalonia.Threading;
+using Lottie;
 using LottieViewConvert.Helper.Convert;
 using LottieViewConvert.Helper.LogHelper;
 using LottieViewConvert.Lang;
 using LottieViewConvert.Models;
 using ReactiveUI;
-using SukiUI.Controls;
 using SukiUI.Toasts;
 
 namespace LottieViewConvert.ViewModels;
@@ -140,6 +141,33 @@ public class FactoryViewModel : Page
         get => _statusText;
         set => this.RaiseAndSetIfChanged(ref _statusText, value);
     }
+    
+    private bool _isLottieViewPaused;
+
+    public bool IsLottieViewPaused
+    {
+        get => _isLottieViewPaused;
+        set => this.RaiseAndSetIfChanged(ref _isLottieViewPaused, value);
+    }
+
+    private int _lottieViewCurrentFrame;
+
+    public int LottieViewCurrentFrame
+    {
+        get => _lottieViewCurrentFrame;
+        set => this.RaiseAndSetIfChanged(ref _lottieViewCurrentFrame, value);
+    }
+
+    private int _lottieViewTotalFrames;
+
+    public int LottieViewTotalFrames
+    {
+        get => _lottieViewTotalFrames;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _lottieViewTotalFrames, value);
+        }
+    }
 
     // Commands
     public ReactiveCommand<Unit, Unit> BrowseSourceFolderCommand { get; }
@@ -148,6 +176,8 @@ public class FactoryViewModel : Page
     public ReactiveCommand<Unit, Unit> StopConversionCommand { get; }
     public ReactiveCommand<Unit, Unit> NextCommand { get; }
     public ReactiveCommand<Unit, Unit> PreviousCommand { get; }
+    public ReactiveCommand<Unit, Unit> LottieViewPauseResumeCommand { get; }
+    public ReactiveCommand<Unit, Unit> ExportCurrentFrameCommand { get; }
 
     private CancellationTokenSource? _cancellationTokenSource;
 
@@ -182,7 +212,37 @@ public class FactoryViewModel : Page
         if (string.IsNullOrWhiteSpace(folder) || !Directory.Exists(folder))
             return;
         SelectedFolder = folder;
-        await Task.Run(() => PopulateFilesFromFolder(folder));
+    
+        await Task.Run(() =>
+        {
+            var files = Directory.GetFiles(folder)
+                .Where(f => f.EndsWith(".json", StringComparison.OrdinalIgnoreCase)
+                            || f.EndsWith(".tgs", StringComparison.OrdinalIgnoreCase))
+                .OrderBy(Path.GetFileName)
+                .Select(file => new FileItemModel
+                {
+                    FileName = Path.GetFileName(file),
+                    FullPath = file,
+                    Status = ConversionStatus.Pending,
+                    Progress = 0
+                })
+                .ToList();
+            
+            Dispatcher.UIThread.Post(() =>
+            {
+                FileItems.Clear();
+                foreach (var fileItem in files)
+                {
+                    FileItems.Add(fileItem);
+                }
+
+                if (FileItems.Any())
+                    SelectedFileItem = FileItems.First();
+            
+                IsFileListVisible = FileItems.Count > 0;
+                GenerateOutputFolder();
+            });
+        });
     }
     
     [Obsolete("Obsolete")]
@@ -324,7 +384,7 @@ public class FactoryViewModel : Page
 
             var converter = new Converter(
                 fileItem.FullPath,
-                OutputFolder,
+                OutputFolder!,
                 new ConversionOptions
                 {
                     PlaySpeed = Speed,
@@ -417,6 +477,10 @@ public class FactoryViewModel : Page
         StopConversionCommand = ReactiveCommand.Create(OnStopConversion);
         NextCommand = ReactiveCommand.Create(OnNext);
         PreviousCommand = ReactiveCommand.Create(OnPrevious);
+        LottieViewPauseResumeCommand = ReactiveCommand.Create(() => { IsLottieViewPaused = !IsLottieViewPaused; });
+        ExportCurrentFrameCommand = ReactiveCommand.Create(ExportCurrentFrame, 
+            this.WhenAnyValue(vm => vm.SelectedFilePath, path => !string.IsNullOrWhiteSpace(path) && File.Exists(path))
+                .CombineLatest(this.WhenAnyValue(vm => vm.LottieViewCurrentFrame), (hasFile, frame) => hasFile && frame >= 0));
     }
     
     private void GenerateOutputFolder()
@@ -425,5 +489,37 @@ public class FactoryViewModel : Page
             return;
         var folderName = Path.GetFileName(SelectedFolder);
         OutputFolder = Path.Combine(SelectedFolder, $"{folderName}_output");
+    }
+    
+    private void ExportCurrentFrame()
+    {
+        try
+        {
+            PngExporter.ExportSingleFrame(
+                SelectedFilePath,
+                Path.Combine(OutputFolder!, $"{Path.GetFileNameWithoutExtension(SelectedFilePath)}_frame{LottieViewCurrentFrame}.png"),
+                LottieViewCurrentFrame,
+                Fps,
+                Speed,
+                OutputWidth,
+                OutputHeight
+            );
+            Global.GetToastManager().CreateToast()
+                .WithTitle(Resources.Export)
+                .WithContent(Resources.ExportSucceeded)
+                .OfType(NotificationType.Success)
+                .Dismiss().ByClicking()
+                .Dismiss().After(TimeSpan.FromSeconds(3))
+                .WithActionButton(Resources.OpenOutputFolder, _ => OpenOutputFolder(), true).Queue();
+        } catch (Exception ex)
+        {
+            Logger.Error($"Failed to export current frame: {ex.Message}");
+            Global.GetToastManager().CreateToast()
+                .WithTitle(Resources.Error)
+                .WithContent($"{Resources.Failed}: {ex.Message}")
+                .OfType(NotificationType.Error)
+                .Dismiss().ByClicking()
+                .Dismiss().After(TimeSpan.FromSeconds(3)).Queue();
+        }
     }
 }

@@ -28,26 +28,56 @@
                         <Button Grid.Column="0" BorderThickness="0" Command="{Binding PreviousCommand}">
                             <avalonia:MaterialIcon Kind="SkipPrevious" Width="24" Height="24" Margin="5" />
                         </Button>
-                        <lottie:LottieView Grid.Column="1"
-                                           Source="{Binding SelectedFilePath}"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Fps="{Binding Fps}"
-                                           Speed="{Binding Speed}"
-                                           MinWidth="256" MinHeight="256" />
+                        <Grid Grid.Column="1" RowDefinitions="*, Auto, Auto" ColumnDefinitions="*,Auto">
+                            <lottie:LottieView
+                                Grid.ColumnSpan="2"
+                                x:Name="LottieView"
+                                Source="{Binding SelectedFilePath}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Fps="{Binding Fps}"
+                                Speed="{Binding Speed}"
+                                MinWidth="256" MinHeight="256"
+                                CurrentFrame="{Binding LottieViewCurrentFrame}"
+                                TotalFrames="{Binding LottieViewTotalFrames, Mode=OneWayToSource}"
+                                IsPaused="{Binding IsLottieViewPaused}" />
+                            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Classes="Basic" Width="60" Height="60"
+                                        Command="{Binding LottieViewPauseResumeCommand}">
+                                    <Button.Content>
+                                        <avalonia:MaterialIcon Width="30" Height="30"
+                                                               Kind="{Binding IsLottieViewPaused, Converter={x:Static converters:BoolToIconConverters.Animation}}" />
+                                    </Button.Content>
+                                </Button>
+                            
+                                <Button Classes="Basic" Width="60" Height="60"
+                                        Command="{Binding ExportCurrentFrameCommand}"
+                                        ToolTip.Tip="{x:Static lang:Resources.ExportCurrentFrame}">
+                                    <Button.Content>
+                                        <avalonia:MaterialIcon Width="30" Height="30"
+                                                               Kind="ContentSave" />
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+
+                            <Slider Grid.Row="2" Grid.Column="0"
+                                    Maximum="{Binding ElementName=LottieView, Path=TotalFrames}"
+                                    Value="{Binding LottieViewCurrentFrame}" Cursor="Hand"
+                                    x:Name="Slider">
+                            </Slider>
+                            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                                <TextBlock Width="30" VerticalAlignment="Center"
+                                           Text="{Binding LottieViewCurrentFrame}" />
+                                <TextBlock Width="10" VerticalAlignment="Center" Text="/" />
+                                <TextBlock Width="30" VerticalAlignment="Center" Text="{Binding LottieViewTotalFrames}" />
+                            </StackPanel>
+                        </Grid>
                         <Button Grid.Column="2" BorderThickness="0" Command="{Binding NextCommand}">
                             <avalonia:MaterialIcon Kind="SkipNext" Width="24" Height="24" Margin="5" />
                         </Button>
                     </Grid>
-                    <StackPanel Orientation="Horizontal" Spacing="10" Grid.Row="1" HorizontalAlignment="Center"
-                                Margin="0,10,0,0">
-                        <NumericUpDown Width="110" suki:NumericUpDownExtensions.Unit="FPS"
-                                       Minimum="1" Maximum="240"
-                                       Value="{Binding Fps, Mode=TwoWay}" />
-                        <NumericUpDown Width="110" suki:NumericUpDownExtensions.Unit="✖️"
-                                       Minimum="1" Maximum="10" Increment="1"
-                                       Value="{Binding Speed, Mode=TwoWay}" />
-                    </StackPanel>
+
+
                 </Grid>
             </suki:GlassCard>
 
@@ -167,8 +197,8 @@
                             <!-- Overall Progress -->
                             <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Spacing="5">
                                 <TextBlock Text="{Binding StatusText}" />
-                                <ProgressBar Value="{Binding OverallProgress}" 
-                                             Maximum="100" 
+                                <ProgressBar Value="{Binding OverallProgress}"
+                                             Maximum="100"
                                              ShowProgressText="True"
                                              IsVisible="{Binding IsConverting}" />
                             </StackPanel>
@@ -191,22 +221,22 @@
                             <DataTemplate x:DataType="models:FileItemModel">
                                 <Grid ColumnDefinitions="Auto, Auto, *" Margin="5">
                                     <!-- Circle Progress -->
-                                    <suki:CircleProgressBar Grid.Column="0" 
+                                    <suki:CircleProgressBar Grid.Column="0"
                                                             StrokeWidth="1"
                                                             Width="20" Height="20"
                                                             Value="{Binding Progress}"
                                                             IsVisible="{Binding Status, Converter={StaticResource StatusToVisibility}}"
                                                             Margin="5,0" />
-                                    
+
                                     <!-- Status -->
-                                    <TextBlock Grid.Column="0" 
+                                    <TextBlock Grid.Column="0"
                                                Text="{Binding Status, Converter={StaticResource StatusToSymbol}}"
                                                FontSize="16"
                                                VerticalAlignment="Center" />
                                     <TextBlock Grid.Column="2" Margin="5 0 0 0"
-                                               Text="{Binding FileName}" 
+                                               Text="{Binding FileName}"
                                                VerticalAlignment="Center" />
-                                    
+
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

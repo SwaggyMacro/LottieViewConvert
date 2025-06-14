@@ -546,6 +546,33 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string Export {
+            get {
+                return ResourceManager.GetString("Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export current frame.
+        /// </summary>
+        public static string ExportCurrentFrame {
+            get {
+                return ResourceManager.GetString("ExportCurrentFrame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export succeeded.
+        /// </summary>
+        public static string ExportSucceeded {
+            get {
+                return ResourceManager.GetString("ExportSucceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Factory.
         /// </summary>
         public static string Factory {

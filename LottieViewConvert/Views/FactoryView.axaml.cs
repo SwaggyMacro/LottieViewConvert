@@ -3,18 +3,43 @@ using System.IO;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using LottieViewConvert.ViewModels;
 
 namespace LottieViewConvert.Views;
 
 public partial class FactoryView : UserControl
 {
+    private bool _lastLottieViewPauseState;
+    
     [Obsolete("Obsolete")]
     public FactoryView()
     {
         InitializeComponent();
         SetupDragDrop();
+        Slider.AddHandler(PointerPressedEvent, OnSliderPointerPressed, RoutingStrategies.Tunnel);
+        Slider.AddHandler(PointerReleasedEvent, OnSliderPointerReleased, RoutingStrategies.Tunnel);
     }
+    private void OnSliderPointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        if (DataContext is HomeViewModel vm)
+        {
+            // Restore the pause state of the LottieView
+            vm.IsLottieViewPaused = _lastLottieViewPauseState;
+        }
+        // Reset the last pause state
+        _lastLottieViewPauseState = false;
+    }
+
+    private void OnSliderPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        _lastLottieViewPauseState = LottieView.IsPaused;
+        if (DataContext is HomeViewModel vm)
+        {
+            vm.IsLottieViewPaused = true; 
+        }
+    }
+    
 
     [Obsolete("Obsolete")]
     private void SetupDragDrop()
