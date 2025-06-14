@@ -15,19 +15,19 @@ jobs:
         include:
           - os: ubuntu-latest
             runtime: linux-x64
-            archive_name: LottieViewConvert.Linux.X64
+            archive_name: LottieViewConvert.Linux.X64.zip
           - os: ubuntu-latest
             runtime: linux-arm64
-            archive_name: LottieViewConvert.Linux.Arm64
+            archive_name: LottieViewConvert.Linux.Arm64.zip
           - os: macos-latest
             runtime: osx-x64
-            archive_name: LottieViewConvert.MacOS.X64
+            archive_name: LottieViewConvert.MacOS.X64.zip
           - os: macos-latest
             runtime: osx-arm64
-            archive_name: LottieViewConvert.MacOS.Arm64
+            archive_name: LottieViewConvert.MacOS.Arm64.zip
           - os: windows-latest
             runtime: win-x64
-            archive_name: LottieViewConvert.Win.X64
+            archive_name: LottieViewConvert.Win.X64.zip
     name: Build on ${{ matrix.os }} (${{ matrix.runtime }})
     steps:
       - name: Checkout code
@@ -55,30 +55,50 @@ jobs:
             -p:UseAppHost=true \
             -p:PublishReadyToRun=true \
             -p:PublishSingleFile=true \
-            -o ./artifacts/${{ matrix.runtime }}
+            -o ./publish/${{ matrix.runtime }}
 
-      - name: Create ZIP archive
-        uses: thedoctor0/zip-release@0.7.5
-        with:
-          type: 'zip'
-          filename: '${{ matrix.archive_name }}.zip'
-          path: './artifacts/${{ matrix.runtime }}'
+      - name: Create archive for ${{ matrix.runtime }}
+        shell: bash
+        run: |
+          cd publish/${{ matrix.runtime }}
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            # On Windows, use PowerShell to create zip
+            powershell -Command "Compress-Archive -Path * -DestinationPath ../../${{ matrix.archive_name }}"
+          else
+            # On Linux/macOS, use zip command
+            zip -r ../../${{ matrix.archive_name }} *
+          fi
 
-      - name: Upload build artifact
+      - name: Upload build artifact (compressed archive only)
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.runtime }}-archive
-          path: ${{ matrix.archive_name }}.zip
+          name: ${{ matrix.archive_name }}
+          path: ${{ matrix.archive_name }}
 
   release:
     needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
-      - name: Download build artifacts
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all build artifacts
         uses: actions/download-artifact@v4
         with:
-          path: artifacts
+          path: ./release-artifacts
+
+      - name: List downloaded files (for debugging)
+        run: |
+          echo "Downloaded artifacts structure:"
+          find ./release-artifacts -type f -name "*.zip" | sort
+
+      - name: Prepare release files
+        run: |
+          mkdir -p ./release-files
+          find ./release-artifacts -name "*.zip" -exec cp {} ./release-files/ \;
+          echo "Files to be released:"
+          ls -la ./release-files/
 
       - name: Create Release and Upload Archives
         uses: softprops/action-gh-release@v1
@@ -87,6 +107,6 @@ jobs:
           name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
-          files: artifacts/**/*.zip
+          files: ./release-files/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
