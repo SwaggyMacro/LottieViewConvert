@@ -62,14 +62,12 @@ jobs:
         run: |
           cd publish/${{ matrix.runtime }}
           if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            # On Windows, use PowerShell to create zip
             powershell -Command "Compress-Archive -Path * -DestinationPath ../../${{ matrix.archive_name }}"
           else
-            # On Linux/macOS, use zip command
             zip -r ../../${{ matrix.archive_name }} *
           fi
 
-      - name: Upload build artifact (compressed archive only)
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.archive_name }}
@@ -86,27 +84,28 @@ jobs:
       - name: Download all build artifacts
         uses: actions/download-artifact@v4
         with:
-          path: ./release-artifacts
-
-      - name: List downloaded files (for debugging)
-        run: |
-          echo "Downloaded artifacts structure:"
-          find ./release-artifacts -type f -name "*.zip" | sort
+          path: ./artifacts
 
       - name: Prepare release files
         run: |
           mkdir -p ./release-files
-          find ./release-artifacts -name "*.zip" -exec cp {} ./release-files/ \;
-          echo "Files to be released:"
+          find ./artifacts -name "*.zip" -exec cp {} ./release-files/ \;
+          echo "Files prepared for release:"
           ls -la ./release-files/
 
-      - name: Create Release and Upload Archives
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-          files: ./release-files/*.zip
+      - name: Create Release using GitHub CLI
+        run: |
+          # Create the release
+          gh release create ${{ github.ref_name }} \
+            --title "Release ${{ github.ref_name }}" \
+            --notes "Release ${{ github.ref_name }}" \
+            --draft=false \
+            --prerelease=false
+          
+          # Upload each file individually
+          for file in ./release-files/*.zip; do
+            echo "Uploading $file"
+            gh release upload ${{ github.ref_name }} "$file"
+          done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
