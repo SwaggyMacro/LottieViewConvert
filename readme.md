@@ -6,6 +6,9 @@
     <img src="https://img.shields.io/badge/version-1.1.0-yellow">
     <a href="//github.com/SwaggyMacro/LottieViewConvert"><img src="https://img.shields.io/badge/Repo-LottieViewConvert-green"></a>
 </p>
+<p align="center">
+    <img src="./images/main_interface.png" width="512px">
+</p>
 
 ## 🎬 Lottie & TGS Animation Converter
 
@@ -124,9 +127,8 @@ ffmpeg -version
 ### 🖼️ Screenshots
 ---
 ![Main Interface](./images/main_interface.png)
-![Tgs Download](./images/tgs_download.gif)
 
-https://github.com/user-attachments/assets/604e787f-e663-4a6d-afa3-c4818e07439c
+https://github.com/user-attachments/assets/b8afe3d4-2301-4c07-9735-6a5238922f6b
 
 ### 📋 Supported Formats
 ---
