@@ -80,26 +80,44 @@ ffmpeg -version
 ### 🚀 Getting Started
 ---
 
-#### 1. Download and Install
+#### 1. Download
 - Download the latest release from the [Releases](https://github.com/SwaggyMacro/LottieViewConvert/releases) page
 - Extract the archive to your preferred location
 - Run the application executable
 
 #### 2. Basic Usage
+##### Single Conversion
 1. **Launch the application**
-2. **Select source files**: Click "Add Files" or drag & drop TGS/Lottie files
+2. **Select source files**: Click "Browser" right the Home Page,  or drag & drop TGS/Lottie files
 3. **Choose output format**: Select from GIF, WebP, APNG, MP4, MKV, AVIF, WebM
 4. **Adjust settings** (optional):
     - Frame rate (1-240 fps, 100 fps for GIF only)
-    - Resolution (maintain aspect ratio)
+    - Resolution
     - Playback speed (0.1x - 10.0x)
     - Quality settings
 5. **Convert**: Click "Convert"
-6. **Output**: Converted files will be saved to your specified output directory
+
+##### Batch Conversion
+1. **Launch the application**
+2. **Go to the Factory Page**
+3. **Browser Tgs/Lottie Folder**: Select a folder containing TGS or Lottie files, or just drag & drop the folder.
+4. **Adjust settings like single conversion**
+5. **Convert**: Click "Start"
+
+##### Download Telegram Stickers (Support animated stickers and regular stickers)
+1. **Launch the application**
+2. **Set up the Telegram Bot Token**: Go to `Settings` -> `Telegram`, and enter your bot token.
+   - You can get a bot token by creating a bot with [BotFather](https://t.me/botfather) on Telegram.
+   - Set up the proxy if needed in `Settings` -> `Proxy`.
+3. **Go to the Tgs Download Page**
+4. **Enter the sticker set URL**: Paste the Telegram sticker set URL (e.g., `https://t.me/addstickers/Godzi`)
+5. **Download**: Click "Download" to fetch all stickers in the set
+
 
 #### 3. Advanced Features
 - **Quality Presets**: Choose from Low, Medium, High, or Custom quality settings
-- **Batch Operations**: Queue multiple conversions with different settings
+- **Batch Operations**: Queue multiple conversions
+- **Download Telegram Stickers Directly**: Fetch sticker sets from Telegram using the bot token
 - **Preview**: Real-time preview of animations before conversion
 - **Progress Tracking**: Monitor conversion progress for each file
 

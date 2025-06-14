@@ -85,20 +85,66 @@ ffmpeg -version
 - 运行应用程序可执行文件
 
 #### 2. 基本用法
+##### Single Conversion
+1. **Launch the application**
+2. **Select source files**: Click "Browser" right the Home Page,  or drag & drop TGS/Lottie files
+3. **Choose output format**: Select from GIF, WebP, APNG, MP4, MKV, AVIF, WebM
+4. **Adjust settings** (optional):
+   - Frame rate (1-240 fps, 100 fps for GIF only)
+   - Resolution
+   - Playback speed (0.1x - 10.0x)
+   - Quality settings
+5. **Convert**: Click "Convert"
+
+##### Batch Conversion
+1. **Launch the application**
+2. **Go to the Factory Page**
+3. **Browser Tgs/Lottie Folder**: Select a folder containing TGS or Lottie files, or just drag & drop the folder.
+4. **Adjust settings like single conversion**
+5. **Convert**: Click "Start"
+
+##### Download Telegram Stickers
+1. **Launch the application**
+2. **Set up the Telegram Bot Token**: Go to `Settings` -> `Telegram`, and enter your bot token.
+   - You can get a bot token by creating a bot with [BotFather](https://t.me/botfather) on Telegram.
+   - Set up the proxy if needed in `Settings` -> `Proxy`.
+3. **Go to the Tgs Download Page**
+4. **Enter the sticker set URL**: Paste the Telegram sticker set URL (e.g., `https://t.me/addstickers/Godzi`)
+5. **Download**: Click "Download" to fetch all stickers in the set
+
+##### 单个转换
 1. **启动应用程序**
-2. **选择源文件**：点击"添加文件"或拖拽 TGS/Lottie 文件
+2. **选择源文件**：点击主页右侧的“浏览”，或拖放 TGS/Lottie 文件
 3. **选择输出格式**：从 GIF、WebP、APNG、MP4、MKV、AVIF、WebM 中选择
 4. **调整设置**（可选）：
-    - 帧率（1-240 fps，GIF 仅限 100 fps）
-    - 分辨率（保持纵横比）
-    - 播放速度（0.1x - 10.0x）
-    - 质量设置
-5. **转换**：点击"转换"
-6. **输出**：转换后的文件将保存到您指定的输出目录
+   - 帧率（1-240 fps，GIF 仅限 100 fps）
+   - 分辨率
+   - 播放速度（0.1x - 10.0x）
+   - 质量设置
+5. **转换**：点击“转换”
+
+##### 批量转换
+1. **启动应用程序**
+2. **转到工厂页面**
+3. **浏览 Tgs/Lottie 文件夹**：选择包含 TGS 或 Lottie 文件的文件夹，或直接拖放文件夹。
+4. **像单个转换一样调整设置**
+5. **转换**：点击“开始”
+
+##### 下载 Telegram 贴纸 (支持普通贴纸包和动画贴纸包)
+1. **启动应用程序**
+2. **设置 Telegram Bot Token**：转到 `设置` -> `Telegram`，并输入您的机器人令牌。
+   - 您可以通过在 Telegram 上使用 [BotFather](https://t.me/botfather) 创建机器人来获取机器人令牌。
+   - 如有需要，请在 `设置` -> `代理` 中设置代理。
+3. **转到 Tgs 下载页面**
+4. **输入贴纸包 URL**：粘贴 Telegram 贴纸包 URL（例如，`https://t.me/addstickers/Godzi`）
+5. **下载**：点击“下载”以获取贴纸包中的所有贴纸
+
+   
 
 #### 3. 高级功能
-- **质量预设**：从低、中、高或自定义质量设置中选择
-- **批量操作**：使用不同设置排队多个转换任务
+- **质量预设**：自定义质量设置
+- **批量操作**：排队处理多个转换任务
+- **直接下载 Telegram 贴纸**：使用机器人令牌从 Telegram 下载贴纸包
 - **预览**：转换前实时预览动画
 - **进度跟踪**：监控每个文件的转换进度
 
