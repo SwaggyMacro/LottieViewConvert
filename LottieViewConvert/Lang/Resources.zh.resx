@@ -710,4 +710,10 @@
     <data name="ExportSucceeded" xml:space="preserve">
         <value>导出成功</value>
     </data>
+    <data name="ConcurrentTasks" xml:space="preserve">
+        <value>并行任务数量</value>
+    </data>
+    <data name="ConversionStopped" xml:space="preserve">
+        <value>转换已停止</value>
+    </data>
 </root>

@@ -128,7 +128,7 @@ public class Converter
         {
             ReportProgress(ConversionStage.Initializing, "Ready to start...", 0);
 
-            var tmpDir = Path.Combine(_outputDirectory, "tmp");
+            var tmpDir = Path.Combine(_outputDirectory, $"tmp_{format}_{Guid.NewGuid()}");
             Directory.CreateDirectory(tmpDir);
 
             var outputFileName = Path.GetFileNameWithoutExtension(_source);

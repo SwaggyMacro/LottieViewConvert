@@ -64,6 +64,13 @@ public class FactoryViewModel : Page
         get => _speed;
         set => this.RaiseAndSetIfChanged(ref _speed, value);
     }
+    
+    private int _concurrentTasks = 2;
+    public int ConcurrentTasks
+    {
+        get => _concurrentTasks;
+        set => this.RaiseAndSetIfChanged(ref _concurrentTasks, Math.Max(1, Math.Min(8, value)));
+    }
 
     // Conversion formats
     public ObservableCollection<string> ConversionFormats { get; } =
@@ -180,6 +187,8 @@ public class FactoryViewModel : Page
     public ReactiveCommand<Unit, Unit> ExportCurrentFrameCommand { get; }
 
     private CancellationTokenSource? _cancellationTokenSource;
+    private SemaphoreSlim? _semaphore;
+    private readonly object _progressLock = new object();
 
     private void PopulateFilesFromFolder(string folder)
     {
@@ -278,53 +287,98 @@ public class FactoryViewModel : Page
 
     private async Task StartConversionAsync()
     {
-        await Task.Run(async () =>
+        // back to the main thread, avoid blocking the UI
+        await Task.Yield();
+        
+        if (string.IsNullOrWhiteSpace(OutputFolder) || !FileItems.Any())
         {
-            if (string.IsNullOrWhiteSpace(OutputFolder) || !FileItems.Any())
-            {
-                StatusText = Resources.PleaseChooseOutputFolderAndFiles;
-                return;
-            }
+            StatusText = Resources.PleaseChooseOutputFolderAndFiles;
+            return;
+        }
 
-            IsConverting = true;
+        // set the conversion status
+        IsConverting = true;
+        StatusText = Resources.StartBatchConvert;
+        
+        // execute the conversion in a background task
+        _ = Task.Run(async () =>
+        {
             _cancellationTokenSource = new CancellationTokenSource();
+            _semaphore = new SemaphoreSlim(ConcurrentTasks, ConcurrentTasks);
 
             try
             {
-                Directory.CreateDirectory(OutputFolder);
+                // create output folder if it doesn't exist
+                await Task.Run(() => Directory.CreateDirectory(OutputFolder!));
                 
-                foreach (var item in FileItems)
+                // reset file items and overall progress
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    item.Status = ConversionStatus.Pending;
-                    item.Progress = 0;
-                }
+                    foreach (var item in FileItems)
+                    {
+                        item.Status = ConversionStatus.Pending;
+                        item.Progress = 0;
+                    }
+                    OverallProgress = 0;
+                });
 
                 var totalFiles = FileItems.Count;
                 var completedFiles = 0;
+                var successCount = 0;
+                var failedCount = 0;
+                
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    StatusText = $"{Resources.StartBatchConvert} {totalFiles} ({ConcurrentTasks} {Resources.ConcurrentTasks})";
+                });
 
-                StatusText =  $"{Resources.StartBatchConvert} {totalFiles}";
-
-                foreach (var fileItem in FileItems)
+                // create a copy of FileItems to avoid modifying the collection while iterating
+                var fileItemsCopy = await Dispatcher.UIThread.InvokeAsync(() => FileItems.ToArray());
+                
+                var conversionTasks = fileItemsCopy.Select(async fileItem =>
                 {
                     if (_cancellationTokenSource.Token.IsCancellationRequested)
-                        break;
+                        return;
 
-                    await ConvertSingleFileAsync(fileItem, _cancellationTokenSource.Token);
-
-                    completedFiles++;
-                    OverallProgress = (double)completedFiles / totalFiles * 100;
-                    StatusText = $"{completedFiles}/{totalFiles}";
-                }
-
-                if (!_cancellationTokenSource.Token.IsCancellationRequested)
-                {
-                    var successCount = FileItems.Count(f => f.Status == ConversionStatus.Success);
-                    var failedCount = FileItems.Count(f => f.Status == ConversionStatus.Failed);
-
-                    StatusText = $"{Resources.BatchConvertDone}! {Resources.Succeeded}: {successCount}, {Resources.Failed}: {failedCount}";
-                    
-                    Dispatcher.UIThread.Post(() =>
+                    await _semaphore.WaitAsync(_cancellationTokenSource.Token);
+                    try
                     {
+                        if (_cancellationTokenSource.Token.IsCancellationRequested)
+                            return;
+
+                        var success = await ConvertSingleFileAsync(fileItem, _cancellationTokenSource.Token);
+                        
+                        lock (_progressLock)
+                        {
+                            completedFiles++;
+                            if (success)
+                                successCount++;
+                            else
+                                failedCount++;
+
+                            var progress = (double)completedFiles / totalFiles * 100;
+                            
+                            Dispatcher.UIThread.Post(() =>
+                            {
+                                OverallProgress = progress;
+                                StatusText = $"{completedFiles}/{totalFiles} - {Resources.Succeeded}: {successCount}, {Resources.Failed}: {failedCount}";
+                            });
+                        }
+                    }
+                    finally
+                    {
+                        _semaphore.Release();
+                    }
+                }).ToArray();
+
+                await Task.WhenAll(conversionTasks);
+                
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    if (!_cancellationTokenSource.Token.IsCancellationRequested)
+                    {
+                        StatusText = $"{Resources.BatchConvertDone}! {Resources.Succeeded}: {successCount}, {Resources.Failed}: {failedCount}";
+                        
                         Global.GetToastManager().CreateToast()
                             .WithTitle(Resources.BatchConvertDone)
                             .WithContent(StatusText)
@@ -333,17 +387,37 @@ public class FactoryViewModel : Page
                             .Dismiss().ByClicking()
                             .Dismiss().After(TimeSpan.FromSeconds(5))
                             .Queue();
-                    });
-                }
+                    }
+                    else
+                    {
+                        StatusText = $"{Resources.ConversionStopped} - {Resources.Succeeded}: {successCount}, {Resources.Failed}: {failedCount}";
+                    }
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    StatusText = Resources.ConversionStopped;
+                });
             }
             catch (Exception ex)
             {
-                StatusText = $"{Resources.BatchConvertError}: {ex.Message}";
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    StatusText = $"{Resources.BatchConvertError}: {ex.Message}";
+                });
                 Logger.Error($"Batch conversion failed: {ex.Message}");
             }
             finally
             {
-                IsConverting = false;
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    IsConverting = false;
+                });
+                
+                _semaphore?.Dispose();
+                _semaphore = null;
                 _cancellationTokenSource?.Dispose();
                 _cancellationTokenSource = null;
             }
@@ -375,12 +449,15 @@ public class FactoryViewModel : Page
         }
     }
     
-    private async Task ConvertSingleFileAsync(FileItemModel fileItem, CancellationToken cancellationToken)
+    private async Task<bool> ConvertSingleFileAsync(FileItemModel fileItem, CancellationToken cancellationToken)
     {
         try
         {
-            fileItem.Status = ConversionStatus.Converting;
-            fileItem.Progress = 0;
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                fileItem.Status = ConversionStatus.Converting;
+                fileItem.Progress = 0;
+            });
 
             var converter = new Converter(
                 fileItem.FullPath,
@@ -428,19 +505,33 @@ public class FactoryViewModel : Page
                     success = await converter.ToMkv(null, cancellationToken);
                     break;
             }
+            
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                fileItem.Status = success ? ConversionStatus.Success : ConversionStatus.Failed;
+                fileItem.Progress = success ? 100 : 0;
+            });
 
-            fileItem.Status = success ? ConversionStatus.Success : ConversionStatus.Failed;
-            fileItem.Progress = success ? 100 : 0;
+            return success;
         }
         catch (OperationCanceledException)
         {
-            fileItem.Status = ConversionStatus.Failed;
-            fileItem.Progress = 0;
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                fileItem.Status = ConversionStatus.Failed;
+                fileItem.Progress = 0;
+            });
+            return false;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            fileItem.Status = ConversionStatus.Failed;
-            fileItem.Progress = 0;
+            Logger.Error($"Failed to convert {fileItem.FileName}: {ex.Message}");
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                fileItem.Status = ConversionStatus.Failed;
+                fileItem.Progress = 0;
+            });
+            return false;
         }
     }
 
@@ -505,18 +596,18 @@ public class FactoryViewModel : Page
                 OutputHeight
             );
             Global.GetToastManager().CreateToast()
-                .WithTitle(Resources.Export)
-                .WithContent(Resources.ExportSucceeded)
+                .WithTitle("导出")
+                .WithContent("导出成功")
                 .OfType(NotificationType.Success)
                 .Dismiss().ByClicking()
                 .Dismiss().After(TimeSpan.FromSeconds(3))
-                .WithActionButton(Resources.OpenOutputFolder, _ => OpenOutputFolder(), true).Queue();
+                .WithActionButton("打开输出文件夹", _ => OpenOutputFolder(), true).Queue();
         } catch (Exception ex)
         {
             Logger.Error($"Failed to export current frame: {ex.Message}");
             Global.GetToastManager().CreateToast()
-                .WithTitle(Resources.Error)
-                .WithContent($"{Resources.Failed}: {ex.Message}")
+                .WithTitle("错误")
+                .WithContent($"失败: {ex.Message}")
                 .OfType(NotificationType.Error)
                 .Dismiss().ByClicking()
                 .Dismiss().After(TimeSpan.FromSeconds(3)).Queue();

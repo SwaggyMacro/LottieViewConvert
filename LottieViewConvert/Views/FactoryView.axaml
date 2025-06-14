@@ -19,7 +19,7 @@
         <converters:StatusToVisibilityConverter x:Key="StatusToVisibility" />
     </UserControl.Resources>
     <Border Padding="20">
-        <Grid ColumnDefinitions="7*, 3*" RowDefinitions="5*, 5*">
+        <Grid ColumnDefinitions="7*, 3*" RowDefinitions="4.5*, 5.5*">
 
             <!-- Lottie Preview -->
             <suki:GlassCard Grid.Row="0" Grid.Column="0" IsInteractive="True">
@@ -126,8 +126,8 @@
                             </Button>
                         </Grid>
 
-                        <!-- Format、Quality、Width、Height、Fps、Speed -->
-                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="10">
+                        <!-- Format、Quality、Width、Height、Fps、Speed、ConcurrentTasks -->
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
                             <!-- Format -->
                             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Spacing="5">
                                 <TextBlock Width="60" VerticalAlignment="Center"
@@ -181,8 +181,20 @@
                                                Value="{Binding Speed, Mode=TwoWay}" />
                             </StackPanel>
 
+                            <!-- ConcurrentTasks：Slider + NumericUpDown -->
+                            <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Spacing="5"
+                                        VerticalAlignment="Center">
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="{x:Static lang:Resources.ConcurrentTasks}" />
+                                <Slider Minimum="1" Maximum="8" SmallChange="1" LargeChange="1" Width="150"
+                                        Value="{Binding ConcurrentTasks, Mode=TwoWay}" />
+                                <NumericUpDown Minimum="1" Maximum="8" Increment="1" Width="80"
+                                               Value="{Binding ConcurrentTasks, Mode=TwoWay}"
+                                               IsEnabled="{Binding !IsConverting}" />
+                            </StackPanel>
+
                             <!-- Convert Button -->
-                            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal"
+                            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal"
                                         HorizontalAlignment="Right">
                                 <Button Classes="Success Rounded"
                                         Content="{x:Static lang:Resources.Start}"
@@ -195,12 +207,11 @@
                             </StackPanel>
 
                             <!-- Overall Progress -->
-                            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Spacing="5">
+                            <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Spacing="5">
                                 <TextBlock Text="{Binding StatusText}" />
                                 <ProgressBar Value="{Binding OverallProgress}"
                                              Maximum="100"
-                                             ShowProgressText="True"
-                                             IsVisible="{Binding IsConverting}" />
+                                             ShowProgressText="True"/>
                             </StackPanel>
                         </Grid>
 

@@ -48,8 +48,7 @@ namespace Lottie
 
         public static readonly StyledProperty<double> PositionProperty =
             AvaloniaProperty.Register<LottieView, double>(nameof(Position), coerce: CoercePosition);
-
-        // 改为 DirectProperty 以支持双向绑定
+        
         public static readonly DirectProperty<LottieView, int> CurrentFrameProperty =
             AvaloniaProperty.RegisterDirect<LottieView, int>(
                 nameof(CurrentFrame),
@@ -67,7 +66,7 @@ namespace Lottie
                 nameof(TotalFrames),
                 o => o.TotalFrames);
 
-        // 添加属性用于控制是否允许外部控制
+        // allow the external control
         public static readonly StyledProperty<bool> AllowExternalControlProperty =
             AvaloniaProperty.Register<LottieView, bool>(nameof(AllowExternalControl), true);
 

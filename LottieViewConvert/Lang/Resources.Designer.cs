@@ -276,6 +276,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Concurrent Tasks.
+        /// </summary>
+        public static string ConcurrentTasks {
+            get {
+                return ResourceManager.GetString("ConcurrentTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configuration.
         /// </summary>
         public static string Configuration {
@@ -290,6 +299,15 @@ namespace LottieViewConvert.Lang {
         public static string ConversionComplete {
             get {
                 return ResourceManager.GetString("ConversionComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conversion stopped.
+        /// </summary>
+        public static string ConversionStopped {
+            get {
+                return ResourceManager.GetString("ConversionStopped", resourceCulture);
             }
         }
         

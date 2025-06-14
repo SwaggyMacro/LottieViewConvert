@@ -711,4 +711,10 @@
     <data name="ExportSucceeded" xml:space="preserve">
         <value>Export succeeded</value>
     </data>
+    <data name="ConcurrentTasks" xml:space="preserve">
+        <value>Concurrent Tasks</value>
+    </data>
+    <data name="ConversionStopped" xml:space="preserve">
+        <value>Conversion stopped</value>
+    </data>
 </root>
