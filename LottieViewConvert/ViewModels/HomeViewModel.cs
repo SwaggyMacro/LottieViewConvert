@@ -179,19 +179,11 @@ namespace LottieViewConvert.ViewModels
             {
                 try
                 {
-                    var uri = new Uri(
-                        "https://github.com/SwaggyMacro/LottieViewConvert/blob/master/readme.md#-getting-started");
-                    if (uri.IsAbsoluteUri && uri.IsFile)
-                    {
-                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                        {
-                            FileName = uri.LocalPath,
-                            UseShellExecute = true
-                        });
-                    }
+                    UrlUtil.OpenUrl("https://github.com/SwaggyMacro/LottieViewConvert/blob/master/readme.md#-getting-started");
                 }
                 catch (Exception ex)
                 {
+                    Logger.Error($"Failed to open README: {ex.Message}");
                     Global.GetToastManager().CreateToast()
                         .WithTitle(Resources.Error)
                         .WithContent($"{Resources.Failed}: {ex.Message}")

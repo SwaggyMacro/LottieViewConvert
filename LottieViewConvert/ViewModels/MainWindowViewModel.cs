@@ -13,6 +13,7 @@ using LottieViewConvert.Lang;
 using LottieViewConvert.Models;
 using LottieViewConvert.Services;
 using LottieViewConvert.Services.Dependency;
+using LottieViewConvert.Utils;
 using ReactiveUI;
 using SukiUI;
 using SukiUI.Dialogs;
@@ -129,22 +130,7 @@ public class MainWindowViewModel : ViewModelBase
         {
             try
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = url,
-                        UseShellExecute = true
-                    });
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                {
-                    Process.Start("open", url);
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    Process.Start("xdg-open", url);
-                }
+                UrlUtil.OpenUrl(url);
             }
             catch (Exception ex)
             {

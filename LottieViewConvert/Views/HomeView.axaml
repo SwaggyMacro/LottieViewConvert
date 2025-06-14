@@ -211,7 +211,7 @@
                     <StackPanel>
                         <TextBlock TextWrapping="Wrap" Text="{x:Static lang:Resources.HowToUseDescription}" />
 
-                        <Button Margin="0 10 0 0" Classes="Basic" Command="{Binding OpenReadmeCommand}">
+                        <Button Cursor="Hand" Margin="0 10 0 0" Classes="Basic" Command="{Binding OpenReadmeCommand}">
                             <Button.Content>
                                 <StackPanel Orientation="Horizontal" Spacing="5">
                                     <avalonia:MaterialIcon Kind="Link" />
