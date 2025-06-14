@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="./images/toast.gif" width="256px">
+    <img src="./images/toast.gif" width="128px">
 </p>
 <p align="center">
     <a href="readme.md"><img src="https://img.shields.io/badge/Lang-English-blue"></a>

@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="./images/toast.gif" width="256px">
+    <img src="./images/toast.gif" width="128px">
 </p>
 <p align="center">
     <a href="readme_cn.md"><img src="https://img.shields.io/badge/Lang-简体中文-red"></a>
