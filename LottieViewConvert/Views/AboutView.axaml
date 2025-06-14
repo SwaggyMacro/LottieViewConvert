@@ -76,7 +76,7 @@
           
           <TextBlock Text="{x:Static lang:Resources.AppName}" Classes="AppTitle"/>
           <TextBlock Text="{x:Static lang:Resources.AppSubTitle}" Classes="Subtitle"/>
-          <TextBlock Text="Version 1.1.1" Classes="VersionText" 
+          <TextBlock Text="Version 1.1.2" Classes="VersionText" 
                      HorizontalAlignment="Center"/>
         </StackPanel>
 
@@ -96,15 +96,16 @@
         <StackPanel Spacing="12">
           <TextBlock Classes="SectionTitle" Text="{x:Static lang:Resources.KeyFeatures}"/>
           <StackPanel Spacing="4">
-            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine1}"/>
-            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine2}"/>
-            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine3}"/>
-            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine4}"/>
-            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine5}"/>
-            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine6}"/>
-            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine7}"/>
-            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine8}"/>
-            <TextBlock Classes="FeatureText" Text="{x:Static lang:Resources.FeatureLine9}"/>
+            <TextBlock Classes="FeatureText" TextWrapping="Wrap" Text="{x:Static lang:Resources.FeatureLine1}"/>
+            <TextBlock Classes="FeatureText" TextWrapping="Wrap" Text="{x:Static lang:Resources.FeatureLine2}"/>
+            <TextBlock Classes="FeatureText" TextWrapping="Wrap" Text="{x:Static lang:Resources.FeatureLine3}"/>
+            <TextBlock Classes="FeatureText" TextWrapping="Wrap" Text="{x:Static lang:Resources.FeatureLine4}"/>
+            <TextBlock Classes="FeatureText" TextWrapping="Wrap" Text="{x:Static lang:Resources.FeatureLine5}"/>
+            <TextBlock Classes="FeatureText" TextWrapping="Wrap" Text="{x:Static lang:Resources.FeatureLine6}"/>
+            <TextBlock Classes="FeatureText" TextWrapping="Wrap" Text="{x:Static lang:Resources.FeatureLine7}"/>
+            <TextBlock Classes="FeatureText" TextWrapping="Wrap" Text="{x:Static lang:Resources.FeatureLine8}"/>
+            <TextBlock Classes="FeatureText" TextWrapping="Wrap" Text="{x:Static lang:Resources.FeatureLine9}"/>
+            <TextBlock Classes="FeatureText" TextWrapping="Wrap" Text="{x:Static lang:Resources.FeatureLine10}"/>
           </StackPanel>
         </StackPanel>
 

@@ -672,6 +672,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to • Concurrent tasks support for faster batch conversion.
+        /// </summary>
+        public static string FeatureLine10 {
+            get {
+                return ResourceManager.GetString("FeatureLine10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to • Batch Processing for multiple files.
         /// </summary>
         public static string FeatureLine2 {
@@ -735,7 +744,7 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Automatic Installation of Dependencies: Simplify setup by automating gifski and FFmpeg installation.
+        ///   Looks up a localized string similar to • Automatic Installation of Dependencies: Simplify setup by automating gifski and FFmpeg installation.
         /// </summary>
         public static string FeatureLine9 {
             get {

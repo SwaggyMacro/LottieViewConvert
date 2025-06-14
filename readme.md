@@ -21,10 +21,8 @@ A powerful cross-platform desktop application for converting TGS (Telegram Stick
 - **Cross-Platform**: Works on Windows, macOS, and Linux
 - **Modern UI**: Built with SukiUI for a sleek, responsive interface
 - **Automatic Installation of Dependencies**: Simplify setup by automating gifski and FFmpeg installation
+- **Concurrent tasks**: support for faster batch conversion
 ---
-
-### 📝 TODO List
-- Multi-Threading support for faster batch conversion
 
 ### 📝 System Requirements
 ---

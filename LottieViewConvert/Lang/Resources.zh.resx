@@ -687,7 +687,7 @@
         <value>gifski 安装成功</value>
     </data>
     <data name="FeatureLine9" xml:space="preserve">
-        <value>依赖项自动安装：通过自动化安装 gifski 和 FFmpeg 来简化设置</value>
+        <value>• 依赖项自动安装：通过自动化安装 gifski 和 FFmpeg 来简化设置</value>
     </data>
     <data name="FFmpegNotFoundContent" xml:space="preserve">
         <value>未检测到 FFmpeg，请去设置页面中配置 FFmpeg（支持自动安装），若未安装 FFmpeg，将无法进行 MKV、MP4、AVIF、APNG、WebM 等格式的转换操作。</value>
@@ -715,5 +715,8 @@
     </data>
     <data name="ConversionStopped" xml:space="preserve">
         <value>转换已停止</value>
+    </data>
+    <data name="FeatureLine10" xml:space="preserve">
+        <value>• 支持批量转换的并发任务</value>
     </data>
 </root>

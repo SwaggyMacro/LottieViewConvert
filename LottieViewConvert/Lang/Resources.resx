@@ -688,7 +688,7 @@
         <value>gifski installed successfully</value>
     </data>
     <data name="FeatureLine9" xml:space="preserve">
-        <value>Automatic Installation of Dependencies: Simplify setup by automating gifski and FFmpeg installation</value>
+        <value>• Automatic Installation of Dependencies: Simplify setup by automating gifski and FFmpeg installation</value>
     </data>
     <data name="FFmpegNotFoundContent" xml:space="preserve">
         <value>FFmpeg not found, please go to setting and install it by automatically or manually, without FFmpeg, converting to formats such as MKV, MP4, AVIF, APNG, and WebM is not supported.</value>
@@ -716,5 +716,8 @@
     </data>
     <data name="ConversionStopped" xml:space="preserve">
         <value>Conversion stopped</value>
+    </data>
+    <data name="FeatureLine10" xml:space="preserve">
+        <value>• Concurrent tasks support for faster batch conversion</value>
     </data>
 </root>
