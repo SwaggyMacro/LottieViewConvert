@@ -211,7 +211,7 @@
         <value>Stopping conversion...</value>
     </data>
     <data name="PleaseChooseOutputFolderAndFiles" xml:space="preserve">
-        <value>Please choose output folder andFiles</value>
+        <value>Please choose output folder and files</value>
     </data>
     <data name="StartBatchConvert" xml:space="preserve">
         <value>Start batch convert</value>

@@ -1510,7 +1510,7 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please choose output folder andFiles.
+        ///   Looks up a localized string similar to Please choose output folder and files.
         /// </summary>
         public static string PleaseChooseOutputFolderAndFiles {
             get {
