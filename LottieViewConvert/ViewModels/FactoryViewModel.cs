@@ -596,18 +596,18 @@ public class FactoryViewModel : Page
                 OutputHeight
             );
             Global.GetToastManager().CreateToast()
-                .WithTitle("导出")
-                .WithContent("导出成功")
+                .WithTitle(Resources.Export)
+                .WithContent(Resources.ExportSucceeded)
                 .OfType(NotificationType.Success)
                 .Dismiss().ByClicking()
                 .Dismiss().After(TimeSpan.FromSeconds(3))
-                .WithActionButton("打开输出文件夹", _ => OpenOutputFolder(), true).Queue();
+                .WithActionButton(Resources.OpenOutputFolder, _ => OpenOutputFolder(), true).Queue();
         } catch (Exception ex)
         {
             Logger.Error($"Failed to export current frame: {ex.Message}");
             Global.GetToastManager().CreateToast()
-                .WithTitle("错误")
-                .WithContent($"失败: {ex.Message}")
+                .WithTitle(Resources.Export)
+                .WithContent($"{Resources.Export} {Resources.Failed}: {ex.Message}")
                 .OfType(NotificationType.Error)
                 .Dismiss().ByClicking()
                 .Dismiss().After(TimeSpan.FromSeconds(3)).Queue();
