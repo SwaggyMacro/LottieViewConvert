@@ -98,22 +98,6 @@ ffmpeg -version
    - Quality settings
 5. **Convert**: Click "Convert"
 
-##### Batch Conversion
-1. **Launch the application**
-2. **Go to the Factory Page**
-3. **Browser Tgs/Lottie Folder**: Select a folder containing TGS or Lottie files, or just drag & drop the folder.
-4. **Adjust settings like single conversion**
-5. **Convert**: Click "Start"
-
-##### Download Telegram Stickers
-1. **Launch the application**
-2. **Set up the Telegram Bot Token**: Go to `Settings` -> `Telegram`, and enter your bot token.
-   - You can get a bot token by creating a bot with [BotFather](https://t.me/botfather) on Telegram.
-   - Set up the proxy if needed in `Settings` -> `Proxy`.
-3. **Go to the Tgs Download Page**
-4. **Enter the sticker set URL**: Paste the Telegram sticker set URL (e.g., `https://t.me/addstickers/Godzi`)
-5. **Download**: Click "Download" to fetch all stickers in the set
-
 ##### 单个转换
 1. **启动应用程序**
 2. **选择源文件**：点击主页右侧的“浏览”，或拖放 TGS/Lottie 文件
