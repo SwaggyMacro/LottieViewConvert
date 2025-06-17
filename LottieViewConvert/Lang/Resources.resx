@@ -385,7 +385,7 @@
         <value>• TGS &amp;amp; Lottie file support</value>
     </data>
     <data name="FeatureLine4" xml:space="preserve">
-        <value>• Parse &amp;amp; Download Sticker sets from Telegram (including .TGS, .JPG, .WebP, .PNG etc..)</value>
+        <value>• Parse &amp; Download Sticker/Emoji set from Telegram (including .TGS, .JPG, .WebP, .PNG etc..)</value>
     </data>
     <data name="FeatureLine5" xml:space="preserve">
         <value>• Customizable output settings</value>

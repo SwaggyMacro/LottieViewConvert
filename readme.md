@@ -18,8 +18,8 @@ A powerful cross-platform desktop application for converting TGS (Telegram Stick
 ---
 - **Multiple Format Support**: Convert to GIF, WebP, APNG, MP4, MKV, AVIF, WebM
 - **Batch Processing**: Convert multiple files simultaneously
-- **TGS & Lottie Support**: Handle both Telegram stickers (.tgs) and standard Lottie files (.json, .lottie)
-- **Telegram Integration**: Parse and download Telegram sticker sets directly
+- **TGS & Lottie Support**: Handle both Telegram sticker/emoji (.tgs) and standard Lottie files (.json, .lottie)
+- **Telegram Integration**: Parse and download Telegram sticker/emoji set directly
 - **Customizable Output**: Adjust playback speed, frame rate, resolution, and conversion quality
 - **Cross-Platform**: Works on Windows, macOS, and Linux
 - **Modern UI**: Built with SukiUI for a sleek, responsive interface
@@ -107,13 +107,13 @@ ffmpeg -version
 4. **Adjust settings like single conversion**
 5. **Convert**: Click "Start"
 
-##### Download Telegram Stickers (Support animated stickers and regular stickers)
+##### Download Telegram Sticker/Emoji (Including animated stickers and regular stickers)
 1. **Launch the application**
 2. **Set up the Telegram Bot Token**: Go to `Settings` -> `Telegram`, and enter your bot token.
    - You can get a bot token by creating a bot with [BotFather](https://t.me/botfather) on Telegram.
    - Set up the proxy if needed in `Settings` -> `Proxy`.
 3. **Go to the Tgs Download Page**
-4. **Enter the sticker set URL**: Paste the Telegram sticker set URL (e.g., `https://t.me/addstickers/Godzi`)
+4. **Enter the sticker/emoji set URL**: Paste the Telegram sticker/emoji set URL (e.g., `https://t.me/addstickers/Godzi`)
 5. **Download**: Click "Download" to fetch all stickers in the set
 
 

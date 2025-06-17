@@ -18,7 +18,7 @@
 - **多格式支持**：转换为 GIF、WebP、APNG、MP4、MKV、AVIF、WebM
 - **批量处理**：同时转换多个文件
 - **TGS & Lottie 支持**：处理 Telegram 贴纸文件（.tgs）和标准 Lottie 文件（.json、.lottie）
-- **Telegram 集成**：直接解析和下载 Telegram 贴纸包
+- **Telegram 集成**：直接解析和下载 Telegram 贴纸包/Emoji
 - **自定义输出**：调整播放速度、帧率、分辨率和转换质量
 - **跨平台**：支持 Windows、macOS 和 Linux
 - **现代化界面**：使用 SukiUI 构建，界面美观且响应迅速
@@ -112,7 +112,7 @@ ffmpeg -version
    - 您可以通过在 Telegram 上使用 [BotFather](https://t.me/botfather) 创建机器人来获取机器人令牌。
    - 如有需要，请在 `设置` -> `代理` 中设置代理。
 3. **转到 Tgs 下载页面**
-4. **输入贴纸包 URL**：粘贴 Telegram 贴纸包 URL（例如，`https://t.me/addstickers/Godzi`）
+4. **输入贴纸包 URL**：粘贴 Telegram 贴纸包/Emoji URL（例如，`https://t.me/addstickers/Godzi`）
 5. **下载**：点击“下载”以获取贴纸包中的所有贴纸
 
 

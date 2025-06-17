@@ -699,7 +699,7 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to • Parse &amp;amp; Download Sticker sets from Telegram (including .TGS, .JPG, .WebP, .PNG etc..).
+        ///   Looks up a localized string similar to • Parse &amp; Download Sticker/Emoji set from Telegram (including .TGS, .JPG, .WebP, .PNG etc..).
         /// </summary>
         public static string FeatureLine4 {
             get {

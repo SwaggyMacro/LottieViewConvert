@@ -384,7 +384,7 @@
         <value>• TGS &amp; Lottie 文件支持</value>
     </data>
     <data name="FeatureLine4" xml:space="preserve">
-        <value>• 从 Telegram 解析 &amp; 下载 贴纸包（包括 .TGS、.JPG、.WebP、.PNG 等）</value>
+        <value>• 从 Telegram 解析 &amp; 下载 贴纸包/Emoji（包括 .TGS、.JPG、.WebP、.PNG 等）</value>
     </data>
     <data name="FeatureLine5" xml:space="preserve">
         <value>• 可自定义的输出设置</value>
