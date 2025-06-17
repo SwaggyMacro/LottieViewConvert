@@ -465,20 +465,20 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloading Sticker set.
+        ///   Looks up a localized string similar to Downloading Sticker/Emoji Set.
         /// </summary>
-        public static string DownloadingStickerSet {
+        public static string DownloadingStickerOrEmojiSet {
             get {
-                return ResourceManager.GetString("DownloadingStickerSet", resourceCulture);
+                return ResourceManager.GetString("DownloadingStickerOrEmojiSet", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download Telegram Sticker Set.
+        ///   Looks up a localized string similar to Download Telegram Sticker/Emoji Set.
         /// </summary>
-        public static string DownloadTgsStickerSetTitle {
+        public static string DownloadTgsStickerOrEmojiSetTitle {
             get {
-                return ResourceManager.GetString("DownloadTgsStickerSetTitle", resourceCulture);
+                return ResourceManager.GetString("DownloadTgsStickerOrEmojiSetTitle", resourceCulture);
             }
         }
         
@@ -1123,11 +1123,11 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input sticker set name or link e.g (Godzi or https://t.me/addstickers/Godzi).
+        ///   Looks up a localized string similar to Input sticker/emoji set name or link e.g (Godzi or https://t.me/addstickers/Godzi).
         /// </summary>
-        public static string InputStickerSetsNameOrLinkWatermark {
+        public static string InputStickerOrEmojiSetNameOrLinkWatermark {
             get {
-                return ResourceManager.GetString("InputStickerSetsNameOrLinkWatermark", resourceCulture);
+                return ResourceManager.GetString("InputStickerOrEmojiSetNameOrLinkWatermark", resourceCulture);
             }
         }
         
@@ -1204,11 +1204,11 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid sticker set name or link.
+        ///   Looks up a localized string similar to Invalid sticker/emoji set name or link.
         /// </summary>
-        public static string InvalidStickerSetNameOrLink {
+        public static string InvalidStickerOrEmojiSetNameOrLink {
             get {
-                return ResourceManager.GetString("InvalidStickerSetNameOrLink", resourceCulture);
+                return ResourceManager.GetString("InvalidStickerOrEmojiSetNameOrLink", resourceCulture);
             }
         }
         
@@ -1843,11 +1843,11 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stikcer set.
+        ///   Looks up a localized string similar to Sticker/Emoji Set.
         /// </summary>
-        public static string StickerSet {
+        public static string StickerOrEmojiSet {
             get {
-                return ResourceManager.GetString("StickerSet", resourceCulture);
+                return ResourceManager.GetString("StickerOrEmojiSet", resourceCulture);
             }
         }
         
@@ -2077,11 +2077,11 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Waiting for download sticker sets....
+        ///   Looks up a localized string similar to Waiting for download sticker/emoji set....
         /// </summary>
-        public static string WaitingForDownloadStickerSetDotDotDot {
+        public static string WaitingForDownloadStickerOrEmojiSetDotDotDot {
             get {
-                return ResourceManager.GetString("WaitingForDownloadStickerSetDotDotDot", resourceCulture);
+                return ResourceManager.GetString("WaitingForDownloadStickerOrEmojiSetDotDotDot", resourceCulture);
             }
         }
         

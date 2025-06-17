@@ -7,13 +7,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace LottieViewConvert.Helper
 {
     /// <summary>
     /// Downloads Telegram stickers with support for concurrency, single file progress, and overall download progress feedback.
+    /// Supports both regular stickers and emoji stickers.
     /// </summary>
-    public class TelegramStickerDownloader
+    public class TelegramStickerEmojiDownloader
     {
         private readonly ITelegramBotClient _botClient;
         private readonly HttpClient _httpClient;
@@ -39,7 +41,7 @@ namespace LottieViewConvert.Helper
         /// </summary>
         public event Action<int /*fetchedCount*/, int /*totalCount*/>? MetadataProgressChanged;
 
-        public TelegramStickerDownloader(string botToken, string? proxyUrl = "")
+        public TelegramStickerEmojiDownloader(string botToken, string? proxyUrl = "")
         {
             if (string.IsNullOrWhiteSpace(botToken))
                 throw new ArgumentException(@"Bot token cannot be null or empty", nameof(botToken));
@@ -63,13 +65,13 @@ namespace LottieViewConvert.Helper
         }
 
         /// <summary>
-        /// concurrently download a sticker set by its name. and report progress for each file and overall progress.
+        /// Concurrently download a sticker set by its name. Supports both regular stickers and emoji stickers.
         /// </summary>
-        /// <param name="stickerSetName">Sticker set name, e.g. "CarBrandsSticker"</param>
+        /// <param name="stickerSetName">Sticker set name, e.g. "CarBrandsSticker" or "DeadpoolWolverineEmoji"</param>
         /// <param name="outputDirectory">Output directory to save downloaded stickers</param>
         /// <param name="maxConcurrency">Maximum number of concurrent downloads. Default is 4.</param>
         /// <param name="cancellationToken"></param>
-        public async Task DownloadStickerSetAsync(
+        public async Task DownloadAsync(
             string stickerSetName,
             string outputDirectory,
             int maxConcurrency = 4,
@@ -79,32 +81,33 @@ namespace LottieViewConvert.Helper
                 throw new ArgumentException(@"Sticker set name cannot be null or empty", nameof(stickerSetName));
             Directory.CreateDirectory(outputDirectory);
 
-            // 1. get sticker set basic info
+            // 1. Get sticker set basic info
             StickerSet set = await _botClient.GetStickerSet(stickerSetName, cancellationToken).ConfigureAwait(false);
             
-            // 2. concurrently fetch file metadata
-            var files = await GetFileMetadataAsync(set.Stickers, maxConcurrency, cancellationToken).ConfigureAwait(false);
+            // 2. Concurrently fetch file metadata
+            var files = await GetFileMetadataAsync(set.Stickers, set.StickerType, maxConcurrency, cancellationToken).ConfigureAwait(false);
             
-            // 3. calculate total bytes
+            // 3. Calculate total bytes
             long grandTotalBytes = 0;
-            foreach (var (_, _, size, _) in files)
+            foreach (var (_, _, size, _, _) in files)
             {
                 grandTotalBytes += size;
             }
 
-            // 4. concurrently download all files
+            // 4. Concurrently download all files
             await DownloadFilesAsync(files, outputDirectory, grandTotalBytes, maxConcurrency, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Concurrently fetch metadata for all stickers in the set, including file ID, file path, size, and unique ID.
+        /// Concurrently fetch metadata for all stickers in the set, including file ID, file path, size, unique ID, and emoji.
         /// </summary>
-        private async Task<(string FileId, string FilePath, long Size, string UniqueId)[]> GetFileMetadataAsync(
+        private async Task<(string FileId, string FilePath, long Size, string UniqueId, string? Emoji)[]> GetFileMetadataAsync(
             Sticker[] stickers, 
+            StickerType stickerType,
             int maxConcurrency, 
             CancellationToken cancellationToken)
         {
-            var files = new (string FileId, string FilePath, long Size, string UniqueId)[stickers.Length];
+            var files = new (string FileId, string FilePath, long Size, string UniqueId, string? Emoji)[stickers.Length];
             var semaphore = new SemaphoreSlim(maxConcurrency);
             var tasks = new List<Task>();
             int fetchedCount = 0;
@@ -122,9 +125,15 @@ namespace LottieViewConvert.Helper
                     {
                         TGFile info = await _botClient.GetFile(sticker.FileId, cancellationToken).ConfigureAwait(false);
                         long size = info.FileSize ?? 0;
-                        files[index] = (sticker.FileId, info.FilePath!, size, sticker.FileUniqueId);
                         
-                        // update metadata progress
+                        // For emoji stickers, include the emoji in the metadata
+                        string? emoji = (stickerType == StickerType.CustomEmoji && !string.IsNullOrWhiteSpace(sticker.Emoji)) 
+                            ? sticker.Emoji 
+                            : null;
+                            
+                        files[index] = (sticker.FileId, info.FilePath!, size, sticker.FileUniqueId, emoji);
+                        
+                        // Update metadata progress
                         int completed = Interlocked.Increment(ref fetchedCount);
                         MetadataProgressChanged?.Invoke(completed, stickers.Length);
                     }
@@ -143,7 +152,7 @@ namespace LottieViewConvert.Helper
         /// Concurrently download all sticker files to the specified output directory.
         /// </summary>
         private async Task DownloadFilesAsync(
-            (string FileId, string FilePath, long Size, string UniqueId)[] files,
+            (string FileId, string FilePath, long Size, string UniqueId, string? Emoji)[] files,
             string outputDirectory,
             long grandTotalBytes,
             int maxConcurrency,
@@ -153,7 +162,7 @@ namespace LottieViewConvert.Helper
             var semaphore = new SemaphoreSlim(maxConcurrency);
             var tasks = new List<Task>();
 
-            foreach (var (fileId, filePath, size, uniqueId) in files)
+            foreach (var (fileId, filePath, size, uniqueId, emoji) in files)
             {
                 await semaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
 
@@ -161,23 +170,25 @@ namespace LottieViewConvert.Helper
                 {
                     try
                     {
-                        string localPath = Path.Combine(outputDirectory, $"{uniqueId}{Path.GetExtension(filePath)}");
+                        // Generate filename with emoji support
+                        string fileName = GenerateFileName(uniqueId, filePath, emoji);
+                        string localPath = Path.Combine(outputDirectory, fileName);
 
-                        // download, and report progress
-                        await DownloadStickerInternalAsync(
+                        // Download and report progress
+                        await DownloadInternalAsync(
                             fileId, filePath, localPath, size,
                             onChunk: downloadedBytes =>
                             {
-                                // single file progress, thread-safe
+                                // Single file progress, thread-safe
                                 DownloadProgressChanged?.Invoke(localPath, downloadedBytes, size);
-                                // overall progress, thread-safe
+                                // Overall progress, thread-safe
                                 long currentOverall = Interlocked.Read(ref overallDownloaded);
                                 OverallProgressChanged?.Invoke(currentOverall + downloadedBytes, grandTotalBytes);
                             },
                             cancellationToken: cancellationToken
                         ).ConfigureAwait(false);
 
-                        // file download completed, update overall progress, thread-safe
+                        // File download completed, update overall progress, thread-safe
                         Interlocked.Add(ref overallDownloaded, size);
                         DownloadFileCompleted?.Invoke(localPath);
                     }
@@ -192,9 +203,28 @@ namespace LottieViewConvert.Helper
         }
 
         /// <summary>
-        /// download sticker file from telegram server
+        /// Generate filename for sticker with emoji support
         /// </summary>
-        private async Task DownloadStickerInternalAsync(
+        private string GenerateFileName(string uniqueId, string filePath, string? emoji)
+        {
+            string extension = Path.GetExtension(filePath);
+            
+            // If emoji is available, use it as prefix for better organization
+            if (!string.IsNullOrWhiteSpace(emoji))
+            {
+                // Clean emoji for filename (remove any characters that might be problematic for filenames)
+                string cleanEmoji = emoji.Replace("\uFE0F", ""); // Remove variation selector
+                return $"{cleanEmoji}_{uniqueId}{extension}";
+            }
+            
+            // Fallback to original naming scheme
+            return $"{uniqueId}{extension}";
+        }
+
+        /// <summary>
+        /// Download sticker / emoji file from telegram server
+        /// </summary>
+        private async Task DownloadInternalAsync(
             string fileId,
             string filePath,
             string destinationPath,
@@ -227,6 +257,14 @@ namespace LottieViewConvert.Helper
                 downloaded += read;
                 onChunk(downloaded);
             }
+        }
+
+        /// <summary>
+        /// Dispose resources
+        /// </summary>
+        public void Dispose()
+        {
+            _httpClient.Dispose();
         }
     }
 }

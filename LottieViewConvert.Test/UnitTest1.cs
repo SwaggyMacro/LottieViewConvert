@@ -16,7 +16,7 @@ public class Tests
     public async Task Test1()
     {
         const string token = "BotToken";
-        var downloader = new TelegramStickerDownloader(token, "http://127.0.0.1:10801");
+        var downloader = new TelegramStickerEmojiDownloader(token, "http://127.0.0.1:10801");
         downloader.DownloadProgressChanged += (file, downloaded, total) =>
         {
             if (total > 0)
@@ -38,7 +38,7 @@ public class Tests
         var outputDir = "./stickers";
         // CarBrandsSticker
         Console.WriteLine($@"Start downloading ：{setName}");
-        await downloader.DownloadStickerSetAsync(setName, outputDir, 30);
+        await downloader.DownloadAsync(setName, outputDir, 30);
         Console.WriteLine($@"Download succeeded, saved in {outputDir}");
     }
 }

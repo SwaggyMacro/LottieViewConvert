@@ -23,11 +23,11 @@ namespace LottieViewConvert.ViewModels;
 
 public class TgsDownloadViewModel : Page, IDisposable
 {
-    private TelegramStickerDownloader? _downloader;
+    private TelegramStickerEmojiDownloader? _downloader;
     private CancellationTokenSource? _cancellationTokenSource;
     private string _tempDownloadPath;
 
-    public TgsDownloadViewModel() : base(Resources.StickerDownload, MaterialIconKind.SendCheck, 2)
+    public TgsDownloadViewModel() : base(Resources.Download, MaterialIconKind.SendCheck, 2)
     {
         _tempDownloadPath = Path.Combine(Path.GetTempPath(), "TgsDownload");
         
@@ -187,7 +187,7 @@ public class TgsDownloadViewModel : Page, IDisposable
             var proxyUrl = config.GetConfig().ProxyAddress;
             if (string.IsNullOrWhiteSpace(token)) return;
 
-            _downloader = new TelegramStickerDownloader(token, string.IsNullOrWhiteSpace(proxyUrl) ? null : proxyUrl);
+            _downloader = new TelegramStickerEmojiDownloader(token, string.IsNullOrWhiteSpace(proxyUrl) ? null : proxyUrl);
             // subscribe to downloader events
             _downloader.OverallProgressChanged += OnOverallProgressChanged;
             _downloader.DownloadFileCompleted += OnDownloadFileCompleted;
@@ -241,14 +241,14 @@ public class TgsDownloadViewModel : Page, IDisposable
             var stickerSetName = ExtractStickerSetName(StickerInput);
             if (string.IsNullOrWhiteSpace(stickerSetName))
             {
-                DownloadStatusText = Resources.InvalidStickerSetNameOrLink;
+                DownloadStatusText = Resources.InvalidStickerOrEmojiSetNameOrLink;
                 return;
             }
             
-            StickerPackTitle = $"{Resources.StickerSet}: {stickerSetName}";
-            DownloadStatusText = $"{Resources.DownloadingStickerSet}...";
+            StickerPackTitle = $"{Resources.StickerOrEmojiSet}: {stickerSetName}";
+            DownloadStatusText = $"{Resources.DownloadingStickerOrEmojiSet}...";
             
-            await _downloader.DownloadStickerSetAsync(
+            await _downloader.DownloadAsync(
                 stickerSetName, 
                 _tempDownloadPath, 
                 maxConcurrency: 4, 

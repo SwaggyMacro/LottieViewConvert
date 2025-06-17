@@ -231,17 +231,17 @@
     <data name="TgsDownload" xml:space="preserve">
         <value>Tgs Download</value>
     </data>
-    <data name="InputStickerSetsNameOrLinkWatermark" xml:space="preserve">
-        <value>Input sticker set name or link e.g (Godzi or https://t.me/addstickers/Godzi)</value>
+    <data name="InputStickerOrEmojiSetNameOrLinkWatermark" xml:space="preserve">
+        <value>Input sticker/emoji set name or link e.g (Godzi or https://t.me/addstickers/Godzi)</value>
     </data>
-    <data name="DownloadTgsStickerSetTitle" xml:space="preserve">
-        <value>Download Telegram Sticker Set</value>
+    <data name="DownloadTgsStickerOrEmojiSetTitle" xml:space="preserve">
+        <value>Download Telegram Sticker/Emoji Set</value>
     </data>
     <data name="Download" xml:space="preserve">
         <value>Download</value>
     </data>
-    <data name="WaitingForDownloadStickerSetDotDotDot" xml:space="preserve">
-        <value>Waiting for download sticker sets...</value>
+    <data name="WaitingForDownloadStickerOrEmojiSetDotDotDot" xml:space="preserve">
+        <value>Waiting for download sticker/emoji set...</value>
     </data>
     <data name="SelectAll" xml:space="preserve">
         <value>Select All</value>
@@ -267,17 +267,17 @@
     <data name="ReadyToDownloadDotDotDot" xml:space="preserve">
         <value>Ready to download...</value>
     </data>
-    <data name="InvalidStickerSetNameOrLink" xml:space="preserve">
-        <value>Invalid sticker set name or link</value>
+    <data name="InvalidStickerOrEmojiSetNameOrLink" xml:space="preserve">
+        <value>Invalid sticker/emoji set name or link</value>
     </data>
-    <data name="StickerSet" xml:space="preserve">
-        <value>Stikcer set</value>
+    <data name="StickerOrEmojiSet" xml:space="preserve">
+        <value>Sticker/Emoji Set</value>
     </data>
     <data name="Downloading" xml:space="preserve">
         <value>Downloading</value>
     </data>
-    <data name="DownloadingStickerSet" xml:space="preserve">
-        <value>Downloading Sticker set</value>
+    <data name="DownloadingStickerOrEmojiSet" xml:space="preserve">
+        <value>Downloading Sticker/Emoji Set</value>
     </data>
     <data name="DownloadCompleted" xml:space="preserve">
         <value>Download completed</value>

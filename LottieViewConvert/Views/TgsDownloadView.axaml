@@ -15,7 +15,7 @@
     <!-- Input name or link -->
     <suki:GlassCard Grid.Row="0" Margin="20,20,20,10">
       <StackPanel Spacing="15" Margin="20">
-        <TextBlock Text="{x:Static lang:Resources.DownloadTgsStickerSetTitle}" 
+        <TextBlock Text="{x:Static lang:Resources.DownloadTgsStickerOrEmojiSetTitle}" 
                    FontSize="20" 
                    FontWeight="Bold"
                    HorizontalAlignment="Center"/>
@@ -28,7 +28,7 @@
           
           <TextBox Grid.Column="0"
                    Text="{Binding StickerInput}"
-                   Watermark="{x:Static lang:Resources.InputStickerSetsNameOrLinkWatermark}"
+                   Watermark="{x:Static lang:Resources.InputStickerOrEmojiSetNameOrLinkWatermark}"
                    FontSize="14"
                    Margin="0,0,10,0"/>
           
@@ -140,7 +140,7 @@
                               Width="64" 
                               Height="64" 
                               Opacity="0.5"/>
-        <TextBlock Text="{x:Static lang:Resources.WaitingForDownloadStickerSetDotDotDot}" 
+        <TextBlock Text="{x:Static lang:Resources.WaitingForDownloadStickerOrEmojiSetDotDotDot}" 
                    FontSize="16" 
                    HorizontalAlignment="Center"
                    Opacity="0.7"/>

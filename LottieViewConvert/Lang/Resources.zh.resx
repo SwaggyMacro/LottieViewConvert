@@ -230,17 +230,17 @@
     <data name="TgsDownload" xml:space="preserve">
         <value>TGS 下载</value>
     </data>
-    <data name="InputStickerSetsNameOrLinkWatermark" xml:space="preserve">
-        <value>输入贴纸包名称或链接，例如 (Godzi 或 https://t.me/addstickers/Godzi)</value>
+    <data name="InputStickerOrEmojiSetNameOrLinkWatermark" xml:space="preserve">
+        <value>输入 贴纸包/Emoj i名称或链接，例如 (Godzi 或 https://t.me/addstickers/Godzi)</value>
     </data>
-    <data name="DownloadTgsStickerSetTitle" xml:space="preserve">
-        <value>下载 Telegram 贴纸包</value>
+    <data name="DownloadTgsStickerOrEmojiSetTitle" xml:space="preserve">
+        <value>下载 Telegram 贴纸包/Emoji</value>
     </data>
     <data name="Download" xml:space="preserve">
         <value>下载</value>
     </data>
-    <data name="WaitingForDownloadStickerSetDotDotDot" xml:space="preserve">
-        <value>等待下载贴纸包...</value>
+    <data name="WaitingForDownloadStickerOrEmojiSetDotDotDot" xml:space="preserve">
+        <value>等待下载贴纸包/emoji...</value>
     </data>
     <data name="SelectAll" xml:space="preserve">
         <value>全选</value>
@@ -266,17 +266,17 @@
     <data name="ReadyToDownloadDotDotDot" xml:space="preserve">
         <value>准备下载...</value>
     </data>
-    <data name="InvalidStickerSetNameOrLink" xml:space="preserve">
-        <value>无效的贴纸包名称或链接</value>
+    <data name="InvalidStickerOrEmojiSetNameOrLink" xml:space="preserve">
+        <value>无效的 贴纸包/Emoji 名称或链接</value>
     </data>
-    <data name="StickerSet" xml:space="preserve">
-        <value>贴纸包</value>
+    <data name="StickerOrEmojiSet" xml:space="preserve">
+        <value>贴纸包/Emoji</value>
     </data>
     <data name="Downloading" xml:space="preserve">
         <value>下载中</value>
     </data>
-    <data name="DownloadingStickerSet" xml:space="preserve">
-        <value>正在下载贴纸包</value>
+    <data name="DownloadingStickerOrEmojiSet" xml:space="preserve">
+        <value>正在下载 贴纸包/Emoji</value>
     </data>
     <data name="DownloadCompleted" xml:space="preserve">
         <value>下载完成</value>
