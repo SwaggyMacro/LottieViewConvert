@@ -87,16 +87,6 @@ ffmpeg -version
 - 运行应用程序可执行文件
 
 #### 2. 基本用法
-##### Single Conversion
-1. **Launch the application**
-2. **Select source files**: Click "Browser" right the Home Page,  or drag & drop TGS/Lottie files
-3. **Choose output format**: Select from GIF, WebP, APNG, MP4, MKV, AVIF, WebM
-4. **Adjust settings** (optional):
-   - Frame rate (1-240 fps, 100 fps for GIF only)
-   - Resolution
-   - Playback speed (0.1x - 10.0x)
-   - Quality settings
-5. **Convert**: Click "Convert"
 
 ##### 单个转换
 1. **启动应用程序**
