@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -26,7 +27,10 @@ public class TgsDownloadViewModel : Page, IDisposable
     private TelegramStickerEmojiDownloader? _downloader;
     private CancellationTokenSource? _cancellationTokenSource;
     private string _tempDownloadPath;
-
+    private static readonly Regex TelegramLinkRegex = new(
+        @"t\.me/(?:addstickers|addemoji)/([^/?#\s]+)",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled
+    );
     public TgsDownloadViewModel() : base(Resources.Download, MaterialIconKind.SendCheck, 2)
     {
         _tempDownloadPath = Path.Combine(Path.GetTempPath(), "TgsDownload");
@@ -238,7 +242,7 @@ public class TgsDownloadViewModel : Page, IDisposable
             Directory.CreateDirectory(_tempDownloadPath);
             
             // get sticker set name from input
-            var stickerSetName = ExtractStickerSetName(StickerInput);
+            var stickerSetName = ExtractStickerEmojiName(StickerInput);
             if (string.IsNullOrWhiteSpace(stickerSetName))
             {
                 DownloadStatusText = Resources.InvalidStickerOrEmojiSetNameOrLink;
@@ -417,15 +421,10 @@ public class TgsDownloadViewModel : Page, IDisposable
         }
     }
 
-    private string ExtractStickerSetName(string input)
+    private string ExtractStickerEmojiName(string input)
     {
-        if (string.IsNullOrWhiteSpace(input))
-            return "";
-
-        if (!input.Contains("t.me/addstickers/")) return input.Trim();
-        var parts = input.Split('/');
-        
-        return parts.LastOrDefault() ?? "";
+        var match = TelegramLinkRegex.Match(input);
+        return match.Success ? match.Groups[1].Value : input;
     }
     
     private void OnMetadataProgressChanged(int fetchedCount, int totalCount)
