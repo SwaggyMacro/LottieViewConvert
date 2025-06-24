@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls.Notifications;
@@ -152,7 +150,7 @@ public class MainWindowViewModel : ViewModelBase
         var ffmpegService = new FFmpegService();
         var gifskiService = new GifskiService();
 
-        var ffmpegPath = await ffmpegService.DetectFFmpegPathAsync();
+        var ffmpegPath = await ffmpegService.GetFFmpegFromSystemPathAsync();
         if (string.IsNullOrEmpty(ffmpegPath))
         {
             ToastManager.CreateToast()
@@ -167,7 +165,7 @@ public class MainWindowViewModel : ViewModelBase
         {
             Logger.Info("FFmpeg is installed and detected.");
         }
-        var gifskiPath = await gifskiService.DetectGifskiPathAsync();
+        var gifskiPath = await gifskiService.GetGifskiFromSystemPathAsync();
         if (string.IsNullOrEmpty(gifskiPath))
         {
             ToastManager.CreateToast()
