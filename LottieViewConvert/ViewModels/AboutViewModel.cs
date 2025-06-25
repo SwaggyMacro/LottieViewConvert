@@ -15,7 +15,7 @@ namespace LottieViewConvert.ViewModels;
 public class AboutViewModel : Page
 {
     public ReactiveCommand<string, Unit> OpenLinkCommand { get; }
-    public AboutViewModel(): base(Resources.About, MaterialIconKind.About, 4)
+    public AboutViewModel(): base(Resources.About, MaterialIconKind.About, 5)
     {
         OpenLinkCommand = ReactiveCommand.Create<string>(OpenLink);
     }

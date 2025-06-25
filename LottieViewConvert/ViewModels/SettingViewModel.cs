@@ -54,7 +54,7 @@ namespace LottieViewConvert.ViewModels
         private string _gifskiSource = string.Empty;
         private bool _isGifskiInPath;
 
-        public SettingViewModel() : base(Resources.Setting, MaterialIconKind.Cog, 3)
+        public SettingViewModel() : base(Resources.Setting, MaterialIconKind.Cog, 4)
         {
             _configService = new ConfigService();
             _ffmpegService = new FFmpegService();

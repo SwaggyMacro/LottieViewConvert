@@ -720,4 +720,58 @@
     <data name="FeatureLine10" xml:space="preserve">
         <value>• Concurrent tasks support for faster batch conversion</value>
     </data>
+    <data name="Telegram" xml:space="preserve">
+        <value>Telegram</value>
+    </data>
+    <data name="Discord" xml:space="preserve">
+        <value>Discord</value>
+    </data>
+    <data name="DiscordStickerPacks" xml:space="preserve">
+        <value>Discord Sticker Packs</value>
+    </data>
+    <data name="Refresh" xml:space="preserve">
+        <value>Refresh</value>
+    </data>
+    <data name="SelectStickerPack" xml:space="preserve">
+        <value>Select Sticker Pack</value>
+    </data>
+    <data name="Load" xml:space="preserve">
+        <value>Load</value>
+    </data>
+    <data name="Retry" xml:space="preserve">
+        <value>Retry</value>
+    </data>
+    <data name="LoadingStickerPacksDotDotDot" xml:space="preserve">
+        <value>Loading sticker packs...</value>
+    </data>
+    <data name="StickerPacksAvailable" xml:space="preserve">
+        <value>sticker packs available</value>
+    </data>
+    <data name="Stickers" xml:space="preserve">
+        <value>stickers</value>
+    </data>
+    <data name="FetchingDiscordStickerPacks" xml:space="preserve">
+        <value>Fetching Discord sticker packs</value>
+    </data>
+    <data name="ConnectingToDiscordAPI" xml:space="preserve">
+        <value>Connecting to Discord API</value>
+    </data>
+    <data name="ProcessingStickerPacks" xml:space="preserve">
+        <value>Processing sticker packs</value>
+    </data>
+    <data name="FailedToLoadStickerPacks" xml:space="preserve">
+        <value>Failed to load sticker packs</value>
+    </data>
+    <data name="Loading" xml:space="preserve">
+        <value>Loading</value>
+    </data>
+    <data name="AllLoaded" xml:space="preserve">
+        <value>All Loaded</value>
+    </data>
+    <data name="LoadAll" xml:space="preserve">
+        <value>Load All</value>
+    </data>
+    <data name="FeatureLine11" xml:space="preserve">
+        <value>• Parse &amp; Download Lottie Sticker set from Discord</value>
+    </data>
 </root>

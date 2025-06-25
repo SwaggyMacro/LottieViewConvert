@@ -16,7 +16,12 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ARxApp_002Ecs_002Fl_003AC_0021_003FUsers_003Fwangh_003FAppData_003FRoaming_003FJetBrains_003FRider2025_002E1_003Fresharper_002Dhost_003FSourcesCache_003Fe221cc8f688c75a9bc3f0b838afc95fcd51f443803803b72c9e6614aacf384_003FRxApp_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ASize_002Ecs_002Fl_003AC_0021_003FUsers_003Fwangh_003FAppData_003FRoaming_003FJetBrains_003FRider2025_002E1_003Fresharper_002Dhost_003FSourcesCache_003F3315e3f4e385d364a96551c0811428a7c01c6cfdcb209e7a3468d167f5297b2_003FSize_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=749182a6_002D9678_002D43bc_002Da0f5_002Dd92e5212946e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;ProjectFile&gt;FD8D2B86-AA02-447D-94BF-BEBD8FF14163/f:UnitTest1.cs&lt;/ProjectFile&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;ProjectFile&gt;FD8D2B86-AA02-447D-94BF-BEBD8FF14163/f:UnitTest1.cs&lt;/ProjectFile&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::FD8D2B86-AA02-447D-94BF-BEBD8FF14163::net8.0::LottieViewConvert.Test.UnitTest2.Test2&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+  &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=LottieViewConvert_002FLang_002FResources/@EntryIndexedValue">True</s:Boolean>
 	

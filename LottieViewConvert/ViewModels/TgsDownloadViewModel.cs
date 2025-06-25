@@ -16,6 +16,7 @@ using LottieViewConvert.Helper.LogHelper;
 using LottieViewConvert.Lang;
 using LottieViewConvert.Models;
 using LottieViewConvert.Services;
+using LottieViewConvert.Utils;
 using Material.Icons;
 using ReactiveUI;
 using SukiUI.Toasts;
@@ -31,7 +32,7 @@ public class TgsDownloadViewModel : Page, IDisposable
         @"t\.me/(?:addstickers|addemoji)/([^/?#\s]+)",
         RegexOptions.IgnoreCase | RegexOptions.Compiled
     );
-    public TgsDownloadViewModel() : base(Resources.Download, MaterialIconKind.SendCheck, 2)
+    public TgsDownloadViewModel() : base(Resources.Telegram, MaterialIconKind.SendCheck, 2)
     {
         _tempDownloadPath = Path.Combine(Path.GetTempPath(), "TgsDownload");
         
@@ -61,7 +62,7 @@ public class TgsDownloadViewModel : Page, IDisposable
         SaveSelectedStickersCommand = ReactiveCommand.CreateFromTask(SaveSelectedStickers, canSaveObservable);
         
         // initialize properties
-        SaveLocation = Path.Combine(AppContext.BaseDirectory, "TelegramStickers");
+        SaveLocation = Path.Combine(AppContext.BaseDirectory, "SavedStickers");
         if (!Directory.Exists(SaveLocation))
         {
             Directory.CreateDirectory(SaveLocation);
@@ -381,7 +382,7 @@ public class TgsDownloadViewModel : Page, IDisposable
                 .WithTitle(Resources.SaveSucceeded)
                 .WithContent(DownloadStatusText)
                 .OfType(NotificationType.Success)
-                .WithActionButton(Resources.Open, _ => { OpenSavedFolder(SaveLocation); })
+                .WithActionButton(Resources.Open, _ => { FolderUtil.OpenSavedFolder(SaveLocation); })
                 .Dismiss().ByClicking()
                 .Dismiss().After(TimeSpan.FromSeconds(5))
                 .Queue();
@@ -398,26 +399,6 @@ public class TgsDownloadViewModel : Page, IDisposable
                 .Dismiss().ByClicking()
                 .Dismiss().After(TimeSpan.FromSeconds(5))
                 .Queue();
-        }
-    }
-    
-    private void OpenSavedFolder(string folderPath)
-    {
-        try
-        {
-            if (Directory.Exists(folderPath))
-            {
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = "explorer",
-                    Arguments = $"\"{folderPath}\"",
-                    UseShellExecute = true
-                });
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"Open saved folder failed: {ex}");
         }
     }
 

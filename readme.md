@@ -3,7 +3,7 @@
 </p>
 <p align="center">
     <a href="readme_cn.md"><img src="https://img.shields.io/badge/Lang-简体中文-red"></a>
-    <img src="https://img.shields.io/badge/version-1.1.6-yellow">
+    <img src="https://img.shields.io/badge/version-1.1.7-yellow">
     <a href="//github.com/SwaggyMacro/LottieViewConvert"><img src="https://img.shields.io/badge/Repo-LottieViewConvert-green"></a>
 </p>
 <p align="center">
@@ -20,11 +20,13 @@ A powerful cross-platform desktop application for converting TGS (Telegram Stick
 - **Batch Processing**: Convert multiple files simultaneously
 - **TGS & Lottie Support**: Handle both Telegram sticker/emoji (.tgs) and standard Lottie files (.json, .lottie)
 - **Telegram Integration**: Parse and download Telegram sticker/emoji set directly
+- **Discord Integration**: Parse & Download Lottie Sticker set from Discord
 - **Customizable Output**: Adjust playback speed, frame rate, resolution, and conversion quality
 - **Cross-Platform**: Works on Windows, macOS, and Linux
 - **Modern UI**: Built with SukiUI for a sleek, responsive interface
 - **Automatic Installation of Dependencies**: Simplify setup by automating gifski and FFmpeg installation
 - **Concurrent tasks**: support for faster batch conversion
+
 ---
 
 ### 📝 System Requirements

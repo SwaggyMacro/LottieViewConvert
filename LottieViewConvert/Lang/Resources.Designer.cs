@@ -96,6 +96,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Loaded.
+        /// </summary>
+        public static string AllLoaded {
+            get {
+                return ResourceManager.GetString("AllLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A powerful cross-platform desktop application for converting TGS (Telegram Stickers) and Lottie animations to various formats including GIF, WebP, APNG, MP4, MKV, AVIF, and WebM. Support download sticker set from Telegram(name or link) directly. Built with modern technologies for optimal performance and user experience..
         /// </summary>
         public static string AppDesc {
@@ -294,6 +303,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connecting to Discord API.
+        /// </summary>
+        public static string ConnectingToDiscordAPI {
+            get {
+                return ResourceManager.GetString("ConnectingToDiscordAPI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Conversion Complete.
         /// </summary>
         public static string ConversionComplete {
@@ -407,6 +425,24 @@ namespace LottieViewConvert.Lang {
         public static string Detect {
             get {
                 return ResourceManager.GetString("Detect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discord.
+        /// </summary>
+        public static string Discord {
+            get {
+                return ResourceManager.GetString("Discord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discord Sticker Packs.
+        /// </summary>
+        public static string DiscordStickerPacks {
+            get {
+                return ResourceManager.GetString("DiscordStickerPacks", resourceCulture);
             }
         }
         
@@ -636,6 +672,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to load sticker packs.
+        /// </summary>
+        public static string FailedToLoadStickerPacks {
+            get {
+                return ResourceManager.GetString("FailedToLoadStickerPacks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to remove .
         /// </summary>
         public static string FailedToRemove {
@@ -677,6 +722,15 @@ namespace LottieViewConvert.Lang {
         public static string FeatureLine10 {
             get {
                 return ResourceManager.GetString("FeatureLine10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to • Parse &amp; Download Lottie Sticker set from Discord.
+        /// </summary>
+        public static string FeatureLine11 {
+            get {
+                return ResourceManager.GetString("FeatureLine11", resourceCulture);
             }
         }
         
@@ -749,6 +803,15 @@ namespace LottieViewConvert.Lang {
         public static string FeatureLine9 {
             get {
                 return ResourceManager.GetString("FeatureLine9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fetching Discord sticker packs.
+        /// </summary>
+        public static string FetchingDiscordStickerPacks {
+            get {
+                return ResourceManager.GetString("FetchingDiscordStickerPacks", resourceCulture);
             }
         }
         
@@ -1285,6 +1348,24 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load.
+        /// </summary>
+        public static string Load {
+            get {
+                return ResourceManager.GetString("Load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load All.
+        /// </summary>
+        public static string LoadAll {
+            get {
+                return ResourceManager.GetString("LoadAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Load failed.
         /// </summary>
         public static string LoadFailed {
@@ -1294,11 +1375,29 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading.
+        /// </summary>
+        public static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading....
         /// </summary>
         public static string LoadingDotDotDot {
             get {
                 return ResourceManager.GetString("LoadingDotDotDot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading sticker packs....
+        /// </summary>
+        public static string LoadingStickerPacksDotDotDot {
+            get {
+                return ResourceManager.GetString("LoadingStickerPacksDotDotDot", resourceCulture);
             }
         }
         
@@ -1546,6 +1645,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Processing sticker packs.
+        /// </summary>
+        public static string ProcessingStickerPacks {
+            get {
+                return ResourceManager.GetString("ProcessingStickerPacks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Proxy.
         /// </summary>
         public static string Proxy {
@@ -1600,6 +1708,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string Refresh {
+            get {
+                return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove from PATH.
         /// </summary>
         public static string RemoveFromPath {
@@ -1641,6 +1758,15 @@ namespace LottieViewConvert.Lang {
         public static string ResetFailed {
             get {
                 return ResourceManager.GetString("ResetFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retry.
+        /// </summary>
+        public static string Retry {
+            get {
+                return ResourceManager.GetString("Retry", resourceCulture);
             }
         }
         
@@ -1740,6 +1866,15 @@ namespace LottieViewConvert.Lang {
         public static string SelectOutputFolder {
             get {
                 return ResourceManager.GetString("SelectOutputFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Sticker Pack.
+        /// </summary>
+        public static string SelectStickerPack {
+            get {
+                return ResourceManager.GetString("SelectStickerPack", resourceCulture);
             }
         }
         
@@ -1852,6 +1987,24 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to sticker packs available.
+        /// </summary>
+        public static string StickerPacksAvailable {
+            get {
+                return ResourceManager.GetString("StickerPacksAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to stickers.
+        /// </summary>
+        public static string Stickers {
+            get {
+                return ResourceManager.GetString("Stickers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stop.
         /// </summary>
         public static string Stop {
@@ -1956,6 +2109,15 @@ namespace LottieViewConvert.Lang {
         public static string TechStackLine5 {
             get {
                 return ResourceManager.GetString("TechStackLine5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telegram.
+        /// </summary>
+        public static string Telegram {
+            get {
+                return ResourceManager.GetString("Telegram", resourceCulture);
             }
         }
         

@@ -1,0 +1,422 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:material="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:vm="clr-namespace:LottieViewConvert.ViewModels"
+             xmlns:lottie="clr-namespace:Lottie;assembly=Lottie"
+             xmlns:lang="clr-namespace:LottieViewConvert.Lang"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             x:DataType="vm:DiscordStickerDownloadViewModel"
+             x:Class="LottieViewConvert.Views.DiscordStickerDownloadView">
+  
+  <UserControl.Styles>
+    <Style Selector="ComboBox">
+      <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+    </Style>
+    
+    <Style Selector="ComboBoxItem">
+      <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    
+    <Style Selector="ComboBoxItem:pointerover">
+      <Setter Property="Background" Value="{DynamicResource SukiPrimaryColor}"/>
+      <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+    </Style>
+    
+    <Style Selector="ComboBoxItem:selected">
+      <Setter Property="Background" Value="{DynamicResource SukiAccentColor}"/>
+      <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+    </Style>
+    
+    <Style Selector="ComboBoxItem TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+    </Style>
+    
+    <Style Selector="ComboBoxItem:pointerover TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+    </Style>
+    
+    <Style Selector="ComboBoxItem:selected TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+    </Style>
+  </UserControl.Styles>
+  
+  <Grid RowDefinitions="Auto,Auto,Auto,*">
+    
+    <!-- Title and Refresh -->
+    <suki:GlassCard Grid.Row="0" Margin="20,20,20,10">
+      <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+          <TextBlock Text="{x:Static lang:Resources.DiscordStickerPacks}" 
+                     FontSize="24" 
+                     FontWeight="Bold"/>
+          <TextBlock Text="{Binding PacksCountText}" 
+                     FontSize="14" 
+                     Opacity="0.7"/>
+        </StackPanel>
+        
+        <Button Grid.Column="1"
+                Command="{Binding RefreshCommand}"
+                IsEnabled="{Binding !IsLoading}"
+                Classes="Accent">
+          <Button.Content>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <material:MaterialIcon Kind="Refresh" Width="16" Height="16"/>
+              <TextBlock Text="{x:Static lang:Resources.Refresh}"/>
+            </StackPanel>
+          </Button.Content>
+        </Button>
+      </Grid>
+    </suki:GlassCard>
+    
+    <!-- Loading Progress -->
+    <suki:GlassCard Grid.Row="1" 
+                    Margin="20,0,20,10"
+                    IsVisible="{Binding IsLoading}">
+      <StackPanel Spacing="15" Margin="20" HorizontalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Spacing="15">
+          <suki:CircleProgressBar Value="{Binding LoadingProgress}"
+                                  Width="40"
+                                  Height="40"
+                                  StrokeWidth="3"
+                                  IsIndeterminate="{Binding IsIndeterminateProgress}"/>
+          <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="{Binding LoadingText}" FontWeight="SemiBold"/>
+            <TextBlock Text="{Binding LoadingDetailText}" FontSize="12" Opacity="0.7"/>
+          </StackPanel>
+        </StackPanel>
+      </StackPanel>
+    </suki:GlassCard>
+    
+    <!-- Sticker Pack Selection -->
+    <suki:GlassCard Grid.Row="2" 
+                    Margin="20,0,20,10"
+                    IsVisible="{Binding HasStickerPacks}">
+      <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Grid.Column="0" 
+                   Text="{x:Static lang:Resources.SelectStickerPack}" 
+                   FontWeight="SemiBold"
+                   VerticalAlignment="Center"
+                   Margin="0,0,15,0"/>
+        
+        <ComboBox Grid.Column="1"
+                  ItemsSource="{Binding StickerPacks}"
+                  SelectedItem="{Binding SelectedStickerPack}"
+                  PlaceholderText="{x:Static lang:Resources.SelectStickerPack}"
+                  HorizontalAlignment="Stretch"
+                  Foreground="{DynamicResource SukiText}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate x:DataType="vm:DiscordStickerPackViewModel">
+              <StackPanel Margin="8,5">
+                <TextBlock Text="{Binding Name}" 
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource SukiText}"/>
+                <TextBlock Text="{Binding Description}" 
+                           FontSize="12" 
+                           Opacity="0.8"
+                           TextTrimming="CharacterEllipsis"
+                           MaxWidth="300"
+                           Foreground="{DynamicResource SukiText}"/>
+                <TextBlock Text="{Binding StickerCountText}" 
+                           FontSize="11" 
+                           Opacity="0.7"
+                           Foreground="{DynamicResource SukiText}"/>
+              </StackPanel>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+          
+          <ComboBox.Styles>
+            <Style Selector="ComboBox /template/ ContentPresenter#PART_ContentPresenter">
+              <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+            </Style>
+            
+            <Style Selector="ComboBox /template/ TextBlock">
+              <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+            </Style>
+            
+            <Style Selector="ComboBox:focus /template/ ContentPresenter#PART_ContentPresenter">
+              <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+            </Style>
+            
+            <Style Selector="ComboBoxItem">
+              <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+              <Setter Property="Background" Value="Transparent"/>
+              <Setter Property="Padding" Value="8,4"/>
+            </Style>
+            
+            <Style Selector="ComboBoxItem:pointerover">
+              <Setter Property="Background" Value="{DynamicResource SukiPrimaryColor}"/>
+              <Setter Property="Foreground" Value="{DynamicResource SukiText}"/>
+            </Style>
+            
+            <Style Selector="ComboBoxItem:selected">
+              <Setter Property="Background" Value="{DynamicResource SukiAccentColor}"/>
+              <Setter Property="Foreground" Value="White"/>
+            </Style>
+            
+            <Style Selector="ComboBoxItem:selected:pointerover">
+              <Setter Property="Background" Value="{DynamicResource SukiAccentColor}"/>
+              <Setter Property="Foreground" Value="White"/>
+            </Style>
+          </ComboBox.Styles>
+        </ComboBox>
+        
+        <TextBlock Grid.Column="2"
+                   Text="{Binding SelectedPackInfoText}"
+                   VerticalAlignment="Center"
+                   Margin="15,0,0,0"
+                   FontSize="12"
+                   Opacity="0.7"/>
+      </Grid>
+    </suki:GlassCard>
+    
+    <!-- Selected Sticker Pack Content -->
+    <ScrollViewer Grid.Row="3" 
+                  Margin="20,0,20,20"
+                  HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto"
+                  IsVisible="{Binding HasSelectedPack}">
+      
+      <suki:GlassCard>
+        <Grid Margin="20">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          
+          <!-- Pack Header -->
+          <Grid Grid.Row="0" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+              <TextBlock Text="{Binding SelectedStickerPack.Name}" 
+                         FontSize="20" 
+                         FontWeight="SemiBold"/>
+              <TextBlock Text="{Binding SelectedStickerPack.Description}" 
+                         FontSize="14" 
+                         Opacity="0.8"
+                         TextWrapping="Wrap"
+                         Margin="0,5,0,0"/>
+              <TextBlock Text="{Binding SelectedStickerPack.StickerCountText}" 
+                         FontSize="12" 
+                         Opacity="0.6"
+                         Margin="0,5,0,0"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
+              <CheckBox Content="{x:Static lang:Resources.SelectAll}" 
+                        IsChecked="{Binding SelectedStickerPack.IsAllSelected, Mode=OneWay}"
+                        Command="{Binding SelectedStickerPack.ToggleAllSelectionCommand}"/>
+              
+              <Button Command="{Binding SelectedStickerPack.LoadAllStickersCommand}"
+                      Classes="Basic"
+                      IsEnabled="{Binding SelectedStickerPack.CanLoadAll}">
+                <Button.Content>
+                  <StackPanel Orientation="Horizontal" Spacing="8">
+                    <material:MaterialIcon Kind="Download" Width="16" Height="16"/>
+                    <TextBlock Text="{Binding SelectedStickerPack.LoadAllText}"/>
+                  </StackPanel>
+                </Button.Content>
+              </Button>
+              
+              <TextBlock Text="{Binding SelectedStickerPack.SelectionCountText}" 
+                         VerticalAlignment="Center"
+                         Opacity="0.7"/>
+            </StackPanel>
+          </Grid>
+          
+          <!-- Pack Actions -->
+          <Grid Grid.Row="1" Margin="0,0,0,15" IsVisible="{Binding SelectedStickerPack.HasSelectedStickers}">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+              <TextBlock Text="{Binding SelectedStickerPack.SaveLocationText}" FontWeight="SemiBold"/>
+              <TextBlock Text="{Binding SelectedStickerPack.SelectedCountText}" 
+                         FontSize="12" 
+                         Opacity="0.7"/>
+            </StackPanel>
+            
+            <Button Grid.Column="1"
+                    Command="{Binding SelectedStickerPack.SelectSaveLocationCommand}"
+                    Classes="Basic"
+                    Margin="0,0,10,0">
+              <Button.Content>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                  <material:MaterialIcon Kind="FolderOpen" Width="16" Height="16"/>
+                  <TextBlock Text="{x:Static lang:Resources.Choose}"/>
+                </StackPanel>
+              </Button.Content>
+            </Button>
+            
+            <Button Grid.Column="2"
+                    Command="{Binding SelectedStickerPack.SaveSelectedStickersCommand}"
+                    Classes="Accent"
+                    IsEnabled="{Binding SelectedStickerPack.CanSave}">
+              <Button.Content>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                  <material:MaterialIcon Kind="ContentSave" Width="16" Height="16"/>
+                  <TextBlock Text="{x:Static lang:Resources.Save}"/>
+                </StackPanel>
+              </Button.Content>
+            </Button>
+          </Grid>
+          
+          <!-- Stickers Grid -->
+          <ItemsControl Grid.Row="2" ItemsSource="{Binding SelectedStickerPack.Stickers}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal" 
+                          ItemWidth="160" 
+                          ItemHeight="180"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:DiscordStickerViewModel">
+                <suki:GlassCard Margin="8" 
+                               Classes.Selected="{Binding IsSelected}"
+                               Cursor="Hand">
+                  <suki:GlassCard.Styles>
+                    <Style Selector="suki|GlassCard.Selected">
+                      <Setter Property="BorderBrush" Value="{DynamicResource SukiAccentColor}"/>
+                      <Setter Property="BorderThickness" Value="2"/>
+                    </Style>
+                  </suki:GlassCard.Styles>
+                  
+                  <Grid>
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="*"/>
+                      <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Sticker Preview Container -->
+                    <Border Grid.Row="0" 
+                           Margin="8"
+                           ToolTip.Tip="{Binding Description}"
+                           CornerRadius="8"
+                           ClipToBounds="True">
+                      <Grid>
+                        <!-- Lottie Animation Preview -->
+                        <lottie:LottieView Source="{Binding LocalFilePath}"
+                                           Fill="Fill"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           IsVisible="{Binding IsLottieLoaded}"/>
+                        
+                        <!-- Loading -->
+                        <Grid IsVisible="{Binding IsLoading}">
+                          <StackPanel HorizontalAlignment="Center" 
+                                     VerticalAlignment="Center"
+                                     Spacing="8">
+                            <material:MaterialIcon Kind="Loading" 
+                                                 Opacity="0.5"/>
+                            <TextBlock Text="{x:Static lang:Resources.LoadingDotDotDot}" 
+                                      FontSize="10" 
+                                      Opacity="0.7"
+                                      HorizontalAlignment="Center"/>
+                          </StackPanel>
+                        </Grid>
+                        
+                        <!-- Load Button for not loaded stickers -->
+                        <Button Command="{Binding LoadStickerCommand}"
+                                Classes="Basic"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                          <Button.IsVisible>
+                            <MultiBinding Converter="{x:Static BoolConverters.And}">
+                              <Binding Path="!IsLoading"/>
+                              <Binding Path="!IsLottieLoaded"/>
+                              <Binding Path="!LoadFailed"/>
+                            </MultiBinding>
+                          </Button.IsVisible>
+                          <StackPanel Orientation="Horizontal" Spacing="5">
+                            <material:MaterialIcon Kind="Download" Width="16" Height="16"/>
+                            <TextBlock Text="{x:Static lang:Resources.Load}" FontSize="10"/>
+                          </StackPanel>
+                        </Button>
+                        
+                        <!-- Loading Failed -->
+                        <StackPanel HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"
+                                   Spacing="8"
+                                   IsVisible="{Binding LoadFailed}">
+                          <material:MaterialIcon Kind="ImageBroken" 
+                                               Width="32" 
+                                               Height="32" 
+                                               Opacity="0.5"/>
+                          <TextBlock Text="{x:Static lang:Resources.LoadFailed}" 
+                                    FontSize="10" 
+                                    Opacity="0.7"
+                                    HorizontalAlignment="Center"/>
+                          <Button Command="{Binding LoadStickerCommand}"
+                                  Classes="Basic"
+                                  FontSize="9">
+                            <TextBlock Text="{x:Static lang:Resources.Retry}"/>
+                          </Button>
+                        </StackPanel>
+                      </Grid>
+                    </Border>
+                    
+                    <!-- Checkbox and info -->
+                    <Grid Grid.Row="1" Margin="8,0,8,8">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                      </Grid.ColumnDefinitions>
+                      
+                      <CheckBox Grid.Column="0"
+                               IsChecked="{Binding IsSelected}"
+                               VerticalAlignment="Center"/>
+                      
+                      <StackPanel Grid.Column="1" 
+                                 Margin="8,0,0,0"
+                                 VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Name}" 
+                                  FontSize="11"
+                                  FontWeight="SemiBold"
+                                  TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding TagsText}" 
+                                  FontSize="9"
+                                  Opacity="0.6"
+                                  TextTrimming="CharacterEllipsis"/>
+                      </StackPanel>
+                    </Grid>
+                  </Grid>
+                  
+                  <Interaction.Behaviors>
+                    <EventTriggerBehavior EventName="Tapped">
+                      <InvokeCommandAction Command="{Binding $parent[ItemsControl].((vm:DiscordStickerPackViewModel)DataContext).ToggleStickerSelectionCommand}"
+                                          CommandParameter="{Binding}"/>
+                    </EventTriggerBehavior>
+                  </Interaction.Behaviors>
+                </suki:GlassCard>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </Grid>
+      </suki:GlassCard>
+    </ScrollViewer>
+  </Grid>
+</UserControl>
