@@ -144,18 +144,18 @@
                                            Text="{x:Static lang:Resources.Quality}" />
                                 <Slider Minimum="1" Maximum="100" Width="150"
                                         Value="{Binding Quality, Mode=TwoWay}" />
-                                <NumericUpDown Minimum="1" Maximum="100" Width="80"
+                                <NumericUpDown Minimum="1" Maximum="100" Width="80" FormatString="0"
                                                Value="{Binding Quality, Mode=TwoWay}" />
                             </StackPanel>
 
                             <!-- Resolution -->
                             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Spacing="5">
                                 <TextBlock Width="60" VerticalAlignment="Center" Text="{x:Static lang:Resources.Width}" />
-                                <NumericUpDown Minimum="16" Maximum="4096" Width="80"
+                                <NumericUpDown Minimum="1" Maximum="100000" Width="80" Increment="5" FormatString="0"
                                                Value="{Binding OutputWidth, Mode=TwoWay}" />
                                 <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.Height}"
                                            Margin="10,0,0,0" />
-                                <NumericUpDown Minimum="16" Maximum="4096" Width="80"
+                                <NumericUpDown Minimum="1" Maximum="100000" Width="80" Increment="5" FormatString="0"
                                                Value="{Binding OutputHeight, Mode=TwoWay}" />
                             </StackPanel>
 
@@ -165,7 +165,7 @@
                                 <TextBlock Width="60" VerticalAlignment="Center" Text="{x:Static lang:Resources.Fps}" />
                                 <Slider Minimum="1" Maximum="240" Width="150"
                                         Value="{Binding Fps, Mode=TwoWay}" />
-                                <NumericUpDown Minimum="1" Maximum="240" Width="80"
+                                <NumericUpDown Minimum="1" Maximum="240" Width="80" FormatString="0"
                                                Value="{Binding Fps, Mode=TwoWay}" />
                             </StackPanel>
 

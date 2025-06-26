@@ -72,6 +72,11 @@ public class Converter
 
     public async Task<bool> ToGif(IProgress<TimeSpan>? progress = null, CancellationToken? externalToken = null)
     {
+        if (_options.Fps > 100)
+        {
+            Logger.Warn($"Fps is too high: {_options.Fps}, setting to 100.");
+            _options.Fps = 100;
+        }
         return await ConvertToFormat("gif", progress, externalToken);
     }
 

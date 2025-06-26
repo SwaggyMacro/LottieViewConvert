@@ -140,18 +140,18 @@
                                            Text="{x:Static lang:Resources.Quality}" />
                                 <Slider Minimum="1" Maximum="100" Width="180"
                                         Value="{Binding Quality, Mode=TwoWay}" />
-                                <NumericUpDown Minimum="1" Maximum="100" Width="80"
+                                <NumericUpDown Minimum="1" Maximum="100" Width="80" FormatString="0"
                                                Value="{Binding Quality, Mode=TwoWay}" />
                             </StackPanel>
                             <!-- Resolution and Fps -->
                             <StackPanel Grid.Row="1" Grid.Column="0" Margin="0 5 0 0"
                                         Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
                                 <TextBlock Width="80" VerticalAlignment="Center" Text="{x:Static lang:Resources.Width}" />
-                                <NumericUpDown Minimum="0.1" Maximum="10000" Increment="0.1" Width="100"
+                                <NumericUpDown Minimum="1" Maximum="10000" Increment="5" FormatString="0" Width="100"
                                                Value="{Binding Width, Mode=TwoWay}" />
                                 <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.Height}"
                                            Margin="10 0 0 0" />
-                                <NumericUpDown Minimum="0.1" Maximum="10000" Increment="0.1" Width="100"
+                                <NumericUpDown Minimum="1" Maximum="10000" Increment="5" FormatString="0" Width="100"
                                                Value="{Binding Height, Mode=TwoWay}" />
                             </StackPanel>
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="0 5 0 0"
@@ -159,7 +159,7 @@
                                 <TextBlock Width="60" VerticalAlignment="Center" Text="{x:Static lang:Resources.Fps}" />
                                 <Slider Minimum="1" Maximum="240" Width="180"
                                         Value="{Binding Fps, Mode=TwoWay}" />
-                                <NumericUpDown Minimum="1" Maximum="240" Width="80"
+                                <NumericUpDown Minimum="1" Maximum="240" Width="80" FormatString="0"
                                                Value="{Binding Fps, Mode=TwoWay}" />
                             </StackPanel>
                             <!-- PlaySpeed and convert -->
