@@ -217,7 +217,6 @@ dotnet publish -c Release -r linux-x64 --self-contained
 如果您遇到任何问题或有疑问：
 - 📝 [提交问题](https://github.com/SwaggyMacro/LottieViewConvert/issues)
 - 💬 [开始讨论](https://github.com/SwaggyMacro/LottieViewConvert/discussions)
-- 📧 邮箱：[your-email@example.com]
 
 ---
 <p align="center">由 <a href="https://github.com/SwaggyMacro">SwaggyMacro</a> 用 ❤️ 制作</p>
