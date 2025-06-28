@@ -220,7 +220,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you encounter any issues or have questions:
 - 📝 [Open an issue](https://github.com/SwaggyMacro/LottieViewConvert/issues)
 - 💬 [Start a discussion](https://github.com/SwaggyMacro/LottieViewConvert/discussions)
-- 📧 Email: [your-email@example.com]
 
 ---
 <p align="center">Made with ❤️ by <a href="https://github.com/SwaggyMacro">SwaggyMacro</a></p>
