@@ -427,137 +427,120 @@ public class TgsDownloadViewModel : Page, IDisposable
     }
     private async Task SaveSelectedStickersAsGif()
     {
-        await Task.Yield();
-        // indicate GIF saving in progress
-        _ = Dispatcher.UIThread.InvokeAsync(() =>
+        // initialize UI state for GIF saving
+        await Dispatcher.UIThread.InvokeAsync(() =>
         {
             IsSavingGif = true;
             SaveGifProgress = 0;
         });
+
+        var selectedStickers = StickerItems
+            .Where(x => x.IsSelected && (x.IsImageFile || x.IsVideoFile))
+            .ToList();
+        Directory.CreateDirectory(SaveLocation);
+
         try
         {
-            Directory.CreateDirectory(SaveLocation);
-            var selectedStickers = StickerItems
-                .Where(x => x.IsSelected && ((x.IsImageFile && x.FileExtension.Equals(".webp", StringComparison.OrdinalIgnoreCase)) || (x.IsVideoFile && x.FileExtension.Equals(".webm", StringComparison.OrdinalIgnoreCase))))
-                .ToList();
-            int totalCount = selectedStickers.Count;
-            int savedCount = 0;
-
-            foreach (var sticker in selectedStickers)
+            await Task.Run(async () =>
             {
-                // update progress before processing
-                savedCount++;
-                var count = savedCount;
-                _ = Dispatcher.UIThread.InvokeAsync(() => SaveGifProgress = (double)count / totalCount * 100);
-                var fileNameWithoutExt = Path.GetFileNameWithoutExtension(sticker.FileName);
-                var destPath = Path.Combine(SaveLocation, fileNameWithoutExt + ".gif");
-
-                if (sticker.IsImageFile && sticker.FileExtension.Equals(".webp", StringComparison.OrdinalIgnoreCase))
+                var totalCount = selectedStickers.Count;
+                var processed = 0;
+                var semaphore = new SemaphoreSlim(6);
+                var tasks = selectedStickers.Select(async sticker =>
                 {
-                    using var images = new MagickImageCollection();
-                    images.Read(sticker.FilePath);
-                    await Task.Run(() => images.Write(destPath));
-                }
-                else
-                {
-                    // export png sequence from webm video
-                    var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-                    Directory.CreateDirectory(tempDir);
-    
-                    var extractArgs = new List<string>
+                    await semaphore.WaitAsync();
+                    try
                     {
-                        "-hide_banner",
-                        "-y",
-                        "-vcodec", "libvpx-vp9", // webm codec
-                        "-i", sticker.FilePath,
-                        "-vf", "format=yuva420p",
-                        "-c:v", "png",
-                        "-pix_fmt", "rgba",
-                        Path.Combine(tempDir, "frame_%03d.png")
-                    };
-    
-                    var executor = new CommandExecutor();
-                    var workingDir = Path.GetDirectoryName(sticker.FilePath) ?? string.Empty;
-                    var extractSuccess = await executor.ExecuteAsync("ffmpeg", extractArgs, workingDir);
-    
-                    if (extractSuccess)
-                    {
-                        // create gif via MagickImage
-                        using var images = new MagickImageCollection();
-                        var frameFiles = Directory.GetFiles(tempDir, "frame_*.png").OrderBy(f => f);
+                        var fileName = Path.GetFileNameWithoutExtension(sticker.FileName);
+                        var destPath = Path.Combine(SaveLocation, fileName + ".gif");
 
-                        MagickImage? previousFrame = null;
-
-                        foreach (var frameFile in frameFiles)
+                        // reuse existing conversion logic (Magick or ffmpeg + Magick)
+                        if (sticker.IsImageFile)
                         {
-                            var currentFrame = new MagickImage(frameFile);
-                            currentFrame.BackgroundColor = MagickColors.Transparent;
-                            currentFrame.Alpha(AlphaOption.Set);
-    
-                            // ensure is complete frame, if not first frame
-                            if (previousFrame != null)
-                            {
-                                // create a transparent background
-                                var fullFrame = new MagickImage(MagickColors.Transparent, currentFrame.Width, currentFrame.Height);
-                                fullFrame.Composite(currentFrame, CompositeOperator.Over);
-                                images.Add(fullFrame);
-                                currentFrame.Dispose();
-                            }
-                            else
-                            {
-                                images.Add(currentFrame);
-                            }
-    
-                            previousFrame?.Dispose();
-                            previousFrame = (MagickImage)images.Last().Clone();
+                            using var imgList = new MagickImageCollection();
+                            await imgList.ReadAsync(sticker.FilePath);
+                            await imgList.WriteAsync(destPath);
                         }
-                        // set gif properties
-                        foreach (var image in images)
+                        else
                         {
-                            // play each frame for 3/100 seconds
-                            image.AnimationDelay = 3;
-                            image.Format = MagickFormat.Gif;
-                            image.GifDisposeMethod = GifDisposeMethod.Background;
-                            image.BackgroundColor = MagickColors.Transparent;
+                            // webm conversion via ffmpeg + MagickImageCollection
+                            var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+                            Directory.CreateDirectory(tempDir);
+                            var exec = new CommandExecutor();
+                            var extractArgs = new List<string>
+                            {
+                                "-hide_banner", "-y",
+                                "-vcodec", "libvpx-vp9", "-i", sticker.FilePath,
+                                "-vf", "format=yuva420p", "-c:v", "png", "-pix_fmt", "rgba",
+                                Path.Combine(tempDir, "frame_%03d.png")
+                            };
+                            if (await exec.ExecuteAsync("ffmpeg", extractArgs, Path.GetDirectoryName(sticker.FilePath) ?? string.Empty))
+                            {
+                                using var imgList = new MagickImageCollection();
+                                foreach (var f in Directory.GetFiles(tempDir, "frame_*.png").OrderBy(f => f))
+                                {
+                                    var img = new MagickImage(f)
+                                    { BackgroundColor = MagickColors.Transparent };
+                                    img.Alpha(AlphaOption.Set);
+                                    imgList.Add(img);
+                                }
+                                foreach (var img in imgList)
+                                {
+                                    img.AnimationDelay = 3;
+                                    img.Format = MagickFormat.Gif;
+                                    img.GifDisposeMethod = GifDisposeMethod.Background;
+                                    img.BackgroundColor = MagickColors.Transparent;
+                                }
+                                await imgList.WriteAsync(destPath);
+                                Directory.Delete(tempDir, true);
+                            }
                         }
-    
-                        await Task.Run(() => images.Write(destPath));
-                        previousFrame?.Dispose();
-        
-                        // clean up temporary files
-                        Directory.Delete(tempDir, true);
                     }
-                }
-            }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                    var count = Interlocked.Increment(ref processed);
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                        SaveGifProgress = (double)count / totalCount * 100
+                    );
+                }).ToList();
+                await Task.WhenAll(tasks);
+            });
 
-            // ensure progress at 100% after completion
-            _ = Dispatcher.UIThread.InvokeAsync(() => SaveGifProgress = 100);
-            DownloadStatusText = $"{Resources.SaveSucceeded} {savedCount} GIF {Resources.Sticker} {SaveLocation}";
-            Global.GetToastManager().CreateToast()
-                .WithTitle(Resources.SaveSucceeded)
-                .WithContent(DownloadStatusText)
-                .OfType(NotificationType.Success)
-                .WithActionButton(Resources.Open, _ => { FolderUtil.OpenSavedFolder(SaveLocation); })
-                .Dismiss().ByClicking()
-                .Dismiss().After(TimeSpan.FromSeconds(5))
-                .Queue();
+            // success: finalize on UI thread
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                SaveGifProgress = 100;
+                DownloadStatusText = $"{Resources.SaveSucceeded} {selectedStickers.Count} GIF {Resources.Sticker} {SaveLocation}";
+                Global.GetToastManager()
+                    .CreateToast()
+                    .WithTitle(Resources.SaveSucceeded)
+                    .WithContent(DownloadStatusText)
+                    .OfType(NotificationType.Success)
+                    .WithActionButton(Resources.Open, _ => FolderUtil.OpenSavedFolder(SaveLocation))
+                    .Dismiss().ByClicking()
+                    .Dismiss().After(TimeSpan.FromSeconds(5))
+                    .Queue();
+                IsSavingGif = false;
+            });
         }
         catch (Exception ex)
         {
-            DownloadStatusText = $"{Resources.SaveFailed}: {ex.Message}";
-            Logger.Error($"Save as GIF failed: {ex}");
-            Global.GetToastManager().CreateToast()
-                .WithTitle(Resources.SaveFailed)
-                .WithContent(DownloadStatusText)
-                .OfType(NotificationType.Error)
-                .Dismiss().ByClicking()
-                .Dismiss().After(TimeSpan.FromSeconds(5))
-                .Queue();
-        }
-        finally
-        {
-            // done saving GIF
-            _ = Dispatcher.UIThread.InvokeAsync(() => IsSavingGif = false);
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                DownloadStatusText = $"{Resources.SaveFailed}: {ex.Message}";
+                Logger.Error($"Save as GIF failed: {ex}");
+                Global.GetToastManager()
+                    .CreateToast()
+                    .WithTitle(Resources.SaveFailed)
+                    .WithContent(DownloadStatusText)
+                    .OfType(NotificationType.Error)
+                    .Dismiss().ByClicking()
+                    .Dismiss().After(TimeSpan.FromSeconds(5))
+                    .Queue();
+                IsSavingGif = false;
+            });
         }
     }
 
