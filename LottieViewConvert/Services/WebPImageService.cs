@@ -82,8 +82,12 @@ namespace LottieViewConvert.Services
                 }
                 else
                 {
-                    // regular image loading
-                    return new Bitmap(filePath);
+                    // regular image loading via memory stream to allow file deletion after load
+                    using var fs = File.OpenRead(filePath);
+                    var ms = new MemoryStream();
+                    fs.CopyTo(ms);
+                    ms.Seek(0, SeekOrigin.Begin);
+                    return new Bitmap(ms);
                 }
             }
             catch (Exception ex)

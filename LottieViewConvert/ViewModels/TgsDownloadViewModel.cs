@@ -12,6 +12,7 @@ using Avalonia.Controls.Notifications;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using LottieViewConvert.Helper;
+using LottieViewConvert.Helper.Convert;
 using LottieViewConvert.Helper.LogHelper;
 using LottieViewConvert.Lang;
 using LottieViewConvert.Models;
@@ -32,6 +33,7 @@ public class TgsDownloadViewModel : Page, IDisposable
         @"t\.me/(?:addstickers|addemoji)/([^/?#\s]+)",
         RegexOptions.IgnoreCase | RegexOptions.Compiled
     );
+
     public TgsDownloadViewModel() : base(Resources.Telegram, MaterialIconKind.SendCheck, 2)
     {
         _tempDownloadPath = Path.Combine(Path.GetTempPath(), "TgsDownload");
@@ -363,6 +365,7 @@ public class TgsDownloadViewModel : Page, IDisposable
 
     private async Task SaveSelectedStickers()
     {
+        await Task.Yield();
         try
         {
             Directory.CreateDirectory(SaveLocation);
@@ -509,21 +512,24 @@ public class StickerItemViewModel : ReactiveObject
     private Bitmap? _previewImage;
     private bool _isImageLoading;
     private bool _imageLoadFailed;
+    private static readonly VideoCoverExtractor SVideoCoverExtractor = new(new CommandExecutor());
 
-    public string FilePath 
+    public string FilePath
     { 
         get => _filePath;
-        set 
+        set
         {
             this.RaiseAndSetIfChanged(ref _filePath, value);
             this.RaisePropertyChanged(nameof(IsTgsFile));
             this.RaisePropertyChanged(nameof(IsImageFile));
+            this.RaisePropertyChanged(nameof(IsVideoFile));
             this.RaisePropertyChanged(nameof(FileExtension));
             
-            if (IsImageFile)
+            if (IsImageFile || IsVideoFile)
             {
                 _ = LoadPreviewImageAsync();
             }
+            this.RaisePropertyChanged(nameof(IsPreview));
         }
     }
     
@@ -560,11 +566,17 @@ public class StickerItemViewModel : ReactiveObject
     public bool IsTgsFile => Path.GetExtension(FilePath).Equals(".tgs", StringComparison.OrdinalIgnoreCase);
     
     public bool IsImageFile => !IsTgsFile && IsImageExtension(Path.GetExtension(FilePath));
-    
+    public bool IsVideoFile => !IsTgsFile && IsVideoExtension(FileExtension);
+    public bool IsPreview => IsImageFile || IsVideoFile;
     private static bool IsImageExtension(string extension)
     {
         var imageExtensions = new[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp", ".ico" };
         return imageExtensions.Contains(extension.ToLowerInvariant());
+    }
+    private static bool IsVideoExtension(string extension)
+    {
+        var videoExt = new[] { ".webm" };
+        return videoExt.Contains(extension.ToLowerInvariant());
     }
 
     private async Task LoadPreviewImageAsync()
@@ -578,7 +590,22 @@ public class StickerItemViewModel : ReactiveObject
 
         try
         {
-            var bitmap = await WebPImageService.Instance.LoadImageAsync(FilePath);
+            Bitmap? bitmap = null;
+            if (IsVideoFile)
+            {
+                // extract first frame
+                var tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".png");
+                var ok = await SVideoCoverExtractor.ExtractCoverFrameAsync(FilePath, tempFile);
+                if (ok && File.Exists(tempFile))
+                {
+                    bitmap = await WebPImageService.Instance.LoadImageAsync(tempFile);
+                    File.Delete(tempFile);
+                }
+            }
+            else
+            {
+                bitmap = await WebPImageService.Instance.LoadImageAsync(FilePath);
+            }
             
             await Dispatcher.UIThread.InvokeAsync(() =>
             {

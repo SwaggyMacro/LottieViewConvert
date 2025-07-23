@@ -225,38 +225,16 @@
                                            VerticalAlignment="Center"
                                            IsVisible="{Binding IsTgsFile}"/>
                         
-                        <!-- Image Preview -->
+                        <!-- Image/Video(WebM) Cover Preview -->
                         <Image Source="{Binding PreviewImage}"
                                Stretch="Uniform"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               IsVisible="{Binding IsImageFile}"/>
+                               IsVisible="{Binding IsPreview}"/>
                         
-                        <!-- Loading -->
-                        <Grid IsVisible="{Binding IsImageLoading}">
-                          <StackPanel HorizontalAlignment="Center" 
-                                     VerticalAlignment="Center"
-                                     Spacing="8">
-                            <material:MaterialIcon Kind="Loading" 
-                                                 Width="24" 
-                                                 Height="24" 
-                                                 Opacity="0.5">
-                              <material:MaterialIcon.RenderTransform>
-                                <RotateTransform>
-                                  <RotateTransform.Angle>
-                                    <MultiBinding Converter="{x:Static BoolConverters.And}">
-                                      <Binding Path="IsImageLoading"/>
-                                      <Binding Source="0"/>
-                                    </MultiBinding>
-                                  </RotateTransform.Angle>
-                                </RotateTransform>
-                              </material:MaterialIcon.RenderTransform>
-                            </material:MaterialIcon>
-                            <TextBlock Text="{x:Static lang:Resources.LoadingDotDotDot}" 
-                                      FontSize="10" 
-                                      Opacity="0.7"
-                                      HorizontalAlignment="Center"/>
-                          </StackPanel>
+                        <!-- Loading Indicator -->
+                        <Grid IsVisible="{Binding IsImageLoading}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                          <ProgressBar IsIndeterminate="True" Width="40" Height="4" Classes="Accent"/>
                         </Grid>
                         
                         <!-- Loading Failed -->
