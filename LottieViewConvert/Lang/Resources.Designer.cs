@@ -1780,6 +1780,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save as Gif.
+        /// </summary>
+        public static string SaveAsGif {
+            get {
+                return ResourceManager.GetString("SaveAsGif", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save failed.
         /// </summary>
         public static string SaveFailed {

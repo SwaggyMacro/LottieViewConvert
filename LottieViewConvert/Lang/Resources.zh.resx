@@ -773,4 +773,7 @@
     <data name="FeatureLine11" xml:space="preserve">
         <value>• 从 Discord 解析 &amp; 下载 动画贴纸包</value>
     </data>
+    <data name="SaveAsGif" xml:space="preserve">
+        <value>保存为 Gif</value>
+    </data>
 </root>
