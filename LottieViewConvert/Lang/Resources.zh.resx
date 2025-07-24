@@ -776,4 +776,7 @@
     <data name="SaveAsGif" xml:space="preserve">
         <value>保存为 Gif</value>
     </data>
+    <data name="Scale" xml:space="preserve">
+        <value>缩放</value>
+    </data>
 </root>

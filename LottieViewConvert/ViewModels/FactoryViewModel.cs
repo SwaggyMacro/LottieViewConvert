@@ -18,6 +18,9 @@ using LottieViewConvert.Lang;
 using LottieViewConvert.Models;
 using ReactiveUI;
 using SukiUI.Toasts;
+using SkiaSharp;
+using SkiaSharp.Skottie;
+using LottieViewConvert.Utils;
 
 namespace LottieViewConvert.ViewModels;
 
@@ -51,7 +54,7 @@ public class FactoryViewModel : Page
         set => this.RaiseAndSetIfChanged(ref _selectedFilePath, value);
     }
 
-    private int _fps = 60;
+    private int _fps = 100;
     public int Fps
     {
         get => _fps;
@@ -65,11 +68,11 @@ public class FactoryViewModel : Page
         set => this.RaiseAndSetIfChanged(ref _speed, value);
     }
     
-    private int _concurrentTasks = 2;
+    private int _concurrentTasks = 5;
     public int ConcurrentTasks
     {
         get => _concurrentTasks;
-        set => this.RaiseAndSetIfChanged(ref _concurrentTasks, Math.Max(1, Math.Min(8, value)));
+        set => this.RaiseAndSetIfChanged(ref _concurrentTasks, Math.Max(1, Math.Min(16, value)));
     }
 
     // Conversion formats
@@ -93,7 +96,7 @@ public class FactoryViewModel : Page
     }
 
     // Quality and output size
-    private int _quality = 75;
+    private int _quality = 100;
     public int Quality
     {
         get => _quality;
@@ -104,14 +107,56 @@ public class FactoryViewModel : Page
     public int OutputWidth
     {
         get => _outputWidth;
-        set => this.RaiseAndSetIfChanged(ref _outputWidth, value);
+        set
+        {
+            if (value < 1) value = 1;
+            this.RaiseAndSetIfChanged(ref _outputWidth, value);
+            if (LockAspect && !_isAspectAdjusting && _intrinsicWidth > 0)
+            {
+                try { _isAspectAdjusting = true;
+                    OutputHeight = (int)Math.Round(_outputWidth * (_intrinsicHeight / _intrinsicWidth));
+                } finally { _isAspectAdjusting = false; }
+            }
+        }
     }
 
     private int _outputHeight = 512;
     public int OutputHeight
     {
         get => _outputHeight;
-        set => this.RaiseAndSetIfChanged(ref _outputHeight, value);
+        set
+        {
+            if (value < 1) value = 1;
+            this.RaiseAndSetIfChanged(ref _outputHeight, value);
+            if (LockAspect && !_isAspectAdjusting && _intrinsicHeight > 0)
+            {
+                try { _isAspectAdjusting = true;
+                    OutputWidth = (int)Math.Round(_outputHeight * (_intrinsicWidth / _intrinsicHeight));
+                } finally { _isAspectAdjusting = false; }
+            }
+        }
+    }
+    // intrinsic animation size and aspect/scale support
+    private double _intrinsicWidth;
+    private double _intrinsicHeight;
+    private bool _isAspectAdjusting;
+    private bool _lockAspect;
+    public bool LockAspect
+    {
+        get => _lockAspect;
+        set => this.RaiseAndSetIfChanged(ref _lockAspect, value);
+    }
+    private bool _useProportionalScaling;
+    public bool UseProportionalScaling
+    {
+        get => _useProportionalScaling;
+        set => this.RaiseAndSetIfChanged(ref _useProportionalScaling, value);
+    }
+    private double _scale;
+    public double Scale
+    {
+        get => _scale;
+        set => this.RaiseAndSetIfChanged(ref _scale, value);
     }
     
     private bool _isFileListVisible;
@@ -459,14 +504,53 @@ public class FactoryViewModel : Page
                 fileItem.Progress = 0;
             });
 
+            // Calculate effective dimensions per file
+            var widthForThis = OutputWidth;
+            var heightForThis = OutputHeight;
+            if (UseProportionalScaling)
+            {
+                try
+                {
+                    await using var fs = File.OpenRead(fileItem.FullPath);
+                    Stream dataStream = fs;
+                    if (LottieUtil.IsGzipCompressed(fs))
+                        dataStream = LottieUtil.UncompressGzip(fs);
+                    using var skStream = new SKManagedStream(dataStream);
+                    if (Animation.TryCreate(skStream, out var anim))
+                    {
+                        widthForThis = (int)Math.Round(anim.Size.Width * Scale);
+                        heightForThis = (int)Math.Round(anim.Size.Height * Scale);
+                        anim.Dispose();
+                    }
+                }
+                catch { /* keep default OutputWidth/OutputHeight */ }
+            }
+            else if (LockAspect)
+            {
+                try
+                {
+                    await using var fs = File.OpenRead(fileItem.FullPath);
+                    Stream dataStream = fs;
+                    if (LottieUtil.IsGzipCompressed(fs))
+                        dataStream = LottieUtil.UncompressGzip(fs);
+                    using var skStream = new SKManagedStream(dataStream);
+                    if (Animation.TryCreate(skStream, out var anim))
+                    {
+                        heightForThis = (int)Math.Round(OutputWidth * (anim.Size.Height / anim.Size.Width));
+                        anim.Dispose();
+                    }
+                }
+                catch { /* keep default OutputHeight */ }
+            }
+            // else keep explicit size defaults
             var converter = new Converter(
                 fileItem.FullPath,
                 OutputFolder!,
                 new ConversionOptions
                 {
                     PlaySpeed = Speed,
-                    Width = OutputWidth,
-                    Height = OutputHeight,
+                    Width = widthForThis,
+                    Height = heightForThis,
                     Fps = Fps,
                     Quality = Quality
                 }
@@ -479,33 +563,18 @@ public class FactoryViewModel : Page
                 });
             };
 
-            var success = false;
-            switch (SelectedFormat.ToLowerInvariant())
+            var success = SelectedFormat.ToLowerInvariant() switch
             {
-                case "gif":
-                    success = await converter.ToGif(null, cancellationToken);
-                    break;
-                case "png":
-                case "webp":
-                    success = await converter.ToWebp(null, cancellationToken);
-                    break;
-                case "mp4":
-                    success = await converter.ToMp4(null, cancellationToken);
-                    break;
-                case "apng":
-                    success = await converter.ToApng(null, cancellationToken);
-                    break;
-                case "webm":
-                    success = await converter.ToWebm(null, cancellationToken);
-                    break;
-                case "avif":
-                    success = await converter.ToAvif(null, cancellationToken);
-                    break;
-                case "mkv":
-                    success = await converter.ToMkv(null, cancellationToken);
-                    break;
-            }
-            
+                "gif" => await converter.ToGif(null, cancellationToken),
+                "png" or "webp" => await converter.ToWebp(null, cancellationToken),
+                "mp4" => await converter.ToMp4(null, cancellationToken),
+                "apng" => await converter.ToApng(null, cancellationToken),
+                "webm" => await converter.ToWebm(null, cancellationToken),
+                "avif" => await converter.ToAvif(null, cancellationToken),
+                "mkv" => await converter.ToMkv(null, cancellationToken),
+                _ => false
+            };
+
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 fileItem.Status = success ? ConversionStatus.Success : ConversionStatus.Failed;
@@ -572,6 +641,29 @@ public class FactoryViewModel : Page
         ExportCurrentFrameCommand = ReactiveCommand.Create(ExportCurrentFrame, 
             this.WhenAnyValue(vm => vm.SelectedFilePath, path => !string.IsNullOrWhiteSpace(path) && File.Exists(path))
                 .CombineLatest(this.WhenAnyValue(vm => vm.LottieViewCurrentFrame), (hasFile, frame) => hasFile && frame >= 0));
+        // Load intrinsic size when selection changes
+        this.WhenAnyValue(vm => vm.SelectedFileItem)
+            .Subscribe(value =>
+            {
+                if (value != null)
+                {
+                    // update path
+                    SelectedFilePath = value.FullPath;
+                    // load intrinsic animation size
+                    try
+                    {
+                        using var fs = File.OpenRead(value.FullPath);
+                        using var skStream = new SKManagedStream(fs);
+                        if (Animation.TryCreate(skStream, out var anim))
+                        {
+                            _intrinsicWidth = anim.Size.Width;
+                            _intrinsicHeight = anim.Size.Height;
+                            anim.Dispose();
+                        }
+                    }
+                    catch { }
+                }
+            });
     }
     
     private void GenerateOutputFolder()

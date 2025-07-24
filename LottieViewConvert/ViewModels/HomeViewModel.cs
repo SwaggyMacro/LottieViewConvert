@@ -17,6 +17,8 @@ using LottieViewConvert.Models;
 using LottieViewConvert.Utils;
 using ReactiveUI;
 using SukiUI.Toasts;
+using SkiaSharp;
+using SkiaSharp.Skottie;
 
 namespace LottieViewConvert.ViewModels
 {
@@ -51,10 +53,7 @@ namespace LottieViewConvert.ViewModels
         public int LottieViewTotalFrames
         {
             get => _lottieViewTotalFrames;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _lottieViewTotalFrames, value);
-            }
+            set => this.RaiseAndSetIfChanged(ref _lottieViewTotalFrames, value);
         }
 
         private string _statusText = Resources.DragHereToConvert;
@@ -106,6 +105,12 @@ namespace LottieViewConvert.ViewModels
             {
                 if (value < 1) value = 1;
                 this.RaiseAndSetIfChanged(ref _width, value);
+                if (LockAspect && !_isAspectAdjusting && _intrinsicWidth > 0)
+                {
+                    try { _isAspectAdjusting = true;
+                        Height = (int)Math.Round(_width * (_intrinsicHeight / _intrinsicWidth));
+                    } finally { _isAspectAdjusting = false; }
+                }
             }
         }
 
@@ -118,6 +123,12 @@ namespace LottieViewConvert.ViewModels
             {
                 if (value < 1) value = 1;
                 this.RaiseAndSetIfChanged(ref _height, value);
+                if (LockAspect && !_isAspectAdjusting && _intrinsicHeight > 0)
+                {
+                    try { _isAspectAdjusting = true;
+                        Width = (int)Math.Round(_height * (_intrinsicWidth / _intrinsicHeight));
+                    } finally { _isAspectAdjusting = false; }
+                }
             }
         }
 
@@ -144,6 +155,20 @@ namespace LottieViewConvert.ViewModels
                 this.RaiseAndSetIfChanged(ref _playSpeed, value);
             }
         }
+        
+        private bool _useProportionalScaling;
+        public bool UseProportionalScaling
+        {
+            get => _useProportionalScaling;
+            set => this.RaiseAndSetIfChanged(ref _useProportionalScaling, value);
+        }
+
+        private double _scale;
+        public double Scale
+        {
+            get => _scale;
+            set => this.RaiseAndSetIfChanged(ref _scale, value);
+        }
 
         private double _progressValue;
 
@@ -165,6 +190,17 @@ namespace LottieViewConvert.ViewModels
         public ReactiveCommand<Unit, Unit> OpenReadmeCommand { get; }
         public ReactiveCommand<Unit, Unit> LottieViewPauseResumeCommand { get; }
         public ReactiveCommand<Unit, Unit> ExportCurrentFrameCommand { get; }
+        
+        private double _intrinsicWidth;
+        private double _intrinsicHeight;
+        private bool _isAspectAdjusting;
+        
+        private bool _lockAspect;
+        public bool LockAspect
+        {
+            get => _lockAspect;
+            set => this.RaiseAndSetIfChanged(ref _lockAspect, value);
+        }
 
         public HomeViewModel()
             : base(Resources.Home, Material.Icons.MaterialIconKind.Home)
@@ -201,14 +237,31 @@ namespace LottieViewConvert.ViewModels
         {
             try
             {
+                // Compute output dimensions using intrinsic size when scaling
+                int effWidth, effHeight;
+                if (UseProportionalScaling && Scale > 0)
+                {
+                    using var fs = File.OpenRead(LottieSource!);
+                    using var skStream = new SKManagedStream(fs);
+                    if (!Animation.TryCreate(skStream, out var anim))
+                        throw new InvalidOperationException($"Failed to load Lottie animation for scaling: {LottieSource}");
+                    effWidth = (int)Math.Round(anim.Size.Width * Scale);
+                    effHeight = (int)Math.Round(anim.Size.Height * Scale);
+                    anim.Dispose();
+                }
+                else
+                {
+                    effWidth = Width;
+                    effHeight = Height;
+                }
                 PngExporter.ExportSingleFrame(
                     LottieSource!,
                     Path.Combine(OutputFolder!, $"{Path.GetFileNameWithoutExtension(LottieSource)}_frame{LottieViewCurrentFrame}.png"),
                     LottieViewCurrentFrame,
                     Fps,
                     PlaySpeed,
-                    Width,
-                    Height
+                    effWidth,
+                    effHeight
                 );
                 Global.GetToastManager().CreateToast()
                     .WithTitle(Resources.Export)
@@ -244,14 +297,59 @@ namespace LottieViewConvert.ViewModels
                 {
                     StatusText = "Starting conversion...";
 
+                    // Calculate effective dimensions
+                    var widthForThis = Width;
+                    var heightForThis = Height;
+                    if (UseProportionalScaling)
+                    {
+                        try
+                        {
+                            await using var fs = File.OpenRead(LottieSource!);
+                            Stream dataStream = fs;
+                            if (LottieUtil.IsGzipCompressed(fs))
+                                dataStream = LottieUtil.UncompressGzip(fs);
+                            using var skStream = new SKManagedStream(dataStream);
+                            if (Animation.TryCreate(skStream, out var anim))
+                            {
+                                widthForThis = (int)Math.Round(anim.Size.Width * Scale);
+                                heightForThis = (int)Math.Round(anim.Size.Height * Scale);
+                                anim.Dispose();
+                            }
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
+                    }
+                    else if (LockAspect)
+                    {
+                        try
+                        {
+                            await using var fs = File.OpenRead(LottieSource!);
+                            Stream dataStream = fs;
+                            if (LottieUtil.IsGzipCompressed(fs))
+                                dataStream = LottieUtil.UncompressGzip(fs);
+                            using var skStream = new SKManagedStream(dataStream);
+                            if (Animation.TryCreate(skStream, out var anim))
+                            {
+                                heightForThis = (int)Math.Round(widthForThis * (anim.Size.Height / anim.Size.Width));
+                                anim.Dispose();
+                            }
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
+                    }
+
                     var converter = new Converter(
-                        LottieSource,
+                        LottieSource!,
                         OutputFolder!,
                         new ConversionOptions
                         {
                             PlaySpeed = PlaySpeed,
-                            Width = Width,
-                            Height = Height,
+                            Width = widthForThis,
+                            Height = heightForThis,
                             Fps = Fps,
                             Quality = Quality
                         }
@@ -331,7 +429,7 @@ namespace LottieViewConvert.ViewModels
             try
             {
                 var uri = new Uri(OutputFolder!);
-                if (uri.IsAbsoluteUri && uri.IsFile)
+                if (uri is { IsAbsoluteUri: true, IsFile: true })
                 {
                     System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
                     {
@@ -384,6 +482,22 @@ namespace LottieViewConvert.ViewModels
                             LottieSource = uri.LocalPath;
                             StatusText = Resources.FileLoadedSuccessfully;
                             GenerateOutputFolder();
+                            // Load intrinsic animation size for aspect ratio
+                            try
+                            {
+                                await using var fs = File.OpenRead(LottieSource!);
+                                using var skStream = new SKManagedStream(fs);
+                                if (Animation.TryCreate(skStream, out var anim))
+                                {
+                                    _intrinsicWidth = anim.Size.Width;
+                                    _intrinsicHeight = anim.Size.Height;
+                                    anim.Dispose();
+                                }
+                            }
+                            catch
+                            {
+                                // ignored
+                            }
                         }
                         else
                         {

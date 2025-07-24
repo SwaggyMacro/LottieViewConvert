@@ -1825,6 +1825,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scale.
+        /// </summary>
+        public static string Scale {
+            get {
+                return ResourceManager.GetString("Scale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select All.
         /// </summary>
         public static string SelectAll {

@@ -9,6 +9,7 @@ public static class BoolToIconConverters
 {
     public static readonly BoolToIconConverter Animation = new(MaterialIconKind.Play, MaterialIconKind.Pause);
     public static readonly BoolToIconConverter WindowLock = new(MaterialIconKind.Unlocked, MaterialIconKind.Lock);
+    public static readonly BoolToIconConverter Link = new(MaterialIconKind.Link, MaterialIconKind.LinkOff);
     public static readonly BoolToIconConverter Visibility = new(MaterialIconKind.EyeClosed, MaterialIconKind.Eye);
     public static readonly BoolToIconConverter Simple = new(MaterialIconKind.Close, MaterialIconKind.Ticket);
 }

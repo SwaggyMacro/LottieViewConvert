@@ -13,6 +13,7 @@
              x:Class="LottieViewConvert.Views.HomeView">
     <UserControl.Resources>
         <converters:ProgressToBoolConverter x:Key="ProgressToBoolConverter" />
+        <converters:BooleanNegationConverter x:Key="BooleanNegationConverter" />
     </UserControl.Resources>
     <Border Margin="10">
         <!-- Tow columns, two rows layout: DropZone on the left spanning two rows; right side has two rows for What's This and How To Use -->
@@ -134,13 +135,13 @@
                                           ItemsSource="{Binding AvailableFormats}"
                                           SelectedItem="{Binding SelectedFormat, Mode=TwoWay}" />
                             </StackPanel>
-                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="0 5 0 0"
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="50 5 0 0"
                                         Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
                                 <TextBlock Width="60" VerticalAlignment="Center"
                                            Text="{x:Static lang:Resources.Quality}" />
                                 <Slider Minimum="1" Maximum="100" Width="180"
                                         Value="{Binding Quality, Mode=TwoWay}" />
-                                <NumericUpDown Minimum="1" Maximum="100" Width="80" FormatString="0"
+                                <NumericUpDown Minimum="1" Maximum="100" Width="100" FormatString="0"
                                                Value="{Binding Quality, Mode=TwoWay}" />
                             </StackPanel>
                             <!-- Resolution and Fps -->
@@ -148,31 +149,50 @@
                                         Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
                                 <TextBlock Width="80" VerticalAlignment="Center" Text="{x:Static lang:Resources.Width}" />
                                 <NumericUpDown Minimum="1" Maximum="10000" Increment="5" FormatString="0" Width="100"
-                                               Value="{Binding Width, Mode=TwoWay}" />
+                                               Value="{Binding Width, Mode=TwoWay}"
+                                               IsEnabled="{Binding UseProportionalScaling, Converter={StaticResource BooleanNegationConverter}}" />
+                                <ToggleButton Width="30" Height="30" IsChecked="{Binding LockAspect}"
+                                              IsEnabled="{Binding UseProportionalScaling, Converter={StaticResource BooleanNegationConverter}}"
+                                              Classes="Basic Rounded" Margin="5 0">
+                                    <ToggleButton.Content>
+                                        <avalonia:MaterialIcon Margin="-3"
+                                                               Kind="{Binding LockAspect, Converter={x:Static converters:BoolToIconConverters.Link}}" />
+                                    </ToggleButton.Content>
+                                </ToggleButton>
                                 <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.Height}"
                                            Margin="10 0 0 0" />
                                 <NumericUpDown Minimum="1" Maximum="10000" Increment="5" FormatString="0" Width="100"
-                                               Value="{Binding Height, Mode=TwoWay}" />
+                                               Value="{Binding Height, Mode=TwoWay}"
+                                               IsEnabled="{Binding UseProportionalScaling, Converter={StaticResource BooleanNegationConverter}}" />
                             </StackPanel>
-                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="0 5 0 0"
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="50 5 0 0"
                                         Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
                                 <TextBlock Width="60" VerticalAlignment="Center" Text="{x:Static lang:Resources.Fps}" />
                                 <Slider Minimum="1" Maximum="240" Width="180"
                                         Value="{Binding Fps, Mode=TwoWay}" />
-                                <NumericUpDown Minimum="1" Maximum="240" Width="80" FormatString="0"
+                                <NumericUpDown Minimum="1" Maximum="240" Width="100" FormatString="0"
                                                Value="{Binding Fps, Mode=TwoWay}" />
                             </StackPanel>
-                            <!-- PlaySpeed and convert -->
+                            <!-- PlaySpeed -->
                             <StackPanel Grid.Row="2" Grid.Column="0" Margin="0 5 0 0"
                                         Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
                                 <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.PlaySpeed}" />
-                                <Slider Minimum="0.1" Maximum="10.0" Width="180" SmallChange="0.1" LargeChange="1"
+                                <Slider Minimum="0.1" Maximum="10.0" Width="210" SmallChange="0.1" LargeChange="1"
                                         Value="{Binding PlaySpeed, Mode=TwoWay}" />
                                 <NumericUpDown Minimum="0.1" Maximum="10.0" Increment="0.1" FormatString="0.00"
-                                               Width="100" suki:NumericUpDownExtensions.Unit="×"
-                                               Value="{Binding PlaySpeed, Mode=TwoWay}" />
+                                               Value="{Binding PlaySpeed, Mode=TwoWay}"
+                                               Width="100" suki:NumericUpDownExtensions.Unit="×"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="2" Grid.Column="1" Margin="0 5 0 0"
+                            <StackPanel Grid.Row="2" Grid.Column="1" Margin="20 5 0 0"
+                                        Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                                <CheckBox Content="{x:Static lang:Resources.Scale}" Width="70" IsChecked="{Binding UseProportionalScaling}" VerticalAlignment="Center" />
+                                <Slider Minimum="0" Maximum="10.0" Width="180" Margin="20 0 0 0"
+                                        Value="{Binding Scale, Mode=TwoWay}"
+                                        IsEnabled="{Binding UseProportionalScaling}" />
+                                <NumericUpDown Minimum="0" Maximum="10.0" Increment="0.1" FormatString="0.00"
+                                               Width="100" Value="{Binding Scale, Mode=TwoWay}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="3" Grid.Column="1" Margin="0 5 0 0"
                                         Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button Classes="Success Rounded" Command="{Binding ConvertCommand}"
                                         suki:ButtonExtensions.ShowProgress="{Binding ProgressValue, Converter={StaticResource ProgressToBoolConverter}}">

@@ -152,11 +152,32 @@
                             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Spacing="5">
                                 <TextBlock Width="60" VerticalAlignment="Center" Text="{x:Static lang:Resources.Width}" />
                                 <NumericUpDown Minimum="1" Maximum="100000" Width="80" Increment="5" FormatString="0"
-                                               Value="{Binding OutputWidth, Mode=TwoWay}" />
+                                               Value="{Binding OutputWidth, Mode=TwoWay}"
+                                               IsEnabled="{Binding UseProportionalScaling, Converter={StaticResource NegateBool}}" />
+                                <ToggleButton Width="30" Height="30"
+                                              IsChecked="{Binding LockAspect}"
+                                              IsEnabled="{Binding UseProportionalScaling, Converter={StaticResource NegateBool}}"
+                                              Classes="Basic Rounded"
+                                              HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5,0">
+                                    <avalonia:MaterialIcon Margin="-3"
+                                                           Kind="{Binding LockAspect, Converter={x:Static converters:BoolToIconConverters.Link}}" />
+
+                                </ToggleButton>
                                 <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.Height}"
                                            Margin="10,0,0,0" />
                                 <NumericUpDown Minimum="1" Maximum="100000" Width="80" Increment="5" FormatString="0"
-                                               Value="{Binding OutputHeight, Mode=TwoWay}" />
+                                               Value="{Binding OutputHeight, Mode=TwoWay}"
+                                               IsEnabled="{Binding UseProportionalScaling, Converter={StaticResource NegateBool}}" />
+                            </StackPanel>
+
+                            <!-- Scale -->
+                            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                                <CheckBox Content="{x:Static lang:Resources.Scale}" IsChecked="{Binding UseProportionalScaling}" />
+                                <Slider Minimum="0" Maximum="10" Width="150" Value="{Binding Scale, Mode=TwoWay}"
+                                        IsEnabled="{Binding UseProportionalScaling}" />
+                                <NumericUpDown Minimum="0" Maximum="10" Increment="0.1" Width="80" FormatString="0.0"
+                                               Value="{Binding Scale, Mode=TwoWay}"
+                                               IsEnabled="{Binding UseProportionalScaling}" />
                             </StackPanel>
 
                             <!-- FPS：Slider + NumericUpDown -->
