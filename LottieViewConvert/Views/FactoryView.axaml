@@ -207,9 +207,9 @@
                                         VerticalAlignment="Center">
                                 <TextBlock VerticalAlignment="Center"
                                            Text="{x:Static lang:Resources.ConcurrentTasks}" />
-                                <Slider Minimum="1" Maximum="8" SmallChange="1" LargeChange="1" Width="150"
+                                <Slider Minimum="1" Maximum="16" SmallChange="1" LargeChange="1" Width="150"
                                         Value="{Binding ConcurrentTasks, Mode=TwoWay}" />
-                                <NumericUpDown Minimum="1" Maximum="8" Increment="1" Width="80"
+                                <NumericUpDown Minimum="1" Maximum="16" Increment="1" Width="80"
                                                Value="{Binding ConcurrentTasks, Mode=TwoWay}"
                                                IsEnabled="{Binding !IsConverting}" />
                             </StackPanel>
