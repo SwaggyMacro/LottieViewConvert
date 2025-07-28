@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -24,7 +26,8 @@ namespace LottieViewConvert.Helper
         /// <summary>
         /// when downloader reads a chunk of bytes, it provides the current file's downloaded bytes and total bytes.
         /// </summary>
-        public event Action<string /*filePath*/, long /*downloadedBytes*/, long /*totalBytes*/>? DownloadProgressChanged;
+        public event Action<string /*filePath*/, long /*downloadedBytes*/, long /*totalBytes*/>?
+            DownloadProgressChanged;
 
         /// <summary>
         /// when a single sticker file is downloaded, it provides the local file path.
@@ -83,10 +86,11 @@ namespace LottieViewConvert.Helper
 
             // 1. Get sticker set basic info
             StickerSet set = await _botClient.GetStickerSet(stickerSetName, cancellationToken).ConfigureAwait(false);
-            
+
             // 2. Concurrently fetch file metadata
-            var files = await GetFileMetadataAsync(set.Stickers, set.StickerType, maxConcurrency, cancellationToken).ConfigureAwait(false);
-            
+            var files = await GetFileMetadataAsync(set.Stickers, set.StickerType, maxConcurrency, cancellationToken)
+                .ConfigureAwait(false);
+
             // 3. Calculate total bytes
             long grandTotalBytes = 0;
             foreach (var (_, _, size, _, _) in files)
@@ -95,19 +99,22 @@ namespace LottieViewConvert.Helper
             }
 
             // 4. Concurrently download all files
-            await DownloadFilesAsync(files, outputDirectory, grandTotalBytes, maxConcurrency, cancellationToken).ConfigureAwait(false);
+            await DownloadFilesAsync(files, outputDirectory, grandTotalBytes, maxConcurrency, cancellationToken)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
         /// Concurrently fetch metadata for all stickers in the set, including file ID, file path, size, unique ID, and emoji.
         /// </summary>
-        private async Task<(string FileId, string FilePath, long Size, string UniqueId, string? Emoji)[]> GetFileMetadataAsync(
-            Sticker[] stickers, 
-            StickerType stickerType,
-            int maxConcurrency, 
-            CancellationToken cancellationToken)
+        private async Task<(string FileId, string FilePath, long Size, string UniqueId, string? Emoji)[]>
+            GetFileMetadataAsync(
+                Sticker[] stickers,
+                StickerType stickerType,
+                int maxConcurrency,
+                CancellationToken cancellationToken)
         {
-            var files = new (string FileId, string FilePath, long Size, string UniqueId, string? Emoji)[stickers.Length];
+            var files =
+                new (string FileId, string FilePath, long Size, string UniqueId, string? Emoji)[stickers.Length];
             var semaphore = new SemaphoreSlim(maxConcurrency);
             var tasks = new List<Task>();
             int fetchedCount = 0;
@@ -116,23 +123,24 @@ namespace LottieViewConvert.Helper
             {
                 int index = i; // capture loop variable
                 var sticker = stickers[i];
-                
+
                 await semaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
-                
+
                 tasks.Add(Task.Run(async () =>
                 {
                     try
                     {
                         TGFile info = await _botClient.GetFile(sticker.FileId, cancellationToken).ConfigureAwait(false);
                         long size = info.FileSize ?? 0;
-                        
+
                         // For emoji stickers, include the emoji in the metadata
-                        string? emoji = (stickerType == StickerType.CustomEmoji && !string.IsNullOrWhiteSpace(sticker.Emoji)) 
-                            ? sticker.Emoji 
+                        string? emoji = (stickerType == StickerType.CustomEmoji &&
+                                         !string.IsNullOrWhiteSpace(sticker.Emoji))
+                            ? sticker.Emoji
                             : null;
-                            
+
                         files[index] = (sticker.FileId, info.FilePath!, size, sticker.FileUniqueId, emoji);
-                        
+
                         // Update metadata progress
                         int completed = Interlocked.Increment(ref fetchedCount);
                         MetadataProgressChanged?.Invoke(completed, stickers.Length);
@@ -207,18 +215,18 @@ namespace LottieViewConvert.Helper
         /// </summary>
         private string GenerateFileName(string uniqueId, string filePath, string? emoji)
         {
-            string extension = Path.GetExtension(filePath);
+            var extension = Path.GetExtension(filePath);
             
-            // If emoji is available, use it as prefix for better organization
-            if (!string.IsNullOrWhiteSpace(emoji))
+            if (string.IsNullOrWhiteSpace(emoji)) return $"{uniqueId}{extension}";
+            
+            var invalidChars = Path.GetInvalidFileNameChars();
+            var builder = new StringBuilder();
+            foreach (var c in emoji.Where(c => c != '\uFE0F' && Array.IndexOf(invalidChars, c) < 0))
             {
-                // Clean emoji for filename (remove any characters that might be problematic for filenames)
-                string cleanEmoji = emoji.Replace("\uFE0F", ""); // Remove variation selector
-                return $"{cleanEmoji}_{uniqueId}{extension}";
+                builder.Append(c);
             }
-            
-            // Fallback to original naming scheme
-            return $"{uniqueId}{extension}";
+            var cleanEmoji = builder.ToString();
+            return !string.IsNullOrWhiteSpace(cleanEmoji) ? $"{cleanEmoji}_{uniqueId}{extension}" : $"{uniqueId}{extension}";
         }
 
         /// <summary>
@@ -251,7 +259,8 @@ namespace LottieViewConvert.Helper
             var buffer = new byte[81920];
             long downloaded = 0;
             int read;
-            while ((read = await sourceStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) > 0)
+            while ((read = await sourceStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)
+                       .ConfigureAwait(false)) > 0)
             {
                 await fileStream.WriteAsync(buffer, 0, read, cancellationToken).ConfigureAwait(false);
                 downloaded += read;
