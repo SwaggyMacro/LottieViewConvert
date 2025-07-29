@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using LottieViewConvert.Helper.LogHelper;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -144,6 +145,11 @@ namespace LottieViewConvert.Helper
                         // Update metadata progress
                         int completed = Interlocked.Increment(ref fetchedCount);
                         MetadataProgressChanged?.Invoke(completed, stickers.Length);
+                    } catch (Exception ex)
+                    {
+                        // Log or handle the error as needed
+                        Logger.Error($"Error fetching metadata for sticker {sticker.FileId}: {ex.Message}");
+                        files[index] = (sticker.FileId, string.Empty, 0, sticker.FileUniqueId, null);
                     }
                     finally
                     {

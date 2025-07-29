@@ -3,7 +3,7 @@
 </p>
 <p align="center">
     <a href="readme.md"><img src="https://img.shields.io/badge/Lang-English-blue"></a>
-    <img src="https://img.shields.io/badge/version-1.2.4-yellow">
+    <img src="https://img.shields.io/badge/version-1.2.5-yellow">
     <a href="//github.com/SwaggyMacro/LottieViewConvert"><img src="https://img.shields.io/badge/Repo-LottieViewConvert-green"></a>
 </p>
 <p align="center">
