@@ -111,7 +111,7 @@ public class FactoryViewModel : Page
         {
             if (value < 1) value = 1;
             this.RaiseAndSetIfChanged(ref _outputWidth, value);
-            if (LockAspect && !_isAspectAdjusting && _intrinsicWidth > 0)
+            if (LockHeight && !_isAspectAdjusting && _intrinsicWidth > 0)
             {
                 try { _isAspectAdjusting = true;
                     OutputHeight = (int)Math.Round(_outputWidth * (_intrinsicHeight / _intrinsicWidth));
@@ -128,7 +128,7 @@ public class FactoryViewModel : Page
         {
             if (value < 1) value = 1;
             this.RaiseAndSetIfChanged(ref _outputHeight, value);
-            if (LockAspect && !_isAspectAdjusting && _intrinsicHeight > 0)
+            if (LockWidth && !_isAspectAdjusting && _intrinsicHeight > 0)
             {
                 try { _isAspectAdjusting = true;
                     OutputWidth = (int)Math.Round(_outputHeight * (_intrinsicWidth / _intrinsicHeight));
@@ -140,17 +140,46 @@ public class FactoryViewModel : Page
     private double _intrinsicWidth;
     private double _intrinsicHeight;
     private bool _isAspectAdjusting;
-    private bool _lockAspect;
-    public bool LockAspect
+    private bool _lockWidth;
+    private bool _lockHeight;
+
+    public bool LockWidth
     {
-        get => _lockAspect;
-        set => this.RaiseAndSetIfChanged(ref _lockAspect, value);
+        get => _lockWidth;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _lockWidth, value);
+            if (value) LockHeight = false;
+            this.RaisePropertyChanged(nameof(IsOutputWidthEditable));
+            this.RaisePropertyChanged(nameof(IsOutputHeightEditable));
+        }
     }
+
+    public bool LockHeight
+    {
+        get => _lockHeight;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _lockHeight, value);
+            if (value) LockWidth = false;
+            this.RaisePropertyChanged(nameof(IsOutputWidthEditable));
+            this.RaisePropertyChanged(nameof(IsOutputHeightEditable));
+        }
+    }
+
+    // Computed properties for UI binding
+    public bool IsOutputWidthEditable => !UseProportionalScaling && !LockWidth;
+    public bool IsOutputHeightEditable => !UseProportionalScaling && !LockHeight;
     private bool _useProportionalScaling;
     public bool UseProportionalScaling
     {
         get => _useProportionalScaling;
-        set => this.RaiseAndSetIfChanged(ref _useProportionalScaling, value);
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _useProportionalScaling, value);
+            this.RaisePropertyChanged(nameof(IsOutputWidthEditable));
+            this.RaisePropertyChanged(nameof(IsOutputHeightEditable));
+        }
     }
     private double _scale;
     public double Scale
@@ -525,7 +554,7 @@ public class FactoryViewModel : Page
                 }
                 catch { /* keep default OutputWidth/OutputHeight */ }
             }
-            else if (LockAspect)
+            else if (LockHeight)
             {
                 try
                 {
@@ -541,6 +570,23 @@ public class FactoryViewModel : Page
                     }
                 }
                 catch { /* keep default OutputHeight */ }
+            }
+            else if (LockWidth)
+            {
+                try
+                {
+                    await using var fs = File.OpenRead(fileItem.FullPath);
+                    Stream dataStream = fs;
+                    if (LottieUtil.IsGzipCompressed(fs))
+                        dataStream = LottieUtil.UncompressGzip(fs);
+                    using var skStream = new SKManagedStream(dataStream);
+                    if (Animation.TryCreate(skStream, out var anim))
+                    {
+                        widthForThis = (int)Math.Round(OutputHeight * (anim.Size.Width / anim.Size.Height));
+                        anim.Dispose();
+                    }
+                }
+                catch { /* keep default OutputWidth */ }
             }
             // else keep explicit size defaults
             var converter = new Converter(

@@ -76,7 +76,7 @@
           
           <TextBlock Text="{x:Static lang:Resources.AppName}" Classes="AppTitle"/>
           <TextBlock Text="{x:Static lang:Resources.AppSubTitle}" Classes="Subtitle"/>
-          <TextBlock Text="Version 1.2.6" Classes="VersionText" 
+          <TextBlock Text="Version 1.2.7" Classes="VersionText" 
                      HorizontalAlignment="Center"/>
         </StackPanel>
 

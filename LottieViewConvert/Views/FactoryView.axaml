@@ -138,7 +138,7 @@
                             </StackPanel>
 
                             <!-- Quality：Slider + NumericUpDown -->
-                            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Spacing="5"
+                            <StackPanel Margin="20 0 0 0"  Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Spacing="5"
                                         VerticalAlignment="Center">
                                 <TextBlock Width="60" VerticalAlignment="Center"
                                            Text="{x:Static lang:Resources.Quality}" />
@@ -150,28 +150,35 @@
 
                             <!-- Resolution -->
                             <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Spacing="5">
-                                <TextBlock Width="60" VerticalAlignment="Center" Text="{x:Static lang:Resources.Width}" />
-                                <NumericUpDown Minimum="1" Maximum="100000" Width="80" Increment="5" FormatString="0"
-                                               Value="{Binding OutputWidth, Mode=TwoWay}"
-                                               IsEnabled="{Binding UseProportionalScaling, Converter={StaticResource NegateBool}}" />
+                                <TextBlock Width="40" VerticalAlignment="Center" Text="{x:Static lang:Resources.Width}" />
                                 <ToggleButton Width="30" Height="30"
-                                              IsChecked="{Binding LockAspect}"
+                                              IsChecked="{Binding LockWidth}"
                                               IsEnabled="{Binding UseProportionalScaling, Converter={StaticResource NegateBool}}"
                                               Classes="Basic Rounded"
                                               HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5,0">
                                     <avalonia:MaterialIcon Margin="-3"
-                                                           Kind="{Binding LockAspect, Converter={x:Static converters:BoolToIconConverters.Link}}" />
+                                                           Kind="{Binding LockWidth, Converter={x:Static converters:BoolToIconConverters.WindowLock}}" />
 
                                 </ToggleButton>
-                                <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.Height}"
-                                           Margin="10,0,0,0" />
+                                <NumericUpDown Minimum="1" Maximum="100000" Width="80" Increment="5" FormatString="0"
+                                               Value="{Binding OutputWidth, Mode=TwoWay}"
+                                               IsEnabled="{Binding IsOutputWidthEditable}" />
+                                <TextBlock Width="40" VerticalAlignment="Center" Text="{x:Static lang:Resources.Height}" Margin="10,0,0,0" />
+                                <ToggleButton Width="30" Height="30"
+                                              IsChecked="{Binding LockHeight}"
+                                              IsEnabled="{Binding UseProportionalScaling, Converter={StaticResource NegateBool}}"
+                                              Classes="Basic Rounded"
+                                              HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5,0">
+                                    <avalonia:MaterialIcon Margin="-3"
+                                                           Kind="{Binding LockHeight, Converter={x:Static converters:BoolToIconConverters.WindowLock}}" />
+                                </ToggleButton>
                                 <NumericUpDown Minimum="1" Maximum="100000" Width="80" Increment="5" FormatString="0"
                                                Value="{Binding OutputHeight, Mode=TwoWay}"
-                                               IsEnabled="{Binding UseProportionalScaling, Converter={StaticResource NegateBool}}" />
+                                               IsEnabled="{Binding IsOutputHeightEditable}" />
                             </StackPanel>
 
                             <!-- Scale -->
-                            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                            <StackPanel Margin="20 0 0 0"  Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
                                 <CheckBox Content="{x:Static lang:Resources.Scale}" IsChecked="{Binding UseProportionalScaling}" />
                                 <Slider Minimum="0" Maximum="10" Width="150" Value="{Binding Scale, Mode=TwoWay}"
                                         IsEnabled="{Binding UseProportionalScaling}" />
@@ -181,7 +188,7 @@
                             </StackPanel>
 
                             <!-- FPS：Slider + NumericUpDown -->
-                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Spacing="5"
+                            <StackPanel Margin="20 0 0 0"  Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Spacing="5"
                                         VerticalAlignment="Center">
                                 <TextBlock Width="60" VerticalAlignment="Center" Text="{x:Static lang:Resources.Fps}" />
                                 <Slider Minimum="1" Maximum="240" Width="150"
