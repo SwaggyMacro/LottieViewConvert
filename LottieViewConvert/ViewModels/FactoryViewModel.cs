@@ -540,11 +540,7 @@ public class FactoryViewModel : Page
             {
                 try
                 {
-                    await using var fs = File.OpenRead(fileItem.FullPath);
-                    Stream dataStream = fs;
-                    if (LottieUtil.IsGzipCompressed(fs))
-                        dataStream = LottieUtil.UncompressGzip(fs);
-                    using var skStream = new SKManagedStream(dataStream);
+                    using var skStream = new SKManagedStream(LottieUtil.OpenLottieStream(fileItem.FullPath));
                     if (Animation.TryCreate(skStream, out var anim))
                     {
                         widthForThis = (int)Math.Round(anim.Size.Width * Scale);
@@ -558,11 +554,7 @@ public class FactoryViewModel : Page
             {
                 try
                 {
-                    await using var fs = File.OpenRead(fileItem.FullPath);
-                    Stream dataStream = fs;
-                    if (LottieUtil.IsGzipCompressed(fs))
-                        dataStream = LottieUtil.UncompressGzip(fs);
-                    using var skStream = new SKManagedStream(dataStream);
+                    using var skStream = new SKManagedStream(LottieUtil.OpenLottieStream(fileItem.FullPath));
                     if (Animation.TryCreate(skStream, out var anim))
                     {
                         heightForThis = (int)Math.Round(OutputWidth * (anim.Size.Height / anim.Size.Width));
@@ -575,11 +567,7 @@ public class FactoryViewModel : Page
             {
                 try
                 {
-                    await using var fs = File.OpenRead(fileItem.FullPath);
-                    Stream dataStream = fs;
-                    if (LottieUtil.IsGzipCompressed(fs))
-                        dataStream = LottieUtil.UncompressGzip(fs);
-                    using var skStream = new SKManagedStream(dataStream);
+                    using var skStream = new SKManagedStream(LottieUtil.OpenLottieStream(fileItem.FullPath));
                     if (Animation.TryCreate(skStream, out var anim))
                     {
                         widthForThis = (int)Math.Round(OutputHeight * (anim.Size.Width / anim.Size.Height));
@@ -698,8 +686,7 @@ public class FactoryViewModel : Page
                     // load intrinsic animation size
                     try
                     {
-                        using var fs = File.OpenRead(value.FullPath);
-                        using var skStream = new SKManagedStream(fs);
+                        using var skStream = new SKManagedStream(LottieUtil.OpenLottieStream(value.FullPath));
                         if (Animation.TryCreate(skStream, out var anim))
                         {
                             _intrinsicWidth = anim.Size.Width;
@@ -707,7 +694,10 @@ public class FactoryViewModel : Page
                             anim.Dispose();
                         }
                     }
-                    catch { }
+                    catch
+                    {
+                        // ignored
+                    }
                 }
             });
     }

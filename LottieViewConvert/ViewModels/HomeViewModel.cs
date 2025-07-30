@@ -6,7 +6,6 @@ using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
-using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using Lottie;
@@ -241,8 +240,7 @@ namespace LottieViewConvert.ViewModels
                 int effWidth, effHeight;
                 if (UseProportionalScaling && Scale > 0)
                 {
-                    using var fs = File.OpenRead(LottieSource!);
-                    using var skStream = new SKManagedStream(fs);
+                    using var skStream = new SKManagedStream(LottieUtil.OpenLottieStream(LottieSource!));
                     if (!Animation.TryCreate(skStream, out var anim))
                         throw new InvalidOperationException($"Failed to load Lottie animation for scaling: {LottieSource}");
                     effWidth = (int)Math.Round(anim.Size.Width * Scale);
@@ -304,11 +302,7 @@ namespace LottieViewConvert.ViewModels
                     {
                         try
                         {
-                            await using var fs = File.OpenRead(LottieSource!);
-                            Stream dataStream = fs;
-                            if (LottieUtil.IsGzipCompressed(fs))
-                                dataStream = LottieUtil.UncompressGzip(fs);
-                            using var skStream = new SKManagedStream(dataStream);
+                            using var skStream = new SKManagedStream(LottieUtil.OpenLottieStream(LottieSource));
                             if (Animation.TryCreate(skStream, out var anim))
                             {
                                 widthForThis = (int)Math.Round(anim.Size.Width * Scale);
@@ -325,11 +319,7 @@ namespace LottieViewConvert.ViewModels
                     {
                         try
                         {
-                            await using var fs = File.OpenRead(LottieSource!);
-                            Stream dataStream = fs;
-                            if (LottieUtil.IsGzipCompressed(fs))
-                                dataStream = LottieUtil.UncompressGzip(fs);
-                            using var skStream = new SKManagedStream(dataStream);
+                            using var skStream = new SKManagedStream(LottieUtil.OpenLottieStream(LottieSource));
                             if (Animation.TryCreate(skStream, out var anim))
                             {
                                 heightForThis = (int)Math.Round(widthForThis * (anim.Size.Height / anim.Size.Width));
@@ -461,22 +451,10 @@ namespace LottieViewConvert.ViewModels
                     {
                         var uri = storageFile.Path;
                         var stream = uri is { IsAbsoluteUri: true, IsFile: true }
-                            ? File.OpenRead(uri.LocalPath)
-                            : AssetLoader.Open(uri);
-                        string content;
-
-                        if (LottieUtil.IsGzipCompressed(stream))
-                        {
-                            await using var uncompressedStream = LottieUtil.UncompressGzip(stream);
-                            using var uncompressedReader = new StreamReader(uncompressedStream);
-                            content = await uncompressedReader.ReadToEndAsync();
-                        }
-                        else
-                        {
-                            using var reader = new StreamReader(stream);
-                            content = await reader.ReadToEndAsync();
-                        }
-
+                            ? LottieUtil.OpenLottieStream(uri.LocalPath)
+                            : LottieUtil.OpenLottieStream(storageFile.Name);
+                        string content = await new StreamReader(stream).ReadToEndAsync();
+                        
                         if (LottieUtil.IsValidLottieJson(content))
                         {
                             LottieSource = uri.LocalPath;
@@ -485,8 +463,7 @@ namespace LottieViewConvert.ViewModels
                             // Load intrinsic animation size for aspect ratio
                             try
                             {
-                                await using var fs = File.OpenRead(LottieSource!);
-                                using var skStream = new SKManagedStream(fs);
+                                using var skStream = new SKManagedStream(LottieUtil.OpenLottieStream(LottieSource));
                                 if (Animation.TryCreate(skStream, out var anim))
                                 {
                                     _intrinsicWidth = anim.Size.Width;
