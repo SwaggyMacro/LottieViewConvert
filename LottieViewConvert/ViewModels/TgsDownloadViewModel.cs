@@ -247,6 +247,8 @@ public class TgsDownloadViewModel : Page, IDisposable
             return;
         }
         
+        SaveLocation = Path.Combine(Path.Combine(AppContext.BaseDirectory, "SavedStickers"), ExtractStickerEmojiName(StickerInput));
+         
         try
         {
             IsDownloading = true;
