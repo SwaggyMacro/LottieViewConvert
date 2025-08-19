@@ -9,6 +9,7 @@
 <p align="center">
     <img src="./images/main_interface.png" width="512px">
 </p>
+
 ## 🎬 Lottie & TGS 动画转换器
 
 一个功能强大的跨平台桌面应用程序，用于将 TGS（Telegram 贴纸）和 Lottie 动画转换为多种格式，包括 GIF、WebP、APNG、MP4、MKV、AVIF 和 WebM。
@@ -217,6 +218,10 @@ dotnet publish -c Release -r linux-x64 --self-contained
 如果您遇到任何问题或有疑问：
 - 📝 [提交问题](https://github.com/SwaggyMacro/LottieViewConvert/issues)
 - 💬 [开始讨论](https://github.com/SwaggyMacro/LottieViewConvert/discussions)
+
+### ⭐ 星星历史
+---  
+[![Star History Chart](https://api.star-history.com/svg?repos=SwaggyMacro/LottieViewConvert&type=Date)](https://www.star-history.com/#SwaggyMacro/LottieViewConvert&Date)
 
 ---
 <p align="center">由 <a href="https://github.com/SwaggyMacro">SwaggyMacro</a> 用 ❤️ 制作</p>
