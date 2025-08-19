@@ -221,8 +221,8 @@ If you encounter any issues or have questions:
 - 📝 [Open an issue](https://github.com/SwaggyMacro/LottieViewConvert/issues)
 - 💬 [Start a discussion](https://github.com/SwaggyMacro/LottieViewConvert/discussions)
 
-### Star History
-
+### ⭐ Star History
+---  
 [![Star History Chart](https://api.star-history.com/svg?repos=SwaggyMacro/LottieViewConvert&type=Date)](https://www.star-history.com/#SwaggyMacro/LottieViewConvert&Date)
 ---
 <p align="center">Made with ❤️ by <a href="https://github.com/SwaggyMacro">SwaggyMacro</a></p>
