@@ -1834,6 +1834,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ⚠️ Manual Installation: Please install the Command-Line (CLI) version of Gifski, NOT the GUI version. (Ignore this if using auto-install).
+        /// </summary>
+        public static string GifskiManualInstallHint {
+            get {
+                return ResourceManager.GetString("GifskiManualInstallHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select All.
         /// </summary>
         public static string SelectAll {

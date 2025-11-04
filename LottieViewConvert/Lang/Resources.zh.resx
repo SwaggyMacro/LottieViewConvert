@@ -779,4 +779,7 @@
     <data name="Scale" xml:space="preserve">
         <value>缩放</value>
     </data>
+    <data name="GifskiManualInstallHint" xml:space="preserve">
+        <value>⚠️ 手动安装说明：请安装 Gifski 的命令行（CLI）版本，而不是图形界面（GUI）版本。(如果使用自动安装请忽略此提示)</value>
+    </data>
 </root>

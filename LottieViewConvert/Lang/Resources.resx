@@ -780,4 +780,7 @@
     <data name="Scale" xml:space="preserve">
         <value>Scale</value>
     </data>
+    <data name="GifskiManualInstallHint" xml:space="preserve">
+        <value>⚠️ Manual Installation: Please install the Command-Line (CLI) version of Gifski, NOT the GUI version. (Ignore this if using auto-install)</value>
+    </data>
 </root>
