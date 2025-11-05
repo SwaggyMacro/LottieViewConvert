@@ -25,27 +25,8 @@
                        Foreground="{DynamicResource SukiAccentColor}" />
         </Border>
 
-        <!-- Loading overlay -->
-        <Border Background="Black"
-                Opacity="0.3"
-                ZIndex="2"
-                IsVisible="{Binding IsLoading}" />
-
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Spacing="10"
-                    ZIndex="3"
-                    IsVisible="{Binding IsLoading}">
-            <suki:CircleProgressBar IsIndeterminate="True"
-                                    Width="32"
-                                    StrokeWidth="2"
-                                    Height="32" />
-            <TextBlock Text="{x:Static lang:Resources.Processing}"
-                       HorizontalAlignment="Center" />
-        </StackPanel>
-
         <!-- MainContent -->
-        <DockPanel IsEnabled="{Binding !IsLoading}">
+        <DockPanel>
             <!-- Operation button -->
             <StackPanel DockPanel.Dock="Bottom"
                         Orientation="Horizontal"

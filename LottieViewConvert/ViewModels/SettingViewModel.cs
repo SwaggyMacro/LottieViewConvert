@@ -30,7 +30,6 @@ namespace LottieViewConvert.ViewModels
         private readonly ConfigService _configService;
         private readonly FFmpegService _ffmpegService;
         private readonly GifskiService _gifskiService;
-        private readonly ObservableAsPropertyHelper<bool> _isLoading;
         private readonly ObservableAsPropertyHelper<bool> _isFFmpegInstalling;
         private readonly ObservableAsPropertyHelper<bool> _isGifskiInstalling;
         private string _proxyAddress = string.Empty;
@@ -86,11 +85,6 @@ namespace LottieViewConvert.ViewModels
             RemoveGifskiFromPathCommand = ReactiveCommand.CreateFromTask(RemoveGifskiFromPathAsync);
 
             // Set loading state
-            _isLoading = SaveCommand.IsExecuting
-                .Merge(ResetCommand.IsExecuting)
-                .Merge(LoadCommand.IsExecuting)
-                .ToProperty(this, x => x.IsLoading);
-
             _isFFmpegInstalling = InstallFFmpegCommand.IsExecuting
                 .ToProperty(this, x => x.IsFFmpegInstalling);
                 
@@ -231,7 +225,6 @@ namespace LottieViewConvert.ViewModels
             set => this.RaiseAndSetIfChanged(ref _statusMessage, value);
         }
 
-        public bool IsLoading => _isLoading.Value;
         public bool IsFFmpegInstalling => _isFFmpegInstalling.Value;
         public bool IsGifskiInstalling => _isGifskiInstalling.Value;
         public bool HasStatusMessage => !string.IsNullOrEmpty(StatusMessage);
@@ -911,6 +904,7 @@ namespace LottieViewConvert.ViewModels
                     .WithContent(Resources.SettingSaved)
                     .OfType(NotificationType.Success)
                     .Dismiss().After(TimeSpan.FromSeconds(2))
+                    .Dismiss().ByClicking()
                     .Queue();
 
                 if (languageChanged)
