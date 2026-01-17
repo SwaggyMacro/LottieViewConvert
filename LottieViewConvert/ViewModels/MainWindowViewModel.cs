@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Controls;
@@ -243,17 +244,29 @@ public class MainWindowViewModel : ViewModelBase
     private Control BuildScamWarningContent()
     {
         var contentPanel = new StackPanel { Spacing = 8 };
-        var paragraphs = Resources.ScamWarningContent.Split(ParagraphSeparators, StringSplitOptions.RemoveEmptyEntries);
-        var header = paragraphs.Length > 0 ? paragraphs[0] : Resources.ScamWarningContent;
+        var content = Resources.ScamWarningContent;
+        var repoUrl = ExtractRepoUrl(content) ?? ScamWarningRepoUrl;
+        var paragraphs = content.Split(ParagraphSeparators, StringSplitOptions.RemoveEmptyEntries);
+
+        if (paragraphs.Length == 0)
+        {
+            contentPanel.Children.Add(new TextBlock
+            {
+                Text = content,
+                TextWrapping = TextWrapping.Wrap
+            });
+            return contentPanel;
+        }
+
+        var header = paragraphs[0];
         var headerPrefix = header;
         var headerSuffix = string.Empty;
 
-        var urlIndex = header.IndexOf(ScamWarningRepoUrl, StringComparison.Ordinal);
-        var hasRepoUrl = urlIndex >= 0;
-        if (hasRepoUrl)
+        var urlIndex = header.IndexOf(repoUrl, StringComparison.Ordinal);
+        if (urlIndex >= 0)
         {
             headerPrefix = header[..urlIndex];
-            headerSuffix = header[(urlIndex + ScamWarningRepoUrl.Length)..];
+            headerSuffix = header[(urlIndex + repoUrl.Length)..];
         }
 
         if (!string.IsNullOrWhiteSpace(headerPrefix))
@@ -265,7 +278,7 @@ public class MainWindowViewModel : ViewModelBase
             });
         }
 
-        contentPanel.Children.Add(CreateRepoLinkTextBlock());
+        contentPanel.Children.Add(CreateRepoLinkTextBlock(repoUrl));
 
         if (!string.IsNullOrWhiteSpace(headerSuffix))
         {
@@ -288,18 +301,27 @@ public class MainWindowViewModel : ViewModelBase
         return contentPanel;
     }
 
-    private TextBlock CreateRepoLinkTextBlock()
+    private TextBlock CreateRepoLinkTextBlock(string repoUrl)
     {
         var linkTextBlock = new TextBlock
         {
-            Text = ScamWarningRepoUrl,
+            Text = repoUrl,
             TextWrapping = TextWrapping.Wrap,
             Foreground = Brushes.DeepSkyBlue,
             TextDecorations = TextDecorations.Underline,
             Cursor = new Cursor(StandardCursorType.Hand)
         };
-        linkTextBlock.PointerPressed += (_, _) => OpenUrlCommand.Execute(ScamWarningRepoUrl);
+        linkTextBlock.PointerPressed += (_, _) => OpenUrlCommand.Execute(repoUrl).Subscribe(
+            _ => { },
+            ex => Logger.Error($"Failed to open scam warning link: {ex.Message}"),
+            () => { });
         return linkTextBlock;
+    }
+
+    private static string? ExtractRepoUrl(string content)
+    {
+        var match = Regex.Match(content, @"https?://\S+");
+        return match.Success ? match.Value : null;
     }
     
     public void ChangeTheme(SukiColorTheme theme) => _theme.ChangeColorTheme(theme);
