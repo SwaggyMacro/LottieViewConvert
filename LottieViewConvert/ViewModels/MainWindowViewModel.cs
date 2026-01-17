@@ -1,14 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Collections;
-using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
-using Avalonia.Input;
-using Avalonia.Media;
 using Avalonia.Styling;
 using LottieViewConvert.Helper.LogHelper;
 using LottieViewConvert.Lang;
@@ -27,14 +23,6 @@ namespace LottieViewConvert.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    private const string ScamWarningRepoUrl = "https://github.com/SwaggyMacro/LottieViewConvert";
-    private static readonly string[] ParagraphSeparators =
-    [
-        $"{Environment.NewLine}{Environment.NewLine}",
-        "\n\n",
-        "\r\n\r\n"
-    ];
-    
     public ISukiDialogManager DialogManager { get; }
     public ISukiToastManager ToastManager { get; set; }
 
@@ -215,113 +203,13 @@ public class MainWindowViewModel : ViewModelBase
 
             DialogManager.CreateDialog()
                 .WithTitle(Resources.ScamWarningTitle)
-                .WithContent(BuildScamWarningContent())
-                .OfType(NotificationType.Information)
-                .WithActionButton(Resources.GotIt, _ => { }, dismissOnClick: true)
-                .WithActionButton(Resources.DontShowAgain, async _ => await DisableScamWarningAsync(), dismissOnClick: true)
+                .WithViewModel(dialog => new Controls.ScamWarning.ScamWarningDialogViewModel(dialog, _configService, OpenUrlCommand))
                 .TryShow();
         }
         catch (Exception ex)
         {
             Logger.Error($"Failed to show scam warning dialog: {ex.Message}");
         }
-    }
-    
-    private async Task DisableScamWarningAsync()
-    {
-        try
-        {
-            var currentConfig = await _configService.LoadConfigAsync();
-            currentConfig.ShowScamWarningDialog = false;
-            await _configService.SaveConfigAsync(currentConfig);
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"Failed to update scam warning preference: {ex.Message}");
-        }
-    }
-    
-    private Control BuildScamWarningContent()
-    {
-        var contentPanel = new StackPanel { Spacing = 8 };
-        var content = Resources.ScamWarningContent;
-        var repoUrl = ExtractRepoUrl(content) ?? ScamWarningRepoUrl;
-        var paragraphs = content.Split(ParagraphSeparators, StringSplitOptions.RemoveEmptyEntries);
-
-        if (paragraphs.Length == 0)
-        {
-            contentPanel.Children.Add(new TextBlock
-            {
-                Text = content,
-                TextWrapping = TextWrapping.Wrap
-            });
-            return contentPanel;
-        }
-
-        var header = paragraphs[0];
-        var headerPrefix = header;
-        var headerSuffix = string.Empty;
-
-        var urlIndex = header.IndexOf(repoUrl, StringComparison.Ordinal);
-        if (urlIndex >= 0)
-        {
-            headerPrefix = header[..urlIndex];
-            headerSuffix = header[(urlIndex + repoUrl.Length)..];
-        }
-
-        if (!string.IsNullOrWhiteSpace(headerPrefix))
-        {
-            contentPanel.Children.Add(new TextBlock
-            {
-                Text = headerPrefix.TrimEnd(),
-                TextWrapping = TextWrapping.Wrap
-            });
-        }
-
-        contentPanel.Children.Add(CreateRepoLinkTextBlock(repoUrl));
-
-        if (!string.IsNullOrWhiteSpace(headerSuffix))
-        {
-            contentPanel.Children.Add(new TextBlock
-            {
-                Text = headerSuffix.TrimStart(),
-                TextWrapping = TextWrapping.Wrap
-            });
-        }
-
-        for (var index = 1; index < paragraphs.Length; index++)
-        {
-            contentPanel.Children.Add(new TextBlock
-            {
-                Text = paragraphs[index],
-                TextWrapping = TextWrapping.Wrap
-            });
-        }
-
-        return contentPanel;
-    }
-
-    private TextBlock CreateRepoLinkTextBlock(string repoUrl)
-    {
-        var linkTextBlock = new TextBlock
-        {
-            Text = repoUrl,
-            TextWrapping = TextWrapping.Wrap,
-            Foreground = Brushes.DeepSkyBlue,
-            TextDecorations = TextDecorations.Underline,
-            Cursor = new Cursor(StandardCursorType.Hand)
-        };
-        linkTextBlock.PointerPressed += (_, _) => OpenUrlCommand.Execute(repoUrl).Subscribe(
-            _ => { },
-            ex => Logger.Error($"Failed to open scam warning link: {ex.Message}"),
-            () => { });
-        return linkTextBlock;
-    }
-
-    private static string? ExtractRepoUrl(string content)
-    {
-        var match = Regex.Match(content, @"https?://\S+");
-        return match.Success ? match.Value : null;
     }
     
     public void ChangeTheme(SukiColorTheme theme) => _theme.ChangeColorTheme(theme);
