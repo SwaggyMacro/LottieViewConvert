@@ -28,7 +28,9 @@ namespace LottieViewConvert.ViewModels;
 public class MainWindowViewModel : ViewModelBase
 {
     private const string ScamWarningRepoUrl = "https://github.com/SwaggyMacro/LottieViewConvert";
-    private const string ScamWarningParagraphPattern = @"\n{2,}";
+    private static readonly Regex ScamWarningParagraphRegex = new(@"\n{2,}", RegexOptions.Compiled);
+    private static readonly Regex ScamWarningUrlRegex = new(@"https?://\S+", RegexOptions.Compiled);
+    private static readonly Regex ScamWarningNewlineRegex = new(@"\r\n?", RegexOptions.Compiled);
 
     public ISukiDialogManager DialogManager { get; }
     public ISukiToastManager ToastManager { get; set; }
@@ -241,7 +243,7 @@ public class MainWindowViewModel : ViewModelBase
         var contentPanel = new StackPanel { Spacing = 8 };
         var normalizedContent = NormalizeScamWarningContent(Resources.ScamWarningContent);
         var repoUrl = ExtractRepoUrl(normalizedContent) ?? ScamWarningRepoUrl;
-        var paragraphs = Regex.Split(normalizedContent, ScamWarningParagraphPattern)
+        var paragraphs = ScamWarningParagraphRegex.Split(normalizedContent)
             .Where(paragraph => !string.IsNullOrWhiteSpace(paragraph))
             .ToArray();
         var header = paragraphs.Length > 0 ? paragraphs[0] : normalizedContent;
@@ -307,19 +309,21 @@ public class MainWindowViewModel : ViewModelBase
             TextDecorations = TextDecorations.Underline,
             Cursor = new Cursor(StandardCursorType.Hand)
         };
-        linkTextBlock.PointerPressed += (_, _) => OpenUrlCommand.Execute(repoUrl).Subscribe();
+        linkTextBlock.PointerPressed += (_, _) => OpenUrlCommand.Execute(repoUrl).Subscribe(
+            _ => { },
+            ex => Logger.Error($"Failed to open scam warning link: {ex.Message}"));
         return linkTextBlock;
     }
 
     private static string? ExtractRepoUrl(string content)
     {
-        var match = Regex.Match(content, @"https?://\S+");
+        var match = ScamWarningUrlRegex.Match(content);
         return match.Success ? match.Value : null;
     }
 
     private static string NormalizeScamWarningContent(string content)
     {
-        return Regex.Replace(content, @"\r\n?", "\n");
+        return ScamWarningNewlineRegex.Replace(content, "\n");
     }
     
     public void ChangeTheme(SukiColorTheme theme) => _theme.ChangeColorTheme(theme);
