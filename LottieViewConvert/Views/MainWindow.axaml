@@ -19,7 +19,8 @@
                    CanMinimize="True"
                    IsTitleBarVisible="True"
                    WindowStartupLocation="CenterScreen"
-                   Title="{x:Static lang:Resources.AppName} ">
+                   Title="{x:Static lang:Resources.AppName} "
+                   Opened="MainWindow_OnOpened">
 
     <suki:SukiWindow.LogoContent>
         <Image Source="/Assets/icon.png"  Width="32"

@@ -15,5 +15,8 @@ namespace LottieViewConvert.Models
         public string FFmpegPath { get; set; } = string.Empty;
         [JsonProperty("gifskiPath")]
         public string GifskiPath { get; set; } = string.Empty;
+
+        [JsonProperty("showScamWarningDialog")]
+        public bool ShowScamWarningDialog { get; set; } = true;
     }
 }
