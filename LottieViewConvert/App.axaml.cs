@@ -59,6 +59,7 @@ public class App : Application
         services.AddSingleton<PageNavigationService>();
         services.AddSingleton<ISukiToastManager, SukiToastManager>();
         services.AddSingleton<ISukiDialogManager, SukiDialogManager>();
+        services.AddSingleton<ConfigService>();
 
         // ViewModels
         services.AddSingleton<MainWindowViewModel>();

@@ -77,13 +77,13 @@ public class MainWindowViewModel : ViewModelBase
     
     
     public MainWindowViewModel(IEnumerable<Page> pages, PageNavigationService pageNavigationService,
-        ISukiToastManager toastManager, ISukiDialogManager dialogManager)
+        ISukiToastManager toastManager, ISukiDialogManager dialogManager, ConfigService configService)
     {
         Pages = new AvaloniaList<Page>(pages.OrderBy(x => x.Index).ThenBy(x => x.DisplayName));
 
         ToastManager = toastManager;
         DialogManager = dialogManager;
-        _configService = new ConfigService();
+        _configService = configService;
 
         Global.SetToastManager(toastManager);
         Global.SetDialogManager(dialogManager);
@@ -207,18 +207,27 @@ public class MainWindowViewModel : ViewModelBase
                 .WithContent(Resources.ScamWarningContent)
                 .OfType(NotificationType.Information)
                 .WithActionButton(Resources.GotIt, _ => { })
-                .WithActionButton(Resources.DontShowAgain, async _ =>
-                {
-                    var currentConfig = await _configService.LoadConfigAsync();
-                    currentConfig.ShowScamWarningDialog = false;
-                    await _configService.SaveConfigAsync(currentConfig);
-                })
+                .WithActionButton(Resources.DontShowAgain, async _ => await DisableScamWarningAsync())
                 .WithActionButton(Resources.Close, _ => { })
                 .TryShow();
         }
         catch (Exception ex)
         {
             Logger.Error($"Failed to show scam warning dialog: {ex.Message}");
+        }
+    }
+    
+    private async Task DisableScamWarningAsync()
+    {
+        try
+        {
+            var currentConfig = await _configService.LoadConfigAsync();
+            currentConfig.ShowScamWarningDialog = false;
+            await _configService.SaveConfigAsync(currentConfig);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to update scam warning preference: {ex.Message}");
         }
     }
     
