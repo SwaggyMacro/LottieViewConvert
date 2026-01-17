@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Collections;
+using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
+using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.Styling;
 using LottieViewConvert.Helper.LogHelper;
 using LottieViewConvert.Lang;
@@ -23,6 +27,9 @@ namespace LottieViewConvert.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
+    private const string ScamWarningRepoUrl = "https://github.com/SwaggyMacro/LottieViewConvert";
+    private const string ScamWarningParagraphPattern = @"\n{2,}";
+
     public ISukiDialogManager DialogManager { get; }
     public ISukiToastManager ToastManager { get; set; }
 
@@ -203,13 +210,116 @@ public class MainWindowViewModel : ViewModelBase
 
             DialogManager.CreateDialog()
                 .WithTitle(Resources.ScamWarningTitle)
-                .WithViewModel(dialog => new Controls.ScamWarning.ScamWarningDialogViewModel(dialog, _configService, OpenUrlCommand))
+                .WithContent(BuildScamWarningContent())
+                .OfType(NotificationType.Information)
+                .WithActionButton(Resources.GotIt, _ => { }, true, "Flat")
+                .WithActionButton(Resources.DontShowAgain, async _ => await DisableScamWarningAsync(), true, "Flat", "Accent")
                 .TryShow();
         }
         catch (Exception ex)
         {
             Logger.Error($"Failed to show scam warning dialog: {ex.Message}");
         }
+    }
+
+    private async Task DisableScamWarningAsync()
+    {
+        try
+        {
+            var currentConfig = await _configService.LoadConfigAsync();
+            currentConfig.ShowScamWarningDialog = false;
+            await _configService.SaveConfigAsync(currentConfig);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to update scam warning preference: {ex.Message}");
+        }
+    }
+    
+    private Control BuildScamWarningContent()
+    {
+        var contentPanel = new StackPanel { Spacing = 8 };
+        var normalizedContent = NormalizeScamWarningContent(Resources.ScamWarningContent);
+        var repoUrl = ExtractRepoUrl(normalizedContent) ?? ScamWarningRepoUrl;
+        var paragraphs = Regex.Split(normalizedContent, ScamWarningParagraphPattern)
+            .Where(paragraph => !string.IsNullOrWhiteSpace(paragraph))
+            .ToArray();
+        var header = paragraphs.Length > 0 ? paragraphs[0] : normalizedContent;
+        var headerPrefix = header;
+        var headerSuffix = string.Empty;
+
+        var urlIndex = header.IndexOf(repoUrl, StringComparison.Ordinal);
+        if (urlIndex >= 0)
+        {
+            headerPrefix = header[..urlIndex];
+            headerSuffix = header[(urlIndex + repoUrl.Length)..];
+        }
+
+        if (!string.IsNullOrWhiteSpace(headerPrefix))
+        {
+            contentPanel.Children.Add(new TextBlock
+            {
+                Text = headerPrefix.TrimEnd(),
+                TextWrapping = TextWrapping.Wrap
+            });
+        }
+
+        contentPanel.Children.Add(CreateRepoLinkTextBlock(repoUrl));
+
+        if (!string.IsNullOrWhiteSpace(headerSuffix))
+        {
+            contentPanel.Children.Add(new TextBlock
+            {
+                Text = headerSuffix.TrimStart(),
+                TextWrapping = TextWrapping.Wrap
+            });
+        }
+
+        if (paragraphs.Length > 1)
+        {
+            contentPanel.Children.Add(new TextBlock
+            {
+                Text = paragraphs[1],
+                TextWrapping = TextWrapping.Wrap,
+                FontWeight = FontWeight.SemiBold
+            });
+        }
+
+        for (var index = 2; index < paragraphs.Length; index++)
+        {
+            contentPanel.Children.Add(new TextBlock
+            {
+                Text = paragraphs[index],
+                TextWrapping = TextWrapping.Wrap
+            });
+        }
+
+        return contentPanel;
+    }
+
+    private TextBlock CreateRepoLinkTextBlock(string repoUrl)
+    {
+        var linkTextBlock = new TextBlock
+        {
+            Text = repoUrl,
+            TextWrapping = TextWrapping.Wrap,
+            Foreground = Brushes.DeepSkyBlue,
+            TextDecorations = TextDecorations.Underline,
+            Cursor = new Cursor(StandardCursorType.Hand)
+        };
+        linkTextBlock.PointerPressed += (_, _) => OpenUrlCommand.Execute(repoUrl).Subscribe();
+        return linkTextBlock;
+    }
+
+    private static string? ExtractRepoUrl(string content)
+    {
+        var match = Regex.Match(content, @"https?://\S+");
+        return match.Success ? match.Value : null;
+    }
+
+    private static string NormalizeScamWarningContent(string content)
+    {
+        return Regex.Replace(content, @"\r\n?", "\n");
     }
     
     public void ChangeTheme(SukiColorTheme theme) => _theme.ChangeColorTheme(theme);
