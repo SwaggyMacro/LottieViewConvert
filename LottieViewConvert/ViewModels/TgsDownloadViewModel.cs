@@ -559,12 +559,17 @@ public class TgsDownloadViewModel : Page, IDisposable
                             // Get the frame rate from the WebM file
                             var fps = await GetVideoFrameRateAsync(sticker.FilePath, exec);
                             
-                            // Extract frames with proper frame rate
+                            // Apply speed adjustment using ffmpeg's setpts filter
+                            // For speed adjustment: setpts=PTS/speed (e.g., PTS/2 for 2x speed, PTS*2 for 0.5x speed)
+                            var ptsMultiplier = 1.0 / playbackSpeed; // Inverse for setpts filter
+                            var videoFilter = $"setpts={ptsMultiplier:F4}*PTS,format=yuva420p";
+                            
+                            // Extract frames with speed adjustment applied
                             var extractArgs = new List<string>
                             {
                                 "-hide_banner", "-y",
                                 "-i", sticker.FilePath,
-                                "-vf", "format=yuva420p",
+                                "-vf", videoFilter,
                                 "-c:v", "png", "-pix_fmt", "rgba",
                                 Path.Combine(tempDir, "frame_%03d.png")
                             };
@@ -578,13 +583,12 @@ public class TgsDownloadViewModel : Page, IDisposable
                                     img.Alpha(AlphaOption.Set);
                                     imgList.Add(img);
                                 }
-                                // Calculate delay based on the actual frame rate and playback speed
-                                // delay in centiseconds = (100 / fps) / playbackSpeed
-                                var baseDelay = fps > 0 ? 100.0 / fps : 3.33;
-                                var adjustedDelay = (uint)Math.Max(1, Math.Round(baseDelay / playbackSpeed));
+                                // Calculate delay based on the actual frame rate
+                                // Since we've already adjusted speed in ffmpeg, use the original fps for delay
+                                var delay = fps > 0 ? (uint)Math.Max(1, Math.Round(100.0 / fps)) : 3;
                                 foreach (var img in imgList)
                                 {
-                                    img.AnimationDelay = adjustedDelay;
+                                    img.AnimationDelay = delay;
                                     img.Format = MagickFormat.Gif;
                                     img.GifDisposeMethod = GifDisposeMethod.Background;
                                     img.BackgroundColor = MagickColors.Transparent;
