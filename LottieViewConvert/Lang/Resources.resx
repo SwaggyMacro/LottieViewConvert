@@ -699,6 +699,22 @@
     <data name="GotIt" xml:space="preserve">
         <value>Got it</value>
     </data>
+    <data name="DontShowAgain" xml:space="preserve">
+        <value>Don't show again</value>
+    </data>
+    <data name="Close" xml:space="preserve">
+        <value>Close</value>
+    </data>
+    <data name="ScamWarningTitle" xml:space="preserve">
+        <value>Open-source Notice</value>
+    </data>
+    <data name="ScamWarningContent" xml:space="preserve">
+        <value>This software is open-source. Repository: https://github.com/SwaggyMacro/LottieViewConvert
+
+If you purchased this software from somewhere else, you have been scammed.
+
+If you find this project useful, please visit it on GitHub and give it a star!</value>
+    </data>
     <data name="Readme" xml:space="preserve">
         <value>Readme</value>
     </data>

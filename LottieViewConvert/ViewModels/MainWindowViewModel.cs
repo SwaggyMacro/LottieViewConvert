@@ -46,6 +46,7 @@ public class MainWindowViewModel : ViewModelBase
     public IAvaloniaReadOnlyList<SukiBackgroundStyle> BackgroundStyles { get; } = null!;
     public IAvaloniaReadOnlyList<SukiColorTheme> Themes { get; }
     private ThemeVariant _baseTheme = null!;
+    private bool _scamWarningShown;
 
     public ThemeVariant BaseTheme
     {
@@ -179,6 +180,43 @@ public class MainWindowViewModel : ViewModelBase
         else
         {
             Logger.Info("Gifski is installed and detected.");
+        }
+    }
+    
+    public async Task ShowScamWarningIfNeededAsync()
+    {
+        if (_scamWarningShown)
+        {
+            return;
+        }
+
+        _scamWarningShown = true;
+
+        try
+        {
+            var configService = new ConfigService();
+            var config = await configService.LoadConfigAsync();
+            if (!config.ShowScamWarningDialog)
+            {
+                return;
+            }
+
+            DialogManager.CreateDialog()
+                .WithTitle(Resources.ScamWarningTitle)
+                .WithContent(Resources.ScamWarningContent)
+                .OfType(NotificationType.Information)
+                .WithActionButton(Resources.GotIt, _ => { })
+                .WithActionButton(Resources.DontShowAgain, _ =>
+                {
+                    config.ShowScamWarningDialog = false;
+                    configService.SaveConfig(config);
+                })
+                .WithActionButton(Resources.Close, _ => { })
+                .TryShow();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to show scam warning dialog: {ex.Message}");
         }
     }
     

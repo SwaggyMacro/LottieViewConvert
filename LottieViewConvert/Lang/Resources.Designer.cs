@@ -238,6 +238,15 @@ namespace LottieViewConvert.Lang {
                 return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Check failed.
@@ -488,6 +497,15 @@ namespace LottieViewConvert.Lang {
         public static string DownloadFailed {
             get {
                 return ResourceManager.GetString("DownloadFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Don't show again.
+        /// </summary>
+        public static string DontShowAgain {
+            get {
+                return ResourceManager.GetString("DontShowAgain", resourceCulture);
             }
         }
         
@@ -1839,6 +1857,28 @@ namespace LottieViewConvert.Lang {
         public static string Scale {
             get {
                 return ResourceManager.GetString("Scale", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This software is open-source. Repository: https://github.com/SwaggyMacro/LottieViewConvert
+        ///
+        ///If you purchased this software from somewhere else, you have been scammed.
+        ///
+        ///If you find this project useful, please visit it on GitHub and give it a star!.
+        /// </summary>
+        public static string ScamWarningContent {
+            get {
+                return ResourceManager.GetString("ScamWarningContent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Open-source Notice.
+        /// </summary>
+        public static string ScamWarningTitle {
+            get {
+                return ResourceManager.GetString("ScamWarningTitle", resourceCulture);
             }
         }
         

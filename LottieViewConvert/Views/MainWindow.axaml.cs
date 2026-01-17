@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -32,5 +33,13 @@ public partial class MainWindow : SukiWindow
     {
         WindowState = WindowState == WindowState.FullScreen ? WindowState.Normal : WindowState.FullScreen;
         IsTitleBarVisible = WindowState != WindowState.FullScreen;
+    }
+
+    private async void MainWindow_OnOpened(object? sender, EventArgs e)
+    {
+        if (DataContext is MainWindowViewModel vm)
+        {
+            await vm.ShowScamWarningIfNeededAsync();
+        }
     }
 }

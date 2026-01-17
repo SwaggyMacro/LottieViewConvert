@@ -878,14 +878,12 @@ namespace LottieViewConvert.ViewModels
 
         private async Task SaveConfig()
         {
-            var config = new AppConfig
-            {
-                ProxyAddress = ProxyAddress,
-                TelegramBotToken = TelegramBotToken,
-                Language = SelectedLanguage,
-                FFmpegPath = FFmpegPath,
-                GifskiPath = GifskiPath // Save Gifski path
-            };
+            var config = _configService.GetConfig();
+            config.ProxyAddress = ProxyAddress;
+            config.TelegramBotToken = TelegramBotToken;
+            config.Language = SelectedLanguage;
+            config.FFmpegPath = FFmpegPath;
+            config.GifskiPath = GifskiPath; // Save Gifski path
             await _configService.SaveConfigAsync(config);
         }
 
@@ -940,6 +938,7 @@ namespace LottieViewConvert.ViewModels
             SelectedLanguage = "auto";
             FFmpegPath = string.Empty;
             GifskiPath = string.Empty;
+            _configService.GetConfig().ShowScamWarningDialog = true;
             await SaveConfig();
             _originalLanguage = SelectedLanguage;
             await CheckFFmpegAsync();
