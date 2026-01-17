@@ -1789,6 +1789,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Playback Speed.
+        /// </summary>
+        public static string PlaybackSpeed {
+            get {
+                return ResourceManager.GetString("PlaybackSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save failed.
         /// </summary>
         public static string SaveFailed {

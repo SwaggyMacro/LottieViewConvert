@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive;
@@ -11,6 +13,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using ImageMagick;
 using LottieViewConvert.Helper;
 using LottieViewConvert.Helper.Convert;
 using LottieViewConvert.Helper.LogHelper;
@@ -21,8 +24,6 @@ using LottieViewConvert.Utils;
 using Material.Icons;
 using ReactiveUI;
 using SukiUI.Toasts;
-using System.Collections.Generic;
-using ImageMagick;
 
 namespace LottieViewConvert.ViewModels;
 
@@ -191,6 +192,13 @@ public class TgsDownloadViewModel : Page, IDisposable
     {
         get => _saveGifProgress;
         set => this.RaiseAndSetIfChanged(ref _saveGifProgress, value);
+    }
+    
+    private double _playbackSpeed = 1.0;
+    public double PlaybackSpeed
+    {
+        get => _playbackSpeed;
+        set => this.RaiseAndSetIfChanged(ref _playbackSpeed, Math.Max(0.25, Math.Min(4.0, value)));
     }
 
     public string SelectionCountText => $"{Resources.Selected} {StickerItems.Count(x => x.IsSelected)} / {StickerItems.Count}";
@@ -427,6 +435,70 @@ public class TgsDownloadViewModel : Page, IDisposable
                 .Queue();
         }
     }
+    
+    private async Task<double> GetVideoFrameRateAsync(string videoPath, CommandExecutor executor)
+    {
+        try
+        {
+            // Use ffprobe to get the frame rate
+            var args = new List<string>
+            {
+                "-v", "error",
+                "-select_streams", "v:0",
+                "-show_entries", "stream=r_frame_rate",
+                "-of", "default=noprint_wrappers=1:nokey=1",
+                videoPath
+            };
+            
+            var tempOutput = Path.Combine(Path.GetTempPath(), $"fps_{Guid.NewGuid()}.txt");
+            try
+            {
+                // Execute ffprobe and capture output
+                var process = new System.Diagnostics.Process
+                {
+                    StartInfo = new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = "ffprobe",
+                        Arguments = string.Join(" ", args.Select(a => a.Contains(" ") ? $"\"{a}\"" : a)),
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    }
+                };
+                
+                process.Start();
+                var output = await process.StandardOutput.ReadToEndAsync();
+                await process.WaitForExitAsync();
+                
+                if (process.ExitCode == 0 && !string.IsNullOrWhiteSpace(output))
+                {
+                    // Parse frame rate (format is usually "30/1" or "30000/1001")
+                    var parts = output.Trim().Split('/');
+                    if (parts.Length == 2 && 
+                        double.TryParse(parts[0], out var numerator) && 
+                        double.TryParse(parts[1], out var denominator) &&
+                        denominator > 0)
+                    {
+                        return numerator / denominator;
+                    }
+                }
+            }
+            finally
+            {
+                if (File.Exists(tempOutput))
+                    File.Delete(tempOutput);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to get video frame rate: {ex}");
+        }
+        
+        // Default to 30 fps if detection fails
+        return 30.0;
+    }
+    
     private async Task SaveSelectedStickersAsGif()
     {
         // initialize UI state for GIF saving
@@ -443,6 +515,9 @@ public class TgsDownloadViewModel : Page, IDisposable
 
         try
         {
+            // Capture the playback speed value to avoid threading issues
+            var playbackSpeed = PlaybackSpeed;
+            
             await Task.Run(async () =>
             {
                 var totalCount = selectedStickers.Count;
@@ -461,6 +536,17 @@ public class TgsDownloadViewModel : Page, IDisposable
                         {
                             using var imgList = new MagickImageCollection();
                             await imgList.ReadAsync(sticker.FilePath);
+                            // Apply playback speed adjustment for animated images (like WebP)
+                            if (imgList.Count > 1)
+                            {
+                                foreach (var img in imgList)
+                                {
+                                    if (img.AnimationDelay > 0)
+                                    {
+                                        img.AnimationDelay = (uint)Math.Max(1, img.AnimationDelay / playbackSpeed);
+                                    }
+                                }
+                            }
                             await imgList.WriteAsync(destPath);
                         }
                         else
@@ -469,11 +555,22 @@ public class TgsDownloadViewModel : Page, IDisposable
                             var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
                             Directory.CreateDirectory(tempDir);
                             var exec = new CommandExecutor();
+                            
+                            // Get the frame rate from the WebM file
+                            var fps = await GetVideoFrameRateAsync(sticker.FilePath, exec);
+                            
+                            // Apply speed adjustment using ffmpeg's setpts filter
+                            // For speed adjustment: setpts=PTS/speed (e.g., PTS/2 for 2x speed, PTS*2 for 0.5x speed)
+                            var ptsMultiplier = 1.0 / playbackSpeed; // Inverse for setpts filter
+                            var videoFilter = $"setpts={ptsMultiplier:F4}*PTS,format=yuva420p";
+                            
+                            // Extract frames with speed adjustment applied
                             var extractArgs = new List<string>
                             {
                                 "-hide_banner", "-y",
-                                "-vcodec", "libvpx-vp9", "-i", sticker.FilePath,
-                                "-vf", "format=yuva420p", "-c:v", "png", "-pix_fmt", "rgba",
+                                "-i", sticker.FilePath,
+                                "-vf", videoFilter,
+                                "-c:v", "png", "-pix_fmt", "rgba",
                                 Path.Combine(tempDir, "frame_%03d.png")
                             };
                             if (await exec.ExecuteAsync("ffmpeg", extractArgs, Path.GetDirectoryName(sticker.FilePath) ?? string.Empty))
@@ -486,9 +583,12 @@ public class TgsDownloadViewModel : Page, IDisposable
                                     img.Alpha(AlphaOption.Set);
                                     imgList.Add(img);
                                 }
+                                // Calculate delay based on the actual frame rate
+                                // Since we've already adjusted speed in ffmpeg, use the original fps for delay
+                                var delay = fps > 0 ? (uint)Math.Max(1, Math.Round(100.0 / fps)) : 3;
                                 foreach (var img in imgList)
                                 {
-                                    img.AnimationDelay = 3;
+                                    img.AnimationDelay = delay;
                                     img.Format = MagickFormat.Gif;
                                     img.GifDisposeMethod = GifDisposeMethod.Background;
                                     img.BackgroundColor = MagickColors.Transparent;
