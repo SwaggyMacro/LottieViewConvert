@@ -876,9 +876,9 @@ namespace LottieViewConvert.ViewModels
             _isInitialLoad = false;
         }
 
-        private async Task SaveConfig()
+        private async Task SaveConfig(AppConfig? config = null)
         {
-            var config = await _configService.LoadConfigAsync();
+            config ??= await _configService.LoadConfigAsync();
             config.ProxyAddress = ProxyAddress;
             config.TelegramBotToken = TelegramBotToken;
             config.Language = SelectedLanguage;
@@ -938,8 +938,9 @@ namespace LottieViewConvert.ViewModels
             SelectedLanguage = "auto";
             FFmpegPath = string.Empty;
             GifskiPath = string.Empty;
-            (await _configService.LoadConfigAsync()).ShowScamWarningDialog = true;
-            await SaveConfig();
+            var config = await _configService.LoadConfigAsync();
+            config.ShowScamWarningDialog = true;
+            await SaveConfig(config);
             _originalLanguage = SelectedLanguage;
             await CheckFFmpegAsync();
             await CheckGifskiAsync();
