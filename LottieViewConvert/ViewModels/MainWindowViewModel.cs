@@ -249,7 +249,8 @@ public class MainWindowViewModel : ViewModelBase
         var headerSuffix = string.Empty;
 
         var urlIndex = header.IndexOf(ScamWarningRepoUrl, StringComparison.Ordinal);
-        if (urlIndex >= 0)
+        var hasRepoUrl = urlIndex >= 0;
+        if (hasRepoUrl)
         {
             headerPrefix = header[..urlIndex];
             headerSuffix = header[(urlIndex + ScamWarningRepoUrl.Length)..];
@@ -297,7 +298,9 @@ public class MainWindowViewModel : ViewModelBase
             TextDecorations = TextDecorations.Underline,
             Cursor = new Cursor(StandardCursorType.Hand)
         };
-        linkTextBlock.PointerPressed += (_, _) => OpenUrlCommand.Execute(ScamWarningRepoUrl).Subscribe();
+        linkTextBlock.PointerPressed += (_, _) => OpenUrlCommand.Execute(ScamWarningRepoUrl).Subscribe(
+            _ => { },
+            ex => Logger.Error($"Failed to open scam warning link: {ex.Message}"));
         return linkTextBlock;
     }
     
