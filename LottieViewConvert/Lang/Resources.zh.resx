@@ -701,9 +701,6 @@
     <data name="DontShowAgain" xml:space="preserve">
         <value>不再显示</value>
     </data>
-    <data name="Close" xml:space="preserve">
-        <value>关闭</value>
-    </data>
     <data name="ScamWarningTitle" xml:space="preserve">
         <value>开源提示</value>
     </data>

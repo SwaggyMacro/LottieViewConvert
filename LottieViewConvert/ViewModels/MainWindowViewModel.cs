@@ -4,7 +4,10 @@ using System.Linq;
 using System.Reactive;
 using System.Threading.Tasks;
 using Avalonia.Collections;
+using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
+using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.Styling;
 using LottieViewConvert.Helper.LogHelper;
 using LottieViewConvert.Lang;
@@ -23,6 +26,7 @@ namespace LottieViewConvert.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
+    private const string ScamWarningRepoUrl = "https://github.com/SwaggyMacro/LottieViewConvert";
     
     public ISukiDialogManager DialogManager { get; }
     public ISukiToastManager ToastManager { get; set; }
@@ -204,11 +208,10 @@ public class MainWindowViewModel : ViewModelBase
 
             DialogManager.CreateDialog()
                 .WithTitle(Resources.ScamWarningTitle)
-                .WithContent(Resources.ScamWarningContent)
+                .WithContent(BuildScamWarningContent())
                 .OfType(NotificationType.Information)
-                .WithActionButton(Resources.GotIt, _ => { })
-                .WithActionButton(Resources.DontShowAgain, async _ => await DisableScamWarningAsync())
-                .WithActionButton(Resources.Close, _ => { })
+                .WithActionButton(Resources.GotIt, _ => { }, dismissOnClick: true)
+                .WithActionButton(Resources.DontShowAgain, async _ => await DisableScamWarningAsync(), dismissOnClick: true)
                 .TryShow();
         }
         catch (Exception ex)
@@ -229,6 +232,64 @@ public class MainWindowViewModel : ViewModelBase
         {
             Logger.Error($"Failed to update scam warning preference: {ex.Message}");
         }
+    }
+    
+    private Control BuildScamWarningContent()
+    {
+        var contentPanel = new StackPanel { Spacing = 8 };
+        var paragraphs = Resources.ScamWarningContent.Split(new[] { "\r\n\r\n", "\n\n" }, StringSplitOptions.None);
+        var header = paragraphs.Length > 0 ? paragraphs[0] : Resources.ScamWarningContent;
+        var headerParts = header.Split(ScamWarningRepoUrl);
+
+        if (!string.IsNullOrWhiteSpace(headerParts[0]))
+        {
+            contentPanel.Children.Add(new TextBlock
+            {
+                Text = headerParts[0].TrimEnd(),
+                TextWrapping = TextWrapping.Wrap
+            });
+        }
+
+        contentPanel.Children.Add(CreateRepoLinkTextBlock());
+
+        if (headerParts.Length > 1 && !string.IsNullOrWhiteSpace(headerParts[1]))
+        {
+            contentPanel.Children.Add(new TextBlock
+            {
+                Text = headerParts[1].TrimStart(),
+                TextWrapping = TextWrapping.Wrap
+            });
+        }
+
+        for (var index = 1; index < paragraphs.Length; index++)
+        {
+            if (string.IsNullOrWhiteSpace(paragraphs[index]))
+            {
+                continue;
+            }
+
+            contentPanel.Children.Add(new TextBlock
+            {
+                Text = paragraphs[index],
+                TextWrapping = TextWrapping.Wrap
+            });
+        }
+
+        return contentPanel;
+    }
+
+    private TextBlock CreateRepoLinkTextBlock()
+    {
+        var linkTextBlock = new TextBlock
+        {
+            Text = ScamWarningRepoUrl,
+            TextWrapping = TextWrapping.Wrap,
+            Foreground = Brushes.DeepSkyBlue,
+            TextDecorations = TextDecorations.Underline,
+            Cursor = new Cursor(StandardCursorType.Hand)
+        };
+        linkTextBlock.PointerPressed += (_, _) => UrlUtil.OpenUrl(ScamWarningRepoUrl);
+        return linkTextBlock;
     }
     
     public void ChangeTheme(SukiColorTheme theme) => _theme.ChangeColorTheme(theme);
