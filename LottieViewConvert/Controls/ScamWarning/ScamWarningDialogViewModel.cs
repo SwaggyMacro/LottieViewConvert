@@ -17,8 +17,8 @@ public class ScamWarningDialogViewModel : ReactiveObject
     private static readonly string[] ParagraphSeparators =
     [
         $"{Environment.NewLine}{Environment.NewLine}",
-        "\r\n\r\n",
-        "\n\n"
+        "\n\n",
+        "\r\n\r\n"
     ];
 
     private readonly ISukiDialog _dialog;
