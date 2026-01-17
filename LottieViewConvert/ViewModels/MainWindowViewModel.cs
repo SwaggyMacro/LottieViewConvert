@@ -243,7 +243,7 @@ public class MainWindowViewModel : ViewModelBase
     private Control BuildScamWarningContent()
     {
         var contentPanel = new StackPanel { Spacing = 8 };
-        var paragraphs = Resources.ScamWarningContent.Split(ParagraphSeparators, StringSplitOptions.None);
+        var paragraphs = Resources.ScamWarningContent.Split(ParagraphSeparators, StringSplitOptions.RemoveEmptyEntries);
         var header = paragraphs.Length > 0 ? paragraphs[0] : Resources.ScamWarningContent;
         var headerPrefix = header;
         var headerSuffix = string.Empty;
@@ -252,9 +252,7 @@ public class MainWindowViewModel : ViewModelBase
         {
             var headerParts = header.Split(ScamWarningRepoUrl, StringSplitOptions.None);
             headerPrefix = headerParts[0];
-            headerSuffix = headerParts.Length > 1
-                ? string.Join(ScamWarningRepoUrl, headerParts.Skip(1))
-                : string.Empty;
+            headerSuffix = headerParts.Length > 1 ? headerParts[1] : string.Empty;
         }
 
         if (!string.IsNullOrWhiteSpace(headerPrefix))
@@ -279,11 +277,6 @@ public class MainWindowViewModel : ViewModelBase
 
         for (var index = 1; index < paragraphs.Length; index++)
         {
-            if (string.IsNullOrWhiteSpace(paragraphs[index]))
-            {
-                continue;
-            }
-
             contentPanel.Children.Add(new TextBlock
             {
                 Text = paragraphs[index],
@@ -304,7 +297,9 @@ public class MainWindowViewModel : ViewModelBase
             TextDecorations = TextDecorations.Underline,
             Cursor = new Cursor(StandardCursorType.Hand)
         };
-        linkTextBlock.PointerPressed += (_, _) => OpenUrlCommand.Execute(ScamWarningRepoUrl).Subscribe();
+        linkTextBlock.PointerPressed += (_, _) => OpenUrlCommand.Execute(ScamWarningRepoUrl).Subscribe(
+            _ => { },
+            ex => Logger.Error($"Failed to open scam warning link: {ex.Message}"));
         return linkTextBlock;
     }
     
