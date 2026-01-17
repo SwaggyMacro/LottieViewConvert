@@ -47,6 +47,7 @@ public class MainWindowViewModel : ViewModelBase
     public IAvaloniaReadOnlyList<SukiColorTheme> Themes { get; }
     private ThemeVariant _baseTheme = null!;
     private bool _scamWarningShown;
+    private readonly ConfigService _configService;
 
     public ThemeVariant BaseTheme
     {
@@ -82,6 +83,7 @@ public class MainWindowViewModel : ViewModelBase
 
         ToastManager = toastManager;
         DialogManager = dialogManager;
+        _configService = new ConfigService();
 
         Global.SetToastManager(toastManager);
         Global.SetDialogManager(dialogManager);
@@ -194,8 +196,7 @@ public class MainWindowViewModel : ViewModelBase
 
         try
         {
-            var configService = new ConfigService();
-            var config = await configService.LoadConfigAsync();
+            var config = await _configService.LoadConfigAsync();
             if (!config.ShowScamWarningDialog)
             {
                 return;
@@ -208,8 +209,9 @@ public class MainWindowViewModel : ViewModelBase
                 .WithActionButton(Resources.GotIt, _ => { })
                 .WithActionButton(Resources.DontShowAgain, async _ =>
                 {
-                    config.ShowScamWarningDialog = false;
-                    await configService.SaveConfigAsync(config);
+                    var currentConfig = await _configService.LoadConfigAsync();
+                    currentConfig.ShowScamWarningDialog = false;
+                    await _configService.SaveConfigAsync(currentConfig);
                 })
                 .WithActionButton(Resources.Close, _ => { })
                 .TryShow();

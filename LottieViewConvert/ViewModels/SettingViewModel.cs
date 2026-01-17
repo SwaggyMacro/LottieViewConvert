@@ -878,7 +878,7 @@ namespace LottieViewConvert.ViewModels
 
         private async Task SaveConfig()
         {
-            var config = _configService.GetConfig();
+            var config = await _configService.LoadConfigAsync();
             config.ProxyAddress = ProxyAddress;
             config.TelegramBotToken = TelegramBotToken;
             config.Language = SelectedLanguage;
@@ -938,7 +938,7 @@ namespace LottieViewConvert.ViewModels
             SelectedLanguage = "auto";
             FFmpegPath = string.Empty;
             GifskiPath = string.Empty;
-            _configService.GetConfig().ShowScamWarningDialog = true;
+            (await _configService.LoadConfigAsync()).ShowScamWarningDialog = true;
             await SaveConfig();
             _originalLanguage = SelectedLanguage;
             await CheckFFmpegAsync();
