@@ -27,6 +27,12 @@ namespace LottieViewConvert.ViewModels;
 public class MainWindowViewModel : ViewModelBase
 {
     private const string ScamWarningRepoUrl = "https://github.com/SwaggyMacro/LottieViewConvert";
+    private static readonly string[] ParagraphSeparators =
+    [
+        $"{Environment.NewLine}{Environment.NewLine}",
+        "\n\n",
+        "\r\n\r\n"
+    ];
     
     public ISukiDialogManager DialogManager { get; }
     public ISukiToastManager ToastManager { get; set; }
@@ -237,26 +243,36 @@ public class MainWindowViewModel : ViewModelBase
     private Control BuildScamWarningContent()
     {
         var contentPanel = new StackPanel { Spacing = 8 };
-        var paragraphs = Resources.ScamWarningContent.Split(new[] { "\r\n\r\n", "\n\n" }, StringSplitOptions.None);
+        var paragraphs = Resources.ScamWarningContent.Split(ParagraphSeparators, StringSplitOptions.None);
         var header = paragraphs.Length > 0 ? paragraphs[0] : Resources.ScamWarningContent;
-        var headerParts = header.Split(ScamWarningRepoUrl);
+        var headerPrefix = header;
+        var headerSuffix = string.Empty;
 
-        if (!string.IsNullOrWhiteSpace(headerParts[0]))
+        if (header.Contains(ScamWarningRepoUrl, StringComparison.Ordinal))
+        {
+            var headerParts = header.Split(ScamWarningRepoUrl, StringSplitOptions.None);
+            headerPrefix = headerParts[0];
+            headerSuffix = headerParts.Length > 1
+                ? string.Join(ScamWarningRepoUrl, headerParts.Skip(1))
+                : string.Empty;
+        }
+
+        if (!string.IsNullOrWhiteSpace(headerPrefix))
         {
             contentPanel.Children.Add(new TextBlock
             {
-                Text = headerParts[0].TrimEnd(),
+                Text = headerPrefix.TrimEnd(),
                 TextWrapping = TextWrapping.Wrap
             });
         }
 
         contentPanel.Children.Add(CreateRepoLinkTextBlock());
 
-        if (headerParts.Length > 1 && !string.IsNullOrWhiteSpace(headerParts[1]))
+        if (!string.IsNullOrWhiteSpace(headerSuffix))
         {
             contentPanel.Children.Add(new TextBlock
             {
-                Text = headerParts[1].TrimStart(),
+                Text = headerSuffix.TrimStart(),
                 TextWrapping = TextWrapping.Wrap
             });
         }
@@ -288,7 +304,7 @@ public class MainWindowViewModel : ViewModelBase
             TextDecorations = TextDecorations.Underline,
             Cursor = new Cursor(StandardCursorType.Hand)
         };
-        linkTextBlock.PointerPressed += (_, _) => UrlUtil.OpenUrl(ScamWarningRepoUrl);
+        linkTextBlock.PointerPressed += (_, _) => OpenUrlCommand.Execute(ScamWarningRepoUrl).Subscribe();
         return linkTextBlock;
     }
     
