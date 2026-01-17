@@ -44,7 +44,7 @@ public class ScamWarningDialogViewModel : ReactiveObject
 
         var content = Resources.ScamWarningContent;
         RepoUrl = ExtractRepoUrl(content) ?? FallbackRepoUrl;
-        var normalizedContent = content.Replace("\r\n", "\n");
+        var normalizedContent = content.Replace("\r\n", "\n").Replace("\r", "\n");
         var paragraphs = normalizedContent.Split(ParagraphSeparator, StringSplitOptions.RemoveEmptyEntries);
         var header = paragraphs.FirstOrDefault() ?? content;
 
