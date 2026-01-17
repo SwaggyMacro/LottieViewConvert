@@ -876,15 +876,15 @@ namespace LottieViewConvert.ViewModels
             _isInitialLoad = false;
         }
 
-        private async Task SaveConfig(AppConfig? config = null)
+        private async Task SaveConfig(AppConfig? configOverride = null)
         {
-            config ??= await _configService.LoadConfigAsync();
-            config.ProxyAddress = ProxyAddress;
-            config.TelegramBotToken = TelegramBotToken;
-            config.Language = SelectedLanguage;
-            config.FFmpegPath = FFmpegPath;
-            config.GifskiPath = GifskiPath; // Save Gifski path
-            await _configService.SaveConfigAsync(config);
+            configOverride ??= await _configService.LoadConfigAsync();
+            configOverride.ProxyAddress = ProxyAddress;
+            configOverride.TelegramBotToken = TelegramBotToken;
+            configOverride.Language = SelectedLanguage;
+            configOverride.FFmpegPath = FFmpegPath;
+            configOverride.GifskiPath = GifskiPath; // Save Gifski path
+            await _configService.SaveConfigAsync(configOverride);
         }
 
         private async Task SaveConfigAsync()
