@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Condition=" '$(TargetFramework)' == 'net8.0' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)skiasharp.nativeassets.webassembly/2.88.9/buildTransitive/netstandard1.0/SkiaSharp.NativeAssets.WebAssembly.targets" Condition="Exists('$(NuGetPackageRoot)skiasharp.nativeassets.webassembly/2.88.9/buildTransitive/netstandard1.0/SkiaSharp.NativeAssets.WebAssembly.targets')" />
+    <Import Project="$(NuGetPackageRoot)magick.net-q16-anycpu/14.6.0/buildTransitive/netstandard20/Magick.NET-Q16-AnyCPU.targets" Condition="Exists('$(NuGetPackageRoot)magick.net-q16-anycpu/14.6.0/buildTransitive/netstandard20/Magick.NET-Q16-AnyCPU.targets')" />
+    <Import Project="$(NuGetPackageRoot)harfbuzzsharp.nativeassets.webassembly/7.3.0.3/buildTransitive/netstandard1.0/HarfBuzzSharp.NativeAssets.WebAssembly.targets" Condition="Exists('$(NuGetPackageRoot)harfbuzzsharp.nativeassets.webassembly/7.3.0.3/buildTransitive/netstandard1.0/HarfBuzzSharp.NativeAssets.WebAssembly.targets')" />
+    <Import Project="$(NuGetPackageRoot)avalonia.buildservices/0.0.31/buildTransitive/Avalonia.BuildServices.targets" Condition="Exists('$(NuGetPackageRoot)avalonia.buildservices/0.0.31/buildTransitive/Avalonia.BuildServices.targets')" />
+    <Import Project="$(NuGetPackageRoot)avalonia/11.3.1/buildTransitive/Avalonia.targets" Condition="Exists('$(NuGetPackageRoot)avalonia/11.3.1/buildTransitive/Avalonia.targets')" />
+  </ImportGroup>
+</Project>
