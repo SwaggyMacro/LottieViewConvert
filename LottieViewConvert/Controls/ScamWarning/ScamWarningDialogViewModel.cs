@@ -17,6 +17,7 @@ public class ScamWarningDialogViewModel : ReactiveObject
     private const int HeaderIndex = 0;
     private const int ScamWarningIndex = 1;
     private const int StarIndex = 2;
+    private const string NormalizedParagraphPattern = @"\n{2,}";
 
     private readonly ISukiDialog _dialog;
     private readonly ConfigService _configService;
@@ -46,10 +47,14 @@ public class ScamWarningDialogViewModel : ReactiveObject
 
         var content = NormalizeContent(Resources.ScamWarningContent);
         RepoUrl = ExtractRepoUrl(content) ?? FallbackRepoUrl;
-        var paragraphs = Regex.Split(content, @"\n{2,}")
+        var paragraphs = Regex.Split(content, NormalizedParagraphPattern)
             .Where(paragraph => !string.IsNullOrWhiteSpace(paragraph))
             .ToArray();
-        var header = paragraphs.Length > HeaderIndex ? paragraphs[HeaderIndex] : content;
+        var header = GetParagraph(paragraphs, HeaderIndex);
+        if (string.IsNullOrWhiteSpace(header))
+        {
+            header = content;
+        }
 
         var urlIndex = header.IndexOf(RepoUrl, StringComparison.Ordinal);
         if (urlIndex >= 0)
@@ -63,8 +68,8 @@ public class ScamWarningDialogViewModel : ReactiveObject
             HeaderSuffix = string.Empty;
         }
 
-        ScamWarningLine = paragraphs.Length > ScamWarningIndex ? paragraphs[ScamWarningIndex] : string.Empty;
-        StarLine = paragraphs.Length > StarIndex ? paragraphs[StarIndex] : string.Empty;
+        ScamWarningLine = GetParagraph(paragraphs, ScamWarningIndex);
+        StarLine = GetParagraph(paragraphs, StarIndex);
 
         GotItCommand = ReactiveCommand.Create(Dismiss);
         DontShowAgainCommand = ReactiveCommand.CreateFromTask(DisableScamWarningAsync);
@@ -102,5 +107,10 @@ public class ScamWarningDialogViewModel : ReactiveObject
     private static string NormalizeContent(string content)
     {
         return Regex.Replace(content, @"\r\n?", "\n");
+    }
+
+    private static string GetParagraph(string[] paragraphs, int index)
+    {
+        return paragraphs.Length > index ? paragraphs[index] : string.Empty;
     }
 }
