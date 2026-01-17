@@ -15,6 +15,9 @@ public class ScamWarningDialogViewModel : ReactiveObject
 {
     private const string FallbackRepoUrl = "https://github.com/SwaggyMacro/LottieViewConvert";
     private const string ParagraphSeparator = "\n\n";
+    private const int HeaderIndex = 0;
+    private const int ScamWarningIndex = 1;
+    private const int StarIndex = 2;
 
     private readonly ISukiDialog _dialog;
     private readonly ConfigService _configService;
@@ -42,11 +45,10 @@ public class ScamWarningDialogViewModel : ReactiveObject
         _configService = configService;
         OpenLinkCommand = openLinkCommand;
 
-        var content = Resources.ScamWarningContent;
+        var content = NormalizeContent(Resources.ScamWarningContent);
         RepoUrl = ExtractRepoUrl(content) ?? FallbackRepoUrl;
-        var normalizedContent = Regex.Replace(content, @"\r\n?", "\n");
-        var paragraphs = normalizedContent.Split(ParagraphSeparator, StringSplitOptions.RemoveEmptyEntries);
-        var header = paragraphs.FirstOrDefault() ?? content;
+        var paragraphs = content.Split(ParagraphSeparator, StringSplitOptions.RemoveEmptyEntries);
+        var header = paragraphs.Length > HeaderIndex ? paragraphs[HeaderIndex] : content;
 
         var urlIndex = header.IndexOf(RepoUrl, StringComparison.Ordinal);
         if (urlIndex >= 0)
@@ -60,8 +62,8 @@ public class ScamWarningDialogViewModel : ReactiveObject
             HeaderSuffix = string.Empty;
         }
 
-        ScamWarningLine = paragraphs.Length > 1 ? paragraphs[1] : string.Empty;
-        StarLine = paragraphs.Length > 2 ? paragraphs[2] : string.Empty;
+        ScamWarningLine = paragraphs.Length > ScamWarningIndex ? paragraphs[ScamWarningIndex] : string.Empty;
+        StarLine = paragraphs.Length > StarIndex ? paragraphs[StarIndex] : string.Empty;
 
         GotItCommand = ReactiveCommand.Create(Dismiss);
         DontShowAgainCommand = ReactiveCommand.CreateFromTask(DisableScamWarningAsync);
@@ -94,5 +96,10 @@ public class ScamWarningDialogViewModel : ReactiveObject
     {
         var match = Regex.Match(content, @"https?://\S+");
         return match.Success ? match.Value : null;
+    }
+
+    private static string NormalizeContent(string content)
+    {
+        return Regex.Replace(content, @"\r\n?", "\n");
     }
 }
