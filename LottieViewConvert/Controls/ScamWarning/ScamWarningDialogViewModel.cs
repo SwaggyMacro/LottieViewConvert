@@ -14,7 +14,6 @@ namespace LottieViewConvert.Controls.ScamWarning;
 public class ScamWarningDialogViewModel : ReactiveObject
 {
     private const string FallbackRepoUrl = "https://github.com/SwaggyMacro/LottieViewConvert";
-    private const string NormalizedParagraphSeparator = "\n\n";
     private const int HeaderIndex = 0;
     private const int ScamWarningIndex = 1;
     private const int StarIndex = 2;
@@ -47,7 +46,9 @@ public class ScamWarningDialogViewModel : ReactiveObject
 
         var content = NormalizeContent(Resources.ScamWarningContent);
         RepoUrl = ExtractRepoUrl(content) ?? FallbackRepoUrl;
-        var paragraphs = content.Split(NormalizedParagraphSeparator, StringSplitOptions.RemoveEmptyEntries);
+        var paragraphs = Regex.Split(content, @"\n{2,}")
+            .Where(paragraph => !string.IsNullOrWhiteSpace(paragraph))
+            .ToArray();
         var header = paragraphs.Length > HeaderIndex ? paragraphs[HeaderIndex] : content;
 
         var urlIndex = header.IndexOf(RepoUrl, StringComparison.Ordinal);
