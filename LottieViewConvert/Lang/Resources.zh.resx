@@ -114,7 +114,7 @@
         <value>格式</value>
     </data>
     <data name="WhatIsThisDescription" xml:space="preserve">
-        <value>这是一个简单的应用程序，可以将 Lottie 动画转换为 GIF、WEBP、APNG、PNG、MP4 格式。</value>
+        <value>这是一个简单的应用程序，可以将 Lottie 动画转换为 GIF、WEBP、APNG、MP4、MKV、AVIF、WEBM 格式。</value>
     </data>
     <data name="DragHereToConvert" xml:space="preserve">
         <value>拖拽到此处进行转换！</value>

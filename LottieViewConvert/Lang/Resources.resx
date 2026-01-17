@@ -115,7 +115,7 @@
         <value>Format</value>
     </data>
     <data name="WhatIsThisDescription" xml:space="preserve">
-        <value>This's a simple application to convert Lottie animations to GIF, WEBP, APNG, PNG, MP4.This's a simple application to convert Lottie animations to GIF, WEBP, APNG, PNG, MP4.</value>
+        <value>This's a simple application to convert Lottie animations to GIF, WEBP, APNG, MP4, AVIF, MKV, WEBM.</value>
     </data>
     <data name="DragHereToConvert" xml:space="preserve">
         <value>Drag here to convert!</value>

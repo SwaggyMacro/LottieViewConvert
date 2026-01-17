@@ -238,7 +238,7 @@ namespace LottieViewConvert.Lang {
                 return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Check failed.
         /// </summary>
@@ -456,6 +456,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t show again.
+        /// </summary>
+        public static string DontShowAgain {
+            get {
+                return ResourceManager.GetString("DontShowAgain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download.
         /// </summary>
         public static string Download {
@@ -488,15 +497,6 @@ namespace LottieViewConvert.Lang {
         public static string DownloadFailed {
             get {
                 return ResourceManager.GetString("DownloadFailed", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Don't show again.
-        /// </summary>
-        public static string DontShowAgain {
-            get {
-                return ResourceManager.GetString("DontShowAgain", resourceCulture);
             }
         }
         
@@ -847,8 +847,8 @@ namespace LottieViewConvert.Lang {
         /// </summary>
         public static string FfmpegDirectoryAddedToPathSuccessfullyYouMayNeedToRestartApplicationsToSeeTheChange {
             get {
-                return ResourceManager.GetString("FfmpegDirectoryAddedToPathSuccessfullyYouMayNeedToRestartApplicationsToSeeTheChan" +
-                        "ge", resourceCulture);
+                return ResourceManager.GetString(("FfmpegDirectoryAddedToPathSuccessfullyYouMayNeedToRestartApplicationsToSeeTheChan" +
+                        "ge"), resourceCulture);
             }
         }
         
@@ -1119,6 +1119,15 @@ namespace LottieViewConvert.Lang {
         public static string GifskiIsAlreadyAvailableOnYourSystemAt {
             get {
                 return ResourceManager.GetString("GifskiIsAlreadyAvailableOnYourSystemAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⚠️ Manual Installation: Please install the Command-Line (CLI) version of Gifski, NOT the GUI version. (Ignore this if using auto-install).
+        /// </summary>
+        public static string GifskiManualInstallHint {
+            get {
+                return ResourceManager.GetString("GifskiManualInstallHint", resourceCulture);
             }
         }
         
@@ -1609,6 +1618,15 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Playback Speed.
+        /// </summary>
+        public static string PlaybackSpeed {
+            get {
+                return ResourceManager.GetString("PlaybackSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Play Speed.
         /// </summary>
         public static string PlaySpeed {
@@ -1798,15 +1816,6 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Playback Speed.
-        /// </summary>
-        public static string PlaybackSpeed {
-            get {
-                return ResourceManager.GetString("PlaybackSpeed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Save failed.
         /// </summary>
         public static string SaveFailed {
@@ -1850,7 +1859,7 @@ namespace LottieViewConvert.Lang {
                 return ResourceManager.GetString("Scale", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to This software is open-source. Repository: https://github.com/SwaggyMacro/LottieViewConvert
         ///
@@ -1863,22 +1872,13 @@ namespace LottieViewConvert.Lang {
                 return ResourceManager.GetString("ScamWarningContent", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Open-source Notice.
         /// </summary>
         public static string ScamWarningTitle {
             get {
                 return ResourceManager.GetString("ScamWarningTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ⚠️ Manual Installation: Please install the Command-Line (CLI) version of Gifski, NOT the GUI version. (Ignore this if using auto-install).
-        /// </summary>
-        public static string GifskiManualInstallHint {
-            get {
-                return ResourceManager.GetString("GifskiManualInstallHint", resourceCulture);
             }
         }
         
@@ -2342,7 +2342,7 @@ namespace LottieViewConvert.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This&apos;s a simple application to convert Lottie animations to GIF, WEBP, APNG, PNG, MP4.This&apos;s a simple application to convert Lottie animations to GIF, WEBP, APNG, PNG, MP4..
+        ///   Looks up a localized string similar to This&apos;s a simple application to convert Lottie animations to GIF, WEBP, APNG, MP4, AVIF, MKV, WEBM..
         /// </summary>
         public static string WhatIsThisDescription {
             get {
