@@ -777,6 +777,9 @@
     <data name="SaveAsGif" xml:space="preserve">
         <value>Save as Gif</value>
     </data>
+    <data name="PlaybackSpeed" xml:space="preserve">
+        <value>Playback Speed</value>
+    </data>
     <data name="Scale" xml:space="preserve">
         <value>Scale</value>
     </data>

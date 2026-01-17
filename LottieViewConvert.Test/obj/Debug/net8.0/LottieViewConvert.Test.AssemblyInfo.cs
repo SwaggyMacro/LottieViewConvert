@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LottieViewConvert.Test")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+68c5cca7d049e8d9e34fd4a1921740606a7ef660")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f5ef9a33bf6c4976ad2de8070f8566f76c1aa623")]
 [assembly: System.Reflection.AssemblyProductAttribute("LottieViewConvert.Test")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LottieViewConvert.Test")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -192,6 +192,13 @@ public class TgsDownloadViewModel : Page, IDisposable
         get => _saveGifProgress;
         set => this.RaiseAndSetIfChanged(ref _saveGifProgress, value);
     }
+    
+    private double _playbackSpeed = 1.0;
+    public double PlaybackSpeed
+    {
+        get => _playbackSpeed;
+        set => this.RaiseAndSetIfChanged(ref _playbackSpeed, Math.Max(0.25, Math.Min(4.0, value)));
+    }
 
     public string SelectionCountText => $"{Resources.Selected} {StickerItems.Count(x => x.IsSelected)} / {StickerItems.Count}";
     public string SelectedCountText => $"{Resources.Selected} {StickerItems.Count(x => x.IsSelected)} {Resources.Sticker}";
@@ -461,6 +468,17 @@ public class TgsDownloadViewModel : Page, IDisposable
                         {
                             using var imgList = new MagickImageCollection();
                             await imgList.ReadAsync(sticker.FilePath);
+                            // Apply playback speed adjustment for animated images (like WebP)
+                            if (imgList.Count > 1)
+                            {
+                                foreach (var img in imgList)
+                                {
+                                    if (img.AnimationDelay > 0)
+                                    {
+                                        img.AnimationDelay = (uint)Math.Max(1, img.AnimationDelay / PlaybackSpeed);
+                                    }
+                                }
+                            }
                             await imgList.WriteAsync(destPath);
                         }
                         else
@@ -486,9 +504,12 @@ public class TgsDownloadViewModel : Page, IDisposable
                                     img.Alpha(AlphaOption.Set);
                                     imgList.Add(img);
                                 }
+                                // Apply playback speed adjustment to animation delay
+                                var baseDelay = 3; // centiseconds
+                                var adjustedDelay = (uint)Math.Max(1, baseDelay / PlaybackSpeed);
                                 foreach (var img in imgList)
                                 {
-                                    img.AnimationDelay = 3;
+                                    img.AnimationDelay = adjustedDelay;
                                     img.Format = MagickFormat.Gif;
                                     img.GifDisposeMethod = GifDisposeMethod.Background;
                                     img.BackgroundColor = MagickColors.Transparent;
