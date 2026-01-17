@@ -297,12 +297,7 @@ public class MainWindowViewModel : ViewModelBase
             TextDecorations = TextDecorations.Underline,
             Cursor = new Cursor(StandardCursorType.Hand)
         };
-        linkTextBlock.PointerPressed += (_, _) =>
-        {
-            using var subscription = OpenUrlCommand.Execute(ScamWarningRepoUrl).Subscribe(
-                _ => { },
-                ex => Logger.Error($"Failed to open scam warning link: {ex.Message}"));
-        };
+        linkTextBlock.PointerPressed += (_, _) => OpenUrlCommand.Execute(ScamWarningRepoUrl).Subscribe();
         return linkTextBlock;
     }
     
