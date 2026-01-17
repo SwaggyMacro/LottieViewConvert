@@ -206,10 +206,10 @@ public class MainWindowViewModel : ViewModelBase
                 .WithContent(Resources.ScamWarningContent)
                 .OfType(NotificationType.Information)
                 .WithActionButton(Resources.GotIt, _ => { })
-                .WithActionButton(Resources.DontShowAgain, _ =>
+                .WithActionButton(Resources.DontShowAgain, async _ =>
                 {
                     config.ShowScamWarningDialog = false;
-                    configService.SaveConfig(config);
+                    await configService.SaveConfigAsync(config);
                 })
                 .WithActionButton(Resources.Close, _ => { })
                 .TryShow();
