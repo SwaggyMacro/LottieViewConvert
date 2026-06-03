@@ -16,6 +16,9 @@ namespace LottieViewConvert.Interface.Convert
             double playSpeed,
             int outputWidth,
             int outputHeight,
+            double rotationAngle = 0.0,
+            bool flipHorizontal = false,
+            bool flipVertical = false,
             IProgress<ExportProgressEventArgs>? progress = null,
             CancellationToken cancellationToken = default);
     }

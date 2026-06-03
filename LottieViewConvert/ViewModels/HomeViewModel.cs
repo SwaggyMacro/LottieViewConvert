@@ -201,6 +201,27 @@ namespace LottieViewConvert.ViewModels
             set => this.RaiseAndSetIfChanged(ref _lockAspect, value);
         }
 
+        private double _rotationAngle = 0.0;
+        public double RotationAngle
+        {
+            get => _rotationAngle;
+            set => this.RaiseAndSetIfChanged(ref _rotationAngle, value);
+        }
+
+        private bool _flipHorizontal;
+        public bool FlipHorizontal
+        {
+            get => _flipHorizontal;
+            set => this.RaiseAndSetIfChanged(ref _flipHorizontal, value);
+        }
+
+        private bool _flipVertical;
+        public bool FlipVertical
+        {
+            get => _flipVertical;
+            set => this.RaiseAndSetIfChanged(ref _flipVertical, value);
+        }
+
         public HomeViewModel()
             : base(Resources.Home, Material.Icons.MaterialIconKind.Home)
         {
@@ -341,7 +362,10 @@ namespace LottieViewConvert.ViewModels
                             Width = widthForThis,
                             Height = heightForThis,
                             Fps = Fps,
-                            Quality = Quality
+                            Quality = Quality,
+                            RotationAngle = RotationAngle,
+                            FlipHorizontal = FlipHorizontal,
+                            FlipVertical = FlipVertical
                         }
                     );
 

@@ -162,6 +162,9 @@ public class Converter
                 _options.PlaySpeed,
                 _options.Width,
                 _options.Height,
+                _options.RotationAngle,
+                _options.FlipHorizontal,
+                _options.FlipVertical,
                 pngExportProgress,
                 token);
             

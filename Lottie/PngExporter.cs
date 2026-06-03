@@ -61,6 +61,9 @@ namespace Lottie
             double playbackSpeed = 1.0,
             int? outputWidth = null,
             int? outputHeight = null,
+            double rotationAngle = 0.0,
+            bool flipHorizontal = false,
+            bool flipVertical = false,
             Action<ExportProgressEventArgs> progressCallback = null)
         {
             if (string.IsNullOrWhiteSpace(lottiePath))
@@ -124,6 +127,16 @@ namespace Lottie
                         canvas.Scale(scaleX, scaleY);
                     }
 
+                    if (rotationAngle != 0 || flipHorizontal || flipVertical)
+                    {
+                        var cx = baseWidth / 2f;
+                        var cy = baseHeight / 2f;
+                        canvas.Translate(cx, cy);
+                        if (rotationAngle != 0) canvas.RotateDegrees((float)rotationAngle);
+                        canvas.Scale(flipHorizontal ? -1 : 1, flipVertical ? -1 : 1);
+                        canvas.Translate(-cx, -cy);
+                    }
+
                     animation.Render(canvas, new SKRect(0, 0, baseWidth, baseHeight));
 
                     using var image = surface.Snapshot();
@@ -170,6 +183,9 @@ namespace Lottie
             double playbackSpeed = 1.0,
             int? outputWidth = null,
             int? outputHeight = null,
+            double rotationAngle = 0.0,
+            bool flipHorizontal = false,
+            bool flipVertical = false,
             IProgress<ExportProgressEventArgs> progress = null)
         {
             ExportPngSequence(
@@ -179,6 +195,9 @@ namespace Lottie
                 playbackSpeed,
                 outputWidth,
                 outputHeight,
+                rotationAngle,
+                flipHorizontal,
+                flipVertical,
                 progress.Report);
         }
 
@@ -205,6 +224,9 @@ namespace Lottie
             double playbackSpeed = 1.0,
             int? outputWidth = null,
             int? outputHeight = null,
+            double rotationAngle = 0.0,
+            bool flipHorizontal = false,
+            bool flipVertical = false,
             Action<ExportProgressEventArgs> progressCallback = null)
         {
             if (string.IsNullOrWhiteSpace(lottiePath))
@@ -278,6 +300,16 @@ namespace Lottie
                         canvas.Scale(scaleX, scaleY);
                     }
 
+                    if (rotationAngle != 0 || flipHorizontal || flipVertical)
+                    {
+                        var cx = baseWidth / 2f;
+                        var cy = baseHeight / 2f;
+                        canvas.Translate(cx, cy);
+                        if (rotationAngle != 0) canvas.RotateDegrees((float)rotationAngle);
+                        canvas.Scale(flipHorizontal ? -1 : 1, flipVertical ? -1 : 1);
+                        canvas.Translate(-cx, -cy);
+                    }
+
                     animation.Render(canvas, new SKRect(0, 0, baseWidth, baseHeight));
 
                     using var image = surface.Snapshot();
@@ -326,6 +358,9 @@ namespace Lottie
             double playbackSpeed = 1.0,
             int? outputWidth = null,
             int? outputHeight = null,
+            double rotationAngle = 0.0,
+            bool flipHorizontal = false,
+            bool flipVertical = false,
             IProgress<ExportProgressEventArgs> progress = null)
         {
             ExportSpecificFrames(
@@ -336,6 +371,9 @@ namespace Lottie
                 playbackSpeed,
                 outputWidth,
                 outputHeight,
+                rotationAngle,
+                flipHorizontal,
+                flipVertical,
                 progress.Report);
         }
 
@@ -360,7 +398,10 @@ namespace Lottie
             int fps = 30,
             double playbackSpeed = 1.0,
             int? outputWidth = null,
-            int? outputHeight = null)
+            int? outputHeight = null,
+            double rotationAngle = 0.0,
+            bool flipHorizontal = false,
+            bool flipVertical = false)
         {
             if (string.IsNullOrWhiteSpace(lottiePath))
                 throw new ArgumentException("Lottie path must not be null or empty", nameof(lottiePath));
@@ -427,6 +468,16 @@ namespace Lottie
                     var scaleX = width / (float)baseWidth;
                     var scaleY = height / (float)baseHeight;
                     canvas.Scale(scaleX, scaleY);
+                }
+
+                if (rotationAngle != 0 || flipHorizontal || flipVertical)
+                {
+                    var cx = baseWidth / 2f;
+                    var cy = baseHeight / 2f;
+                    canvas.Translate(cx, cy);
+                    if (rotationAngle != 0) canvas.RotateDegrees((float)rotationAngle);
+                    canvas.Scale(flipHorizontal ? -1 : 1, flipVertical ? -1 : 1);
+                    canvas.Translate(-cx, -cy);
                 }
 
                 animation.Render(canvas, new SKRect(0, 0, baseWidth, baseHeight));
