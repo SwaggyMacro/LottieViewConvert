@@ -127,7 +127,7 @@
                         </Grid>
 
                         <!-- Format、Quality、Width、Height、Fps、Speed、ConcurrentTasks -->
-                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
                             <!-- Format -->
                             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Spacing="5">
                                 <TextBlock Width="60" VerticalAlignment="Center"
@@ -209,8 +209,20 @@
                                                Value="{Binding Speed, Mode=TwoWay}" />
                             </StackPanel>
 
+                            <!-- Rotate and Flip -->
+                            <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                                <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.RotateAngle}" />
+                                <NumericUpDown Minimum="0" Maximum="360" Increment="90" FormatString="0"
+                                               Value="{Binding RotationAngle, Mode=TwoWay}"
+                                               Width="100" suki:NumericUpDownExtensions.Unit="°"/>
+                            </StackPanel>
+                            <StackPanel Margin="20 0 0 0" Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                                <CheckBox Content="{x:Static lang:Resources.FlipHorizontal}" IsChecked="{Binding FlipHorizontal}" />
+                                <CheckBox Content="{x:Static lang:Resources.FlipVertical}" IsChecked="{Binding FlipVertical}" />
+                            </StackPanel>
+
                             <!-- ConcurrentTasks：Slider + NumericUpDown -->
-                            <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Spacing="5"
+                            <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Spacing="5"
                                         VerticalAlignment="Center">
                                 <TextBlock VerticalAlignment="Center"
                                            Text="{x:Static lang:Resources.ConcurrentTasks}" />
@@ -222,7 +234,7 @@
                             </StackPanel>
 
                             <!-- Convert Button -->
-                            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal"
+                            <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal"
                                         HorizontalAlignment="Right">
                                 <Button Classes="Success Rounded"
                                         Content="{x:Static lang:Resources.Start}"
@@ -235,7 +247,7 @@
                             </StackPanel>
 
                             <!-- Overall Progress -->
-                            <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Spacing="5">
+                            <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Spacing="5">
                                 <TextBlock Text="{Binding StatusText}" />
                                 <ProgressBar Value="{Binding OverallProgress}"
                                              Maximum="100"

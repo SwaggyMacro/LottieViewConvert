@@ -216,6 +216,27 @@ public class FactoryViewModel : Page
         set => this.RaiseAndSetIfChanged(ref _overallProgress, value);
     }
 
+    private double _rotationAngle = 0.0;
+    public double RotationAngle
+    {
+        get => _rotationAngle;
+        set => this.RaiseAndSetIfChanged(ref _rotationAngle, value);
+    }
+
+    private bool _flipHorizontal;
+    public bool FlipHorizontal
+    {
+        get => _flipHorizontal;
+        set => this.RaiseAndSetIfChanged(ref _flipHorizontal, value);
+    }
+
+    private bool _flipVertical;
+    public bool FlipVertical
+    {
+        get => _flipVertical;
+        set => this.RaiseAndSetIfChanged(ref _flipVertical, value);
+    }
+
     private string _statusText = string.Empty;
     public string StatusText
     {
@@ -586,7 +607,10 @@ public class FactoryViewModel : Page
                     Width = widthForThis,
                     Height = heightForThis,
                     Fps = Fps,
-                    Quality = Quality
+                    Quality = Quality,
+                    RotationAngle = RotationAngle,
+                    FlipHorizontal = FlipHorizontal,
+                    FlipVertical = FlipVertical
                 }
             );
 

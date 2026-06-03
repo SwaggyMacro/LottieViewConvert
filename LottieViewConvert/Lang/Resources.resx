@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
+<?xml version='1.0' encoding='utf-8'?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:schema id="root">
+        <xs:element name="root" ns1:IsDataSet="true">
             
-        </xsd:element>
-    </xsd:schema>
+        </xs:element>
+    </xs:schema>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -799,4 +798,4 @@ If you find this project useful, please visit it on GitHub and give it a star!</
     <data name="GifskiManualInstallHint" xml:space="preserve">
         <value>⚠️ Manual Installation: Please install the Command-Line (CLI) version of Gifski, NOT the GUI version. (Ignore this if using auto-install)</value>
     </data>
-</root>
+<data name="RotateAngle" xml:space="preserve"><value>Rotation Angle</value></data><data name="FlipHorizontal" xml:space="preserve"><value>Flip Horizontal</value></data><data name="FlipVertical" xml:space="preserve"><value>Flip Vertical</value></data></root>

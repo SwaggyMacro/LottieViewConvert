@@ -2394,5 +2394,21 @@ namespace LottieViewConvert.Lang {
                 return ResourceManager.GetString("YouShouldRestartTheApplicationToApplyChanges", resourceCulture);
             }
         }
+
+        public static string RotateAngle {
+            get {
+                return ResourceManager.GetString("RotateAngle", resourceCulture);
+            }
+        }
+        public static string FlipHorizontal {
+            get {
+                return ResourceManager.GetString("FlipHorizontal", resourceCulture);
+            }
+        }
+        public static string FlipVertical {
+            get {
+                return ResourceManager.GetString("FlipVertical", resourceCulture);
+            }
+        }
     }
 }

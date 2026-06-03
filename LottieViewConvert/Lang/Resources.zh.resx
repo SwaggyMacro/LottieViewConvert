@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
+<?xml version='1.0' encoding='utf-8'?>
+<root xmlns:ns1="urn:schemas-microsoft-com:xml-msdata" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:schema id="root">
+        <xs:element name="root" ns1:IsDataSet="true">
             
-        </xsd:element>
-    </xsd:schema>
+        </xs:element>
+    </xs:schema>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -798,4 +798,4 @@
     <data name="GifskiManualInstallHint" xml:space="preserve">
         <value>⚠️ 手动安装说明：请安装 Gifski 的命令行（CLI）版本，而不是图形界面（GUI）版本。(如果使用自动安装请忽略此提示)</value>
     </data>
-</root>
+<data name="RotateAngle" xml:space="preserve"><value>旋转角度</value></data><data name="FlipHorizontal" xml:space="preserve"><value>水平翻转</value></data><data name="FlipVertical" xml:space="preserve"><value>垂直翻转</value></data></root>

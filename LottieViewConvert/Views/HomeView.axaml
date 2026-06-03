@@ -125,7 +125,7 @@
                         </Grid>
                         <!-- Parameter -->
                         <Grid Grid.Row="3" Margin="0 10 0 0" ColumnDefinitions="*,*"
-                              RowDefinitions="Auto,Auto,Auto,Auto">
+                              RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                             <!-- Format and Quality -->
                             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Spacing="5"
                                         VerticalAlignment="Center">
@@ -192,7 +192,19 @@
                                 <NumericUpDown Minimum="0" Maximum="10.0" Increment="0.1" FormatString="0.00"
                                                Width="100" Value="{Binding Scale, Mode=TwoWay}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="3" Grid.Column="1" Margin="0 5 0 0"
+                            <StackPanel Grid.Row="3" Grid.Column="0" Margin="0 5 0 0"
+                                        Orientation="Horizontal" Spacing="5" VerticalAlignment="Center">
+                                <TextBlock VerticalAlignment="Center" Text="{x:Static lang:Resources.RotateAngle}" />
+                                <NumericUpDown Minimum="0" Maximum="360" Increment="90" FormatString="0"
+                                               Value="{Binding RotationAngle, Mode=TwoWay}"
+                                               Width="100" suki:NumericUpDownExtensions.Unit="°"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="3" Grid.Column="1" Margin="20 5 0 0"
+                                        Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                                <CheckBox Content="{x:Static lang:Resources.FlipHorizontal}" IsChecked="{Binding FlipHorizontal}" />
+                                <CheckBox Content="{x:Static lang:Resources.FlipVertical}" IsChecked="{Binding FlipVertical}" />
+                            </StackPanel>
+                            <StackPanel Grid.Row="4" Grid.Column="1" Margin="0 5 0 0"
                                         Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button Classes="Success Rounded" Command="{Binding ConvertCommand}"
                                         suki:ButtonExtensions.ShowProgress="{Binding ProgressValue, Converter={StaticResource ProgressToBoolConverter}}">
@@ -203,7 +215,7 @@
                                 </Button>
                             </StackPanel>
                         </Grid>
-                        <ProgressBar Grid.Row="4" Margin="0 5 0 0" ShowProgressText="True"
+                        <ProgressBar Grid.Row="5" Margin="0 5 0 0" ShowProgressText="True"
                                      Value="{Binding ProgressValue}" />
                     </Grid>
                 </suki:GroupBox>
