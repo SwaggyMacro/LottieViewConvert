@@ -14,6 +14,7 @@ using LottieViewConvert.Helper.LogHelper;
 using LottieViewConvert.Lang;
 using LottieViewConvert.Models;
 using LottieViewConvert.Utils;
+using LottieViewConvert.Telegram;
 using ReactiveUI;
 using SukiUI.Toasts;
 using SkiaSharp;
@@ -28,7 +29,11 @@ namespace LottieViewConvert.ViewModels
         public string? LottieSource
         {
             get => _lottieSource;
-            set => this.RaiseAndSetIfChanged(ref _lottieSource, value);
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _lottieSource, value);
+                _ = RefreshTelegramValidationAsync();
+            }
         }
 
         private bool _isLottieViewPaused;
@@ -71,8 +76,61 @@ namespace LottieViewConvert.ViewModels
             "mp4",
             "mkv",
             "avif",
-            "webm"
+            "webm",
+            "tgs"
         ];
+
+        public System.Collections.Generic.IReadOnlyList<string> AvailableTelegramPresets { get; } =
+            TelegramPresetService.PresetNames;
+        public System.Collections.Generic.IReadOnlyList<string> AvailableDurationHandling { get; } =
+            TelegramPresetService.DurationHandlingNames;
+
+        private string _selectedTelegramPreset = TelegramPresetNames.Default;
+        public string SelectedTelegramPreset
+        {
+            get => _selectedTelegramPreset;
+            set
+            {
+                if (_selectedTelegramPreset == value) return;
+                _selectedTelegramPreset = value;
+                this.RaisePropertyChanged();
+                ApplyTelegramPreset();
+            }
+        }
+
+        private string _selectedDurationHandling = "Trim to 3 s";
+        public string SelectedDurationHandling
+        {
+            get => _selectedDurationHandling;
+            set
+            {
+                if (_selectedDurationHandling == value) return;
+                _selectedDurationHandling = value;
+                this.RaisePropertyChanged();
+                ApplyTelegramPreset();
+            }
+        }
+
+        private string _telegramValidationText = "Select a Telegram preset to validate and export a Telegram-ready asset.";
+        public string TelegramValidationText
+        {
+            get => _telegramValidationText;
+            set => this.RaiseAndSetIfChanged(ref _telegramValidationText, value);
+        }
+
+        private bool _isTelegramPresetActive;
+        public bool IsTelegramPresetActive
+        {
+            get => _isTelegramPresetActive;
+            set => this.RaiseAndSetIfChanged(ref _isTelegramPresetActive, value);
+        }
+
+        private string? _lastOutputPath;
+        public string? LastOutputPath
+        {
+            get => _lastOutputPath;
+            set => this.RaiseAndSetIfChanged(ref _lastOutputPath, value);
+        }
 
         private string _selectedFormat = "gif";
 
@@ -189,6 +247,11 @@ namespace LottieViewConvert.ViewModels
         public ReactiveCommand<Unit, Unit> OpenReadmeCommand { get; }
         public ReactiveCommand<Unit, Unit> LottieViewPauseResumeCommand { get; }
         public ReactiveCommand<Unit, Unit> ExportCurrentFrameCommand { get; }
+        public ReactiveCommand<Unit, Unit> RevealOutputCommand { get; }
+        public ReactiveCommand<string, Unit> SelectTelegramPresetCommand { get; }
+        public ReactiveCommand<string, Unit> SelectDurationHandlingCommand { get; }
+
+        private readonly TelegramExportService _telegramExportService = new();
         
         private double _intrinsicWidth;
         private double _intrinsicHeight;
@@ -251,6 +314,66 @@ namespace LottieViewConvert.ViewModels
 
             LottieViewPauseResumeCommand = ReactiveCommand.Create(() => { IsLottieViewPaused = !IsLottieViewPaused; });
             ExportCurrentFrameCommand = ReactiveCommand.Create(ExportCurrentFrame);
+            RevealOutputCommand = ReactiveCommand.Create(RevealLastOutput);
+            SelectTelegramPresetCommand = ReactiveCommand.Create<string>(preset => SelectedTelegramPreset = preset);
+            SelectDurationHandlingCommand = ReactiveCommand.Create<string>(value => SelectedDurationHandling = value);
+        }
+
+        private void ApplyTelegramPreset()
+        {
+            var preset = TelegramPresetNames.Parse(SelectedTelegramPreset);
+            IsTelegramPresetActive = preset != TelegramPreset.Default;
+            if (preset == TelegramPreset.Default)
+            {
+                TelegramValidationText = "Default mode: Telegram-specific constraints are not applied.";
+                return;
+            }
+
+            if (preset is TelegramPreset.AnimatedSticker or TelegramPreset.AnimatedEmoji)
+            {
+                SelectedFormat = "tgs";
+                Width = Height = 512;
+                Fps = 60;
+            }
+            else
+            {
+                SelectedFormat = "webm";
+            }
+            _ = RefreshTelegramValidationAsync();
+        }
+
+        private async Task RefreshTelegramValidationAsync()
+        {
+            var source = LottieSource;
+            var preset = TelegramPresetNames.Parse(SelectedTelegramPreset);
+            if (preset == TelegramPreset.Default || string.IsNullOrWhiteSpace(source) || !File.Exists(source)) return;
+            try
+            {
+                await Task.Run(() =>
+                {
+                    if (preset is TelegramPreset.AnimatedSticker or TelegramPreset.AnimatedEmoji)
+                    {
+                        var validation = _telegramExportService.ValidateTgsSource(source, preset);
+                        TelegramValidationText = validation.ToDisplayText($"Source · {preset.DisplayName()}");
+                    }
+                    else
+                    {
+                        var handling = TelegramPresetService.ParseDurationHandling(SelectedDurationHandling);
+                        var description = _telegramExportService.DescribeVideoSource(source, preset, handling);
+                        var facts = new TelegramMediaValidator().InspectLottieSource(source);
+                        var plan = new TelegramPresetService().CreateVideoPlan(facts, preset, handling);
+                        Width = plan.Width;
+                        Height = plan.Height;
+                        Fps = plan.Fps;
+                        TelegramValidationText = description + Environment.NewLine + Environment.NewLine +
+                            "Output status: convert to run ffprobe and real alpha validation.";
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                TelegramValidationText = $"INVALID{Environment.NewLine}{ex.Message}";
+            }
         }
         
         private void ExportCurrentFrame()
@@ -310,6 +433,43 @@ namespace LottieViewConvert.ViewModels
             }
 
             Directory.CreateDirectory(OutputFolder!);
+            var telegramPreset = TelegramPresetNames.Parse(SelectedTelegramPreset);
+            if (telegramPreset != TelegramPreset.Default)
+            {
+                ProgressValue = 1;
+                try
+                {
+                    var durationHandling = TelegramPresetService.ParseDurationHandling(SelectedDurationHandling);
+                    var progress = new Progress<double>(value => ProgressValue = value);
+                    var result = await Task.Run(() => _telegramExportService.ExportAsync(
+                        LottieSource!, OutputFolder!, telegramPreset, durationHandling, progress));
+                    LastOutputPath = result.OutputPath;
+                    TelegramValidationText = result.SourcePlan + Environment.NewLine + Environment.NewLine +
+                        result.Validation.ToDisplayText($"Output · {telegramPreset.DisplayName()}");
+                    StatusText = result.IsValid
+                        ? $"Telegram-ready: {result.OutputPath}"
+                        : $"INVALID: {string.Join("; ", result.Validation.Errors.Select(issue => issue.Message))}";
+                    ProgressValue = 100;
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        Global.GetToastManager().CreateToast()
+                            .WithTitle(result.IsValid ? "Telegram-ready" : "Telegram output is INVALID")
+                            .WithContent(StatusText)
+                            .OfType(result.IsValid ? NotificationType.Success : NotificationType.Error)
+                            .WithActionButton("Reveal in Finder", _ => RevealLastOutput(), true)
+                            .Dismiss().ByClicking()
+                            .Dismiss().After(TimeSpan.FromSeconds(8)).Queue();
+                    });
+                }
+                catch (Exception ex)
+                {
+                    ProgressValue = 0;
+                    StatusText = $"Telegram export failed: {ex.Message}";
+                    TelegramValidationText = $"INVALID{Environment.NewLine}{ex.Message}";
+                }
+                return;
+            }
+
             await Task.Run(async () =>
             {
                 try
@@ -461,6 +621,17 @@ namespace LottieViewConvert.ViewModels
                     .Dismiss().ByClicking()
                     .Dismiss().After(TimeSpan.FromSeconds(3)).Queue();
             }
+        }
+
+        private void RevealLastOutput()
+        {
+            if (string.IsNullOrWhiteSpace(LastOutputPath) || !File.Exists(LastOutputPath)) return;
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "open",
+                ArgumentList = { "-R", LastOutputPath },
+                UseShellExecute = false
+            });
         }
 
         public async Task HandleFileDrop(System.Collections.Generic.IEnumerable<IStorageItem> files)

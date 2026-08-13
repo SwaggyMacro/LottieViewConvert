@@ -18,14 +18,14 @@ public static class FilePickerHelper
     public static async Task<string?> SelectFileAsync(
         Window window,
         string title,
-        FilePickerFileType fileTypeFilter = null,
+        FilePickerFileType? fileTypeFilter = null,
         bool allowMultiple = false)
     {
         var options = new FilePickerOpenOptions
         {
             AllowMultiple = allowMultiple,
             Title = title,
-            FileTypeFilter = [fileTypeFilter]
+            FileTypeFilter = fileTypeFilter == null ? null : [fileTypeFilter]
         };
 
         var result = await window.StorageProvider.OpenFilePickerAsync(options);
