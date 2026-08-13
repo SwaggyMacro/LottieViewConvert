@@ -12,7 +12,7 @@ public class Tests
     {
     }
 
-    [Test]
+    [Test, Ignore("Upstream integration sample requires a real bot token and proxy; excluded from autonomous unit tests.")]
     public async Task Test1()
     {
         const string token = "BotToken";
@@ -42,4 +42,3 @@ public class Tests
         Console.WriteLine($@"Download succeeded, saved in {outputDir}");
     }
 }
-
