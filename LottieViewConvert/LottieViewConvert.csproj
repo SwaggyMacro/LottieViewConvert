@@ -32,8 +32,8 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.3.0" />
         
         <PackageReference Include="CliWrap" Version="3.9.0" />
-        <PackageReference Include="log4net" Version="3.1.0" />
-        <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.6.0" />
+        <PackageReference Include="log4net" Version="3.3.2" />
+        <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.16.0" />
         <PackageReference Include="Markdown.Avalonia" Version="11.0.3-a1" />
         <PackageReference Include="Material.Icons.Avalonia" Version="3.0.0-preview1.1" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0-preview.5.25277.114" />
@@ -42,6 +42,7 @@
         <PackageReference Include="SkiaSharp.Skottie" Version="3.119.0" />
         <PackageReference Include="SukiUI" Version="6.0.2" />
         <PackageReference Include="Telegram.Bot" Version="22.5.2-dev.6" />
+        <PackageReference Include="Tmds.DBus.Protocol" Version="0.21.3" />
         <PackageReference Include="Xaml.Behaviors.Avalonia" Version="11.3.0.10" />
         <PackageReference Include="Xaml.Behaviors.Interactivity" Version="11.3.0.10" />
     </ItemGroup>

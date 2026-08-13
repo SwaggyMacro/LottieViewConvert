@@ -147,13 +147,13 @@
         <value>文件加载失败</value>
     </data>
     <data name="PleaseDragDotTgsOrDotJsonFile" xml:space="preserve">
-        <value>请拖拽 .tgs 或 .json 文件</value>
+        <value>请拖拽 .tgs、.json 或 .lottie 文件</value>
     </data>
     <data name="HowToUse" xml:space="preserve">
         <value>如何使用？</value>
     </data>
     <data name="HowToUseDescription" xml:space="preserve">
-        <value>只需将您的 Lottie 文件（.tgs、.json）拖拽到该区域即可。</value>
+        <value>只需将您的 Lottie 文件（.tgs、.json、.lottie）拖拽到该区域即可。</value>
     </data>
     <data name="SourceFile" xml:space="preserve">
         <value>源文件</value>
@@ -183,7 +183,7 @@
         <value>选择 Lottie JSON/TGS</value>
     </data>
     <data name="LottieJsonTgs" xml:space="preserve">
-        <value>Lottie JSON/TGS</value>
+        <value>Lottie JSON/TGS/dotLottie</value>
     </data>
     <data name="SelectOutputFolder" xml:space="preserve">
         <value>选择输出文件夹</value>

@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using LottieViewConvert.Interface.Convert;
+using LottieViewConvert.Helper.LogHelper;
+using LottieViewConvert.Telegram;
 
 namespace LottieViewConvert.Helper.Convert
 {
@@ -28,6 +31,9 @@ namespace LottieViewConvert.Helper.Convert
             IProgress<TimeSpan>? progress = null,
             CancellationToken cancellationToken = default)
         {
+            if (options.TelegramVideo)
+                return await ConvertTelegramAsync(inputDirectory, outputPath, options, progress, cancellationToken);
+
             var args = new List<string>
             {
                 "-hide_banner",
@@ -51,6 +57,90 @@ namespace LottieViewConvert.Helper.Convert
             };
 
             return await _commandExecutor.ExecuteAsync("ffmpeg", args, inputDirectory, progress, cancellationToken);
+        }
+
+        private async Task<bool> ConvertTelegramAsync(
+            string inputDirectory,
+            string outputPath,
+            ConversionOptions options,
+            IProgress<TimeSpan>? progress,
+            CancellationToken cancellationToken)
+        {
+            var crfAttempts = new[] { 24, 32, 40, 48, 56 };
+            var maxBytes = options.MaximumOutputBytes ?? TelegramRules.MaxWebmBytes;
+            string? smallestAttempt = null;
+            long smallestSize = long.MaxValue;
+
+            for (var attempt = 0; attempt < Math.Min(crfAttempts.Length, TelegramRules.MaxEncodeAttempts); attempt++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var attemptPath = $"{outputPath}.attempt-{attempt + 1}.webm";
+                var args = BuildTelegramArgs(options.Fps, crfAttempts[attempt], attemptPath);
+                Logger.Info($"Telegram VP9 encode attempt {attempt + 1}/{TelegramRules.MaxEncodeAttempts}, CRF {crfAttempts[attempt]}");
+
+                var success = await _commandExecutor.ExecuteAsync(
+                    "ffmpeg", args, inputDirectory, progress, cancellationToken);
+                if (!success || !File.Exists(attemptPath))
+                {
+                    TryDelete(attemptPath);
+                    continue;
+                }
+
+                var size = new FileInfo(attemptPath).Length;
+                if (size < smallestSize)
+                {
+                    if (smallestAttempt != null && smallestAttempt != attemptPath) TryDelete(smallestAttempt);
+                    smallestAttempt = attemptPath;
+                    smallestSize = size;
+                }
+
+                if (size <= maxBytes)
+                {
+                    File.Move(attemptPath, outputPath, true);
+                    CleanupAttempts(outputPath, attempt + 1);
+                    Logger.Info($"Telegram VP9 output fits the limit: {size} bytes at CRF {crfAttempts[attempt]}");
+                    return true;
+                }
+            }
+
+            // Preserve the smallest decodable attempt for explicit INVALID reporting.
+            if (smallestAttempt != null && File.Exists(smallestAttempt))
+                File.Move(smallestAttempt, outputPath, true);
+            CleanupAttempts(outputPath, TelegramRules.MaxEncodeAttempts);
+            Logger.Warn($"Telegram VP9 output exceeds {maxBytes} bytes after bounded optimization.");
+            return File.Exists(outputPath);
+        }
+
+        private static List<string> BuildTelegramArgs(int fps, int crf, string outputPath) =>
+        [
+            "-hide_banner",
+            "-y",
+            "-framerate", fps.ToString(),
+            "-i", "%05d.png",
+            "-c:v", "libvpx-vp9",
+            "-pix_fmt", "yuva420p",
+            "-auto-alt-ref", "0",
+            "-b:v", "0",
+            "-crf", crf.ToString(),
+            "-deadline", "good",
+            "-cpu-used", "2",
+            "-row-mt", "1",
+            "-an",
+            "-metadata:s:v:0", "alpha_mode=1",
+            "-progress", "pipe:1",
+            "-nostats",
+            outputPath
+        ];
+
+        private static void CleanupAttempts(string outputPath, int count)
+        {
+            for (var index = 1; index <= count; index++)
+                TryDelete($"{outputPath}.attempt-{index}.webm");
+        }
+
+        private static void TryDelete(string path)
+        {
+            try { if (File.Exists(path)) File.Delete(path); } catch { }
         }
 
         /// <summary>

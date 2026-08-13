@@ -454,29 +454,7 @@ namespace Lottie
 
         private Stream OpenStream(string p)
         {
-            var uri = new Uri(p, UriKind.RelativeOrAbsolute);
-            var stream = uri is { IsAbsoluteUri: true, IsFile: true }
-                ? File.OpenRead(uri.LocalPath)
-                : AssetLoader.Open(uri, _contextBase);
-
-            if (!stream.CanSeek)
-                stream = new BufferedStream(stream);
-
-            var header = new byte[2];
-            var read = stream.Read(header, 0, 2);
-            stream.Seek(-read, SeekOrigin.Current);
-
-            // gzip magic number
-            if (read == 2 && header[0] == 0x1F && header[1] == 0x8B)
-            {
-                using var gzip = new GZipStream(stream, CompressionMode.Decompress, leaveOpen: true);
-                var decompressed = new MemoryStream();
-                gzip.CopyTo(decompressed);
-                decompressed.Seek(0, SeekOrigin.Begin);
-                return decompressed;
-            }
-
-            return stream;
+            return LottieFile.Open(p, _contextBase);
         }
     }
 }

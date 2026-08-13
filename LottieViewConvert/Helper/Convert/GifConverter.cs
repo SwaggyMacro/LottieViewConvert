@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,15 +32,25 @@ namespace LottieViewConvert.Helper.Convert
             IProgress<TimeSpan>? progress = null,
             CancellationToken cancellationToken = default)
         {
+            var frameFiles = Directory.EnumerateFiles(inputDirectory, "*.png")
+                .OrderBy(path => path, StringComparer.Ordinal)
+                .ToArray();
+
+            if (frameFiles.Length == 0)
+            {
+                return false;
+            }
+
             var args = new List<string>
             {
                 "--fps", options.Fps.ToString(),
                 "--width", options.Width.ToString(),
                 "--height", options.Height.ToString(),
                 "--quality", GetGifskiQuality(options.Quality).ToString(),
-                "--output", outputPath,
-                Path.Combine(inputDirectory, "*.png")
+                "--output", outputPath
             };
+
+            args.AddRange(frameFiles);
 
             if (options.Quality < 70)
             {

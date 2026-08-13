@@ -31,6 +31,13 @@ public class FileItemModel : ReactiveObject
         get => _progress;
         set => this.RaiseAndSetIfChanged(ref _progress, value);
     }
+
+    private string _validationSummary = string.Empty;
+    public string ValidationSummary
+    {
+        get => _validationSummary;
+        set => this.RaiseAndSetIfChanged(ref _validationSummary, value);
+    }
 }
 
 public enum ConversionStatus

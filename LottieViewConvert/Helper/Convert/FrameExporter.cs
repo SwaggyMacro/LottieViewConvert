@@ -20,6 +20,8 @@ namespace LottieViewConvert.Helper.Convert
             double rotationAngle = 0.0,
             bool flipHorizontal = false,
             bool flipVertical = false,
+            bool preserveAspectRatio = false,
+            double? maxDurationSeconds = null,
             IProgress<ExportProgressEventArgs>? progress = null,
             CancellationToken cancellationToken = default)
         {
@@ -33,6 +35,8 @@ namespace LottieViewConvert.Helper.Convert
                 rotationAngle,
                 flipHorizontal,
                 flipVertical,
+                preserveAspectRatio,
+                maxDurationSeconds,
                 progress);
         }
     }

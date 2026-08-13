@@ -3,3 +3,18 @@
 /obj/
 **/bin/
 **/obj/
+
+# IDE and local user settings
+.vs/
+.idea/
+.vscode/
+*.user
+
+# OS and test artifacts
+.DS_Store
+TestResults/
+*.log
+
+# Local conversion/runtime outputs
+frames/
+SavedStickers/

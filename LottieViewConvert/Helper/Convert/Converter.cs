@@ -25,6 +25,8 @@ public class Converter
     private int _totalPngFrames;
     private TimeSpan _estimatedDuration;
 
+    public string? OutputPath { get; private set; }
+
     public event Action<ConversionProgressEventArgs>? DetailedProgressUpdated
     {
         add => _progressTracker.DetailedProgressUpdated += value;
@@ -136,8 +138,9 @@ public class Converter
             var tmpDir = Path.Combine(_outputDirectory, $"tmp_{format}_{Guid.NewGuid()}");
             Directory.CreateDirectory(tmpDir);
 
-            var outputFileName = Path.GetFileNameWithoutExtension(_source);
+            var outputFileName = _options.OutputFileName ?? Path.GetFileNameWithoutExtension(_source);
             var outputPath = Path.Combine(_outputDirectory, $"{outputFileName}.{converter.FileExtension}");
+            OutputPath = outputPath;
             
             ReportProgress(ConversionStage.PngExport, "Export PNG frame...", 0);
 
@@ -165,6 +168,8 @@ public class Converter
                 _options.RotationAngle,
                 _options.FlipHorizontal,
                 _options.FlipVertical,
+                _options.PreserveAspectRatio,
+                _options.MaxDurationSeconds,
                 pngExportProgress,
                 token);
             

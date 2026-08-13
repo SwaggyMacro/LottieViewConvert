@@ -13,4 +13,9 @@ public class ConversionOptions
     public double RotationAngle { get; set; } = 0.0;
     public bool FlipHorizontal { get; set; } = false;
     public bool FlipVertical { get; set; } = false;
+    public bool PreserveAspectRatio { get; set; }
+    public double? MaxDurationSeconds { get; set; }
+    public bool TelegramVideo { get; set; }
+    public long? MaximumOutputBytes { get; set; }
+    public string? OutputFileName { get; set; }
 }

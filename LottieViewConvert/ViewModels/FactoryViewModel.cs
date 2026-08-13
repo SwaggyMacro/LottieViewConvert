@@ -21,11 +21,36 @@ using SukiUI.Toasts;
 using SkiaSharp;
 using SkiaSharp.Skottie;
 using LottieViewConvert.Utils;
+using LottieViewConvert.Telegram;
 
 namespace LottieViewConvert.ViewModels;
 
 public class FactoryViewModel : Page
 {
+    private readonly TelegramExportService _telegramExportService = new();
+
+    public System.Collections.Generic.IReadOnlyList<string> AvailableTelegramPresets { get; } = TelegramPresetService.PresetNames;
+    public System.Collections.Generic.IReadOnlyList<string> AvailableDurationHandling { get; } = TelegramPresetService.DurationHandlingNames;
+
+    private string _selectedTelegramPreset = TelegramPresetNames.Default;
+    public string SelectedTelegramPreset
+    {
+        get => _selectedTelegramPreset;
+        set
+        {
+            if (_selectedTelegramPreset == value) return;
+            _selectedTelegramPreset = value;
+            this.RaisePropertyChanged();
+            ApplyTelegramPreset();
+        }
+    }
+
+    private string _selectedDurationHandling = "Trim to 3 s";
+    public string SelectedDurationHandling
+    {
+        get => _selectedDurationHandling;
+        set => this.RaiseAndSetIfChanged(ref _selectedDurationHandling, value);
+    }
     private string? _selectedFolder;
     public string? SelectedFolder
     {
@@ -85,7 +110,8 @@ public class FactoryViewModel : Page
         "Mp4",
         "Webm",
         "Avif",
-        "Mkv"
+        "Mkv",
+        "TGS"
     ];
 
     private string _selectedFormat = "GIF";
@@ -280,6 +306,8 @@ public class FactoryViewModel : Page
     public ReactiveCommand<Unit, Unit> PreviousCommand { get; }
     public ReactiveCommand<Unit, Unit> LottieViewPauseResumeCommand { get; }
     public ReactiveCommand<Unit, Unit> ExportCurrentFrameCommand { get; }
+    public ReactiveCommand<string, Unit> SelectTelegramPresetCommand { get; }
+    public ReactiveCommand<string, Unit> SelectDurationHandlingCommand { get; }
 
     private CancellationTokenSource? _cancellationTokenSource;
     private SemaphoreSlim? _semaphore;
@@ -290,7 +318,8 @@ public class FactoryViewModel : Page
         FileItems.Clear();
         var files = Directory.GetFiles(folder)
             .Where(f => f.EndsWith(".json", StringComparison.OrdinalIgnoreCase)
-                        || f.EndsWith(".tgs", StringComparison.OrdinalIgnoreCase))
+                        || f.EndsWith(".tgs", StringComparison.OrdinalIgnoreCase)
+                        || f.EndsWith(".lottie", StringComparison.OrdinalIgnoreCase))
             .OrderBy(f => Path.GetFileName(f));
 
         foreach (var file in files)
@@ -321,7 +350,8 @@ public class FactoryViewModel : Page
         {
             var files = Directory.GetFiles(folder)
                 .Where(f => f.EndsWith(".json", StringComparison.OrdinalIgnoreCase)
-                            || f.EndsWith(".tgs", StringComparison.OrdinalIgnoreCase))
+                            || f.EndsWith(".tgs", StringComparison.OrdinalIgnoreCase)
+                            || f.EndsWith(".lottie", StringComparison.OrdinalIgnoreCase))
                 .OrderBy(Path.GetFileName)
                 .Select(file => new FileItemModel
                 {
@@ -413,6 +443,7 @@ public class FactoryViewModel : Page
                     {
                         item.Status = ConversionStatus.Pending;
                         item.Progress = 0;
+                        item.ValidationSummary = string.Empty;
                     }
                     OverallProgress = 0;
                 });
@@ -456,7 +487,10 @@ public class FactoryViewModel : Page
                             Dispatcher.UIThread.Post(() =>
                             {
                                 OverallProgress = progress;
-                                StatusText = $"{completedFiles}/{totalFiles} - {Resources.Succeeded}: {successCount}, {Resources.Failed}: {failedCount}";
+                                var isTelegram = TelegramPresetNames.Parse(SelectedTelegramPreset) != TelegramPreset.Default;
+                                StatusText = isTelegram
+                                    ? $"Total: {totalFiles} · Completed: {completedFiles} · Valid: {successCount} · Invalid: {failedCount}"
+                                    : $"{completedFiles}/{totalFiles} - {Resources.Succeeded}: {successCount}, {Resources.Failed}: {failedCount}";
                             });
                         }
                     }
@@ -472,7 +506,10 @@ public class FactoryViewModel : Page
                 {
                     if (!_cancellationTokenSource.Token.IsCancellationRequested)
                     {
-                        StatusText = $"{Resources.BatchConvertDone}! {Resources.Succeeded}: {successCount}, {Resources.Failed}: {failedCount}";
+                        var isTelegram = TelegramPresetNames.Parse(SelectedTelegramPreset) != TelegramPreset.Default;
+                        StatusText = isTelegram
+                            ? $"Total: {totalFiles} · Valid: {successCount} · Invalid: {failedCount}"
+                            : $"{Resources.BatchConvertDone}! {Resources.Succeeded}: {successCount}, {Resources.Failed}: {failedCount}";
                         
                         Global.GetToastManager().CreateToast()
                             .WithTitle(Resources.BatchConvertDone)
@@ -553,6 +590,25 @@ public class FactoryViewModel : Page
                 fileItem.Status = ConversionStatus.Converting;
                 fileItem.Progress = 0;
             });
+
+            var telegramPreset = TelegramPresetNames.Parse(SelectedTelegramPreset);
+            if (telegramPreset != TelegramPreset.Default)
+            {
+                var durationHandling = TelegramPresetService.ParseDurationHandling(SelectedDurationHandling);
+                var progress = new Progress<double>(value =>
+                    Dispatcher.UIThread.Post(() => fileItem.Progress = value));
+                var result = await _telegramExportService.ExportAsync(
+                    fileItem.FullPath, OutputFolder!, telegramPreset, durationHandling, progress, cancellationToken);
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    fileItem.Status = result.IsValid ? ConversionStatus.Success : ConversionStatus.Failed;
+                    fileItem.Progress = 100;
+                    fileItem.ValidationSummary = result.IsValid
+                        ? "VALID"
+                        : $"INVALID: {string.Join("; ", result.Validation.Errors.Select(issue => issue.Message))}";
+                });
+                return result.IsValid;
+            }
 
             // Calculate effective dimensions per file
             var widthForThis = OutputWidth;
@@ -668,6 +724,24 @@ public class FactoryViewModel : Page
         StatusText = Resources.StoppingConversion;
     }
 
+    private void ApplyTelegramPreset()
+    {
+        var preset = TelegramPresetNames.Parse(SelectedTelegramPreset);
+        if (preset == TelegramPreset.Default) return;
+        if (preset is TelegramPreset.AnimatedSticker or TelegramPreset.AnimatedEmoji)
+        {
+            SelectedFormat = "TGS";
+            OutputWidth = OutputHeight = 512;
+            Fps = 60;
+        }
+        else
+        {
+            SelectedFormat = "Webm";
+            Fps = 30;
+            if (preset == TelegramPreset.VideoEmoji) OutputWidth = OutputHeight = 100;
+        }
+    }
+
     private void OnNext()
     {
         if (SelectedFileItem == null) return;
@@ -699,6 +773,8 @@ public class FactoryViewModel : Page
         ExportCurrentFrameCommand = ReactiveCommand.Create(ExportCurrentFrame, 
             this.WhenAnyValue(vm => vm.SelectedFilePath, path => !string.IsNullOrWhiteSpace(path) && File.Exists(path))
                 .CombineLatest(this.WhenAnyValue(vm => vm.LottieViewCurrentFrame), (hasFile, frame) => hasFile && frame >= 0));
+        SelectTelegramPresetCommand = ReactiveCommand.Create<string>(preset => SelectedTelegramPreset = preset);
+        SelectDurationHandlingCommand = ReactiveCommand.Create<string>(value => SelectedDurationHandling = value);
         // Load intrinsic size when selection changes
         this.WhenAnyValue(vm => vm.SelectedFileItem)
             .Subscribe(value =>

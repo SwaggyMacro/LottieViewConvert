@@ -59,7 +59,7 @@ public partial class HomeView : UserControl
 
         var path = await FilePickerHelper.SelectFileAsync(topLevel, Lang.Resources.SelectLottieFile, new FilePickerFileType(Lang.Resources.LottieJsonTgs)
         {
-            Patterns = new[] {"*.json", "*.tgs"}
+            Patterns = new[] {"*.json", "*.tgs", "*.lottie"}
         }, allowMultiple: false);
         if (string.IsNullOrEmpty(path)) return;
 

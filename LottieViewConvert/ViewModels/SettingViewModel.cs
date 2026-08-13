@@ -805,7 +805,7 @@ namespace LottieViewConvert.ViewModels
             }
         }
 
-        private async Task ApplyLanguageChangeAsync(string languageCode)
+        private Task ApplyLanguageChangeAsync(string languageCode)
         {
             try
             {
@@ -826,6 +826,7 @@ namespace LottieViewConvert.ViewModels
             {
                 Logger.Error($"Failed to change language: {ex.Message}");
             }
+            return Task.CompletedTask;
         }
 
         private void RestartApplication()

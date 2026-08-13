@@ -29,7 +29,7 @@
                             <TextBlock Text="{x:Static lang:Resources.DragHereToConvert}" />
                         </StackPanel>
                     </suki:GroupBox.Header>
-                    <Grid RowDefinitions="*, Auto, Auto, Auto, Auto">
+                    <Grid RowDefinitions="*, Auto, Auto, Auto, Auto, Auto">
                         <!-- Lottie Preview -->
                         <Grid RowDefinitions="*, Auto, Auto" ColumnDefinitions="*,Auto"
                               IsVisible="{Binding LottieSource, Converter={x:Static ObjectConverters.IsNotNull}}">
@@ -124,7 +124,7 @@
                             </Button>
                         </Grid>
                         <!-- Parameter -->
-                        <Grid Grid.Row="3" Margin="0 10 0 0" ColumnDefinitions="*,*"
+                        <Grid Grid.Row="4" Margin="0 10 0 0" ColumnDefinitions="*,*"
                               RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                             <!-- Format and Quality -->
                             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Spacing="5"
@@ -215,6 +215,51 @@
                                 </Button>
                             </StackPanel>
                         </Grid>
+                        <Border Grid.Row="3" Margin="0 8 0 0" Padding="10"
+                                BorderThickness="1" BorderBrush="#4488AAFF" CornerRadius="6">
+                            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+                                <StackPanel Grid.Row="0" Grid.Column="0" Spacing="6">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <TextBlock Text="Telegram preset" VerticalAlignment="Center" />
+                                        <Button Classes="Basic Rounded" Content="Default"
+                                                Command="{Binding SelectTelegramPresetCommand}" CommandParameter="Default" />
+                                        <Button Classes="Basic Rounded" Content="Animated Sticker"
+                                                Command="{Binding SelectTelegramPresetCommand}" CommandParameter="Telegram Animated Sticker" />
+                                        <Button Classes="Basic Rounded" Content="Video Sticker"
+                                                Command="{Binding SelectTelegramPresetCommand}" CommandParameter="Telegram Video Sticker" />
+                                        <Button Classes="Basic Rounded" Content="Animated Emoji"
+                                                Command="{Binding SelectTelegramPresetCommand}" CommandParameter="Telegram Animated Emoji" />
+                                        <Button Classes="Basic Rounded" Content="Video Emoji"
+                                                Command="{Binding SelectTelegramPresetCommand}" CommandParameter="Telegram Video Emoji" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <TextBlock Text="Active:" FontWeight="Bold" />
+                                        <TextBlock Text="{Binding SelectedTelegramPreset}" FontWeight="Bold" />
+                                    <TextBlock Text="Duration handling" VerticalAlignment="Center"
+                                               IsVisible="{Binding IsTelegramPresetActive}" />
+                                    <Button Classes="Basic Rounded" Content="Keep"
+                                            IsVisible="{Binding IsTelegramPresetActive}"
+                                            Command="{Binding SelectDurationHandlingCommand}" CommandParameter="Keep" />
+                                    <Button Classes="Basic Rounded" Content="Trim to 3 s"
+                                            IsVisible="{Binding IsTelegramPresetActive}"
+                                            Command="{Binding SelectDurationHandlingCommand}" CommandParameter="Trim to 3 s" />
+                                    <Button Classes="Basic Rounded" Content="Speed up to 3 s"
+                                            IsVisible="{Binding IsTelegramPresetActive}"
+                                            Command="{Binding SelectDurationHandlingCommand}" CommandParameter="Speed up to 3 s" />
+                                    <TextBlock Text="Active:" IsVisible="{Binding IsTelegramPresetActive}" />
+                                    <TextBlock Text="{Binding SelectedDurationHandling}" FontWeight="Bold"
+                                               IsVisible="{Binding IsTelegramPresetActive}" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <Button Grid.Row="0" Grid.Column="1" Classes="Basic Rounded"
+                                        Content="Reveal in Finder" Command="{Binding RevealOutputCommand}" />
+                                <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                              MaxHeight="170" Margin="0 8 0 0">
+                                    <TextBlock Text="{Binding TelegramValidationText}" TextWrapping="Wrap"
+                                               FontFamily="Menlo" FontSize="12" />
+                                </ScrollViewer>
+                            </Grid>
+                        </Border>
                         <ProgressBar Grid.Row="5" Margin="0 5 0 0" ShowProgressText="True"
                                      Value="{Binding ProgressValue}" />
                     </Grid>
